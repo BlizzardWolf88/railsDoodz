@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg" data-bs-theme="dark" style="background-color: #084298;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">      
+       <%= image_tag 'BlueWolfDood.png', class: "navbar-brand rounded-circle",style: 'max-width: 4rem;' %>
+    </a>
+    <%= link_to 'DOODZ APP', root_path, class:"navbar-brand" %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav w-100 mb-2 mb-lg-0">
+
+              <li class="nav-item">
+              <% if user_signed_in? %>  
+
+              <%= link_to 'All About Ma Doodz', home_about_path, class:"nav-link" %>
+                </li>
+                                         
+                  <li class="nav-item">
+                    <%= link_to 'Change Some Stuff',  edit_user_registration_path, class:"nav-link" %>
+                  </li>  
+                  <li class="nav-item">
+                  <%= link_to 'Show Madoodz', madoods_path, class:"nav-link" %>
+                </li>
+                    <li class="nav-item">
+                  <%= link_to 'Add A Dood',new_madood_path, class:"nav-link" %>
+                  </li>
+                  
+                  <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Dropdown
+                  </a>
+                  <ul class="dropdown-menu" style="background:white;">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  </ul>
+                  </li> 
+                  <li class="nav-item">
+                    <%= link_to 'Dip Outta Here', destroy_user_session_path, method: :delete, class:"nav-link" %>
+                  </li> 
+                  
+
+                <form class="form-inline d-flex ms-auto " role="search">
+                <input class="form-control me-2 " type="search" placeholder="Search" aria-label="Search" style="background-color:white;">
+                  <button class="btn btn-outline-light" type="submit">Search</button>
+                </form>
+              <% else %>
+                <%= link_to 'Become A Dood', new_user_registration_path, class:"nav-link" %>
+                  </li>
+                  <li class="nav-item">
+                    <%= link_to 'Access Yer Doodship',new_user_session_path, class:"nav-link" %>
+                  </li>         
+                <li class="nav-item">
+                <%= link_to 'All About Ma Doodz', home_about_path, class:"nav-link" %>
+                </li>
+        
+      </ul>
+      <% end %>
+      
+    </div>
+  </div>
+</nav>

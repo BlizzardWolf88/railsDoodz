@@ -1,0 +1,2 @@
+module MadoodsHelper
+end

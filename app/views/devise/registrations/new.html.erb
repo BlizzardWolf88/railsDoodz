@@ -1,0 +1,49 @@
+
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <br/>
+  <br/>
+  <br/>
+
+  <div class= "container d-flex justify-content-center">
+  <div class="card text-center" style="width: 30rem;" > 
+    <div class="card-header">
+      <h2>BECOMMMIN' A DOOOD!!!!!</h2> 
+    </div>
+    <div class="card-body"> 
+     <div class="field">
+       <h5><%= f.label :email,class: "form-label",for:"Email1"  %></h5>
+        <%= f.email_field :email, autofocus: true,class:"form-control",placeholder:"Your Email Madoo" ,autocomplete: "email" %>
+       </div>
+
+        <br/>
+        <div class="field">  
+          <h5><%= f.label :password,class: "form-label"  %></h5> 
+          <%= f.password_field :password, class:"form-control",placeholder:"New Password Madoo",autocomplete: "new-password" %></h5>
+          <% if @minimum_password_length %>   
+            <em><%= @minimum_password_length %> characters minimum Madoo. Some Charz should be Spesh</em>
+          <% end %>
+        </div>
+
+        <br/>
+        <div class="field">
+          <h5><%= f.label :password_confirmation,class: "form-label" %><br /></h5>
+          <%= f.password_field :password_confirmation,class:"form-control", autocomplete: "new-password" %>
+        </div>
+
+          <br/>
+          <div class="actions">
+            <%= f.submit "DoodShip!!!" , class:"btn btn-primary btn-lg active" %>
+          </div>
+        <% end %>
+    </div>
+      <div class="card-footer text-muted"><strong>Become A Dood Madoo</strong></div>
+    </div>
+
+  <br/>
+</div>
+
+<br/>
+<%= render "devise/shared/links" %>

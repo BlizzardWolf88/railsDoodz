@@ -1,0 +1,80 @@
+<br/>
+
+<div class= "container d-flex justify-content-center">
+<div class="card text-center" style="width: 30rem;" > 
+   <div class="card-header">
+     <h2 class="card-title">Changing The Doopship</h2> 
+    </div>
+    <div class="card-body"> 
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="field ">
+   <h5><%= f.label :email,class: "form-label",for:"Email1"  %></h5>
+    <%= f.email_field :email, autofocus: true,class:"form-control", autocomplete: "email" %>
+  </div>
+
+ <br/>
+ <div class="field ">
+   <h5> <%= f.label :current_password,class: "form-label" %></h5>
+    <%= f.password_field :current_password,class:"form-control",placeholder:"Old Passy" ,autocomplete: "current-password" %>
+     <%= f.label :current_password,class: "form-label" %> <i>(we need your current password to confirm your changes Madoo!!)</i><br />
+  </div>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+  <% end %>
+
+  <br/>
+  <div class="field ">
+    <h5><%= f.label :password,class: "form-label" %><br /></h5>
+    <%= f.password_field :password, class:"form-control",placeholder:"New Passy",autocomplete: "new-password" %></h5>
+    <% if @minimum_password_length %>
+     <%= f.label :password,class: "form-label" %> <i>(leave blank if you don't want to change it.) Also... </i> <em><%= @minimum_password_length %> characters minimum</em> <br />
+    <%else%>
+        <%= f.label :password,class: "form-label" %> <i>(leave blank if you don't want to change it) </i>  
+    <% end %>
+  </div>
+  <br/>
+
+  <div class="field ">
+    <h5><%= f.label :password_confirmation,class: "form-label" %></h5>
+    <%= f.password_field :password_confirmation,class:"form-control", placeholder:"Re-Type That New Passy",autocomplete: "new-password" %>
+  </div>
+
+  <br/>
+  <div class="actions">
+    <%= f.submit "Change Dood Stuff", class:"btn btn-primary btn-lg active" %>
+  </div>
+<% end %>
+    </div>
+    <div class="card-footer text-muted"><strong>The ONLY Constant IS Change Madoo</strong></div>
+  </div>
+
+</div>
+
+<br/>
+<br/>
+
+<div class= "container d-flex justify-content-center">
+  <div class="card text-center" style="width: 30rem;" > 
+    <div class="card-header">
+      <h3>Cancel my account</h3> 
+      </div>
+      <div class="card-body"> 
+      <br/>    
+      <%= button_to "Destroy your Doodship???!!!!", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete,class:"btn btn-danger btn-lg active" %>
+      <br/>
+      </div>
+      <div class="card-footer text-muted"><strong>THIS IS A LOST BOY</strong></div>
+    </div>
+
+  <br/>
+</div>
+
+<br/>
+
+<div class= "container d-flex justify-content-center">
+  <%= link_to "Back", :back, class:"btn btn-primary btn-lg active"  %>
+ </div>
+

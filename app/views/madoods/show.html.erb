@@ -1,0 +1,20 @@
+
+<div class= "container d-flex justify-content-center">
+
+  <div class="card text-center" style="width: 30rem;" > 
+    <%= image_tag 'Fall.jpg', class: 'w-100  d-block mx-auto',style: 'max-width: 32rem;' %>
+    <div class="card-body">
+      <h5 class="card-title">This was a Pic with your Doods</h5>
+      <%= render @madood %>   
+      <%= link_to "Edit this Dood", edit_madood_path(@madood),class:"btn btn-primary btn-lg active" %>
+      <br/> 
+      <br/>
+      <%= link_to "Back to Madoods", madoods_path,class:"btn btn-primary btn-lg active" %>
+    <br/>
+    <br/>   
+      <button type="button" class="btn btn-lg btn-danger active" data-bs-toggle="modal" data-bs-target="#MaybzDelete">Delete This Dood?</button>
+    </div>
+    <div class="card-footer text-muted"><strong>THIS IS A LOST BOY</strong></div>
+  </div>
+
+</div>

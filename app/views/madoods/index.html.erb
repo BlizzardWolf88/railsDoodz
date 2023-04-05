@@ -1,0 +1,36 @@
+<% if user_signed_in? %>
+      <h1>Madoods</h1>
+
+      <table class="table table-striped table-hover table-bordered">
+        <thead class= "thead-dark">
+        <tr>
+          <th>Name</th>        
+          <th>Email</th>
+          <th>Phone</th>
+          <th>E-Baby's Twitter</th>
+        </tr>
+        </thead>
+      <tbody> 
+        <% @madoods.each do |madood| %>  
+        <tr>
+            <td><strong><%= link_to madood.first_name + " " + madood.last_name,madood,class:"btn btn-primary btn-sm active" %></strong></td>
+            <td><strong><%= madood.email%></strong></td>
+            <td><strong><%= madood.phone%></strong></td>
+            <td><strong><%= madood.EBabys_Twitter%></strong></td> 
+          </tr>
+        <% end %>
+
+      </tbody>
+      </table>
+
+      <%= link_to "New Dood?", new_madood_path,class:"btn btn-primary btn-lg active" %>
+      <br/>
+    
+
+<% else %>
+
+<h1>GET IT RIGHT GET IT RIGHT GET IT TIGHT</h1>
+<p>Booty Booty Booty Booty ROCKIN' EVERYWHERE  </p>
+
+
+<% end %>

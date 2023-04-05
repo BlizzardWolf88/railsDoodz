@@ -1,0 +1,66 @@
+<%= form_with(model: madood) do |form| %>
+  <% if madood.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(madood.errors.count, "error") %> prohibited this madood from being saved:</h2>
+
+      <ul>
+        <% madood.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  
+<div class= "container d-flex justify-content-center">
+  <div class="card text-center" style="width: 30rem;" > 
+    <div class="card-header">
+      <% if local_assigns[:NewDood] == 'NEW' %>
+      <h3> NEW DOOD </h3> 
+      <% elsif local_assigns[:NewDood] == 'EDIT'  %>
+        <h3> CHANGE DOOD </h3>
+      <% end %>
+    </div>
+    <div class="card-body"> 
+      <div class="mb-3">  
+         <%= form.text_field :first_name, class:"form-control", placeholder:"First Name" %>
+      </div>
+
+      <div class="mb-3">   
+        <%= form.text_field :last_name,class:"form-control" , placeholder:"Last Name" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.text_field :email,class:"form-control", placeholder:"Email" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.text_field :phone,class:"form-control", placeholder:"Ya Digits!!" %>
+      </div>
+
+      <div class="mb-3">  
+        <%= form.text_field :EBabys_Twitter ,class:"form-control" , placeholder:"Twitt Handle" %>
+      </div>
+
+       <div class="mb-3">  
+        <%= form.number_field :user_id,id: :madood_user_id ,class:"form-control" , value:current_user.id,type: :hidden %>
+      </div>
+
+      <div>
+        <%= form.submit class:"btn btn-primary btn-lg active" %>
+      </div>
+        <% end %>
+      </div>
+      <div class="card-footer text-muted">
+          <%if local_assigns[:NewDood] == 'NEW' %>
+             <strong> ONE OF THE.... DOODS </strong> 
+            <% elsif local_assigns[:NewDood] == 'EDIT'  %>
+             <strong> CHANGIN' MADOO </strong>
+            <% end %>
+      
+      </div>
+
+    </div>
+
+  <br/>
+</div>

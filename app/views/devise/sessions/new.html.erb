@@ -1,0 +1,41 @@
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+ 
+<div class= "container d-flex justify-content-center">
+  <div class="card text-center" style="width: 30rem;" > 
+    <div class="card-header">
+     <h2>Get To Your DoodShip!!!!</h2>
+    </div>
+    <div class="card-body">
+    <div class="field mb-3">
+      <h5><%= f.label :email,class: "form-label",for:"Email1"  %></h5>
+       <%= f.email_field :email,id: "Email1", autofocus: true,class:"form-control",placeholder:"Email", autocomplete: "email" %>
+     </div>
+
+        <div class="field">
+          <h5><%= f.label :password ,class: "form-label" %><br /></h5>
+          <%= f.password_field :password,class:"form-control",placeholder:"Password", autocomplete: "current-password" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="field">
+            <%= f.check_box :remember_me,class:"form-check-input" %>
+            <%= f.label :remember_me %>
+          </div>
+        <% end %>
+
+        <br/>
+        <div class="actions">
+          <%= f.submit "DOOODSHIP!!!",  class:"btn btn-primary btn-lg active" %>
+        </div>
+      <% end %>
+    </div> 
+   
+      <div class="card-footer text-muted">
+        <strong>Let's Geddit Madoo</strong>
+      </div>
+    </div>
+
+</div>
+
+<%= render "devise/shared/links" %>
