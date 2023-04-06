@@ -13,3 +13,12 @@
  *= require_tree .
  *= require_self
  */
+.c-item{
+    height: 887px;
+}
+
+.c-img{
+    height: 100%;
+    object-fit: cover;
+    /* filter:brightness(0.7) */
+}

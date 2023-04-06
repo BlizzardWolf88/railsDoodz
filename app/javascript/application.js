@@ -8,5 +8,3 @@ import "controllers"
 //= require bootstrap
 //= require_tree.
 
-// $("#modal-window").find(".modal-content").html("<%= j (render 'confirm_delete') %>");
-// $("#modal-window").modal('show');
