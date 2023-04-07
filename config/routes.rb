@@ -1,23 +1,20 @@
 Rails.application.routes.draw do
 
-  #get 'home/index'
+  
   root 'home#index'
   get  'home/about'
+  get  'madoods/index'
   
   
-  devise_for :users
 
-  #This was added because the Log out in the link_to in the _header.html.erb was causing errors
-  devise_scope :user do  
-    get '/users/sign_out' => 'devise/sessions#destroy'     
-  end
-
-  # Rails.application.routes.draw do
-  #   devise_for :users, controllers: {
-  #     sessions: 'users/sessions'
-  #   }
-  # end
-
+    devise_for :users, controllers: {
+      sessions: 'users/sessions',
+      passwords: 'users/passwords',
+      registrations: 'users/registrations',
+      confirmations: 'users/confirmations'
+     # after_sign_in_path_for  'madoods/index'   
+    }
+  
 
   resources :madoods
   resources :doodzs

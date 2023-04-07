@@ -9,4 +9,6 @@ class HomeController < ApplicationController
   def about
     @about_me = "My Name is Johnny Boy!!!"
   end
+
+  
 end

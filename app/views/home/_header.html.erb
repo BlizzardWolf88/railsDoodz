@@ -37,7 +37,7 @@
                   </ul>
                   </li> 
                   <li class="nav-item">
-                    <%= link_to 'Dip Outta Here', destroy_user_session_path, method: :delete, class:"nav-link" %>
+                    <%= link_to 'Dip Outta Here', destroy_user_session_path, method: :delete, class:"nav-link",data: { turbo_method: :delete } %>
                   </li> 
                   
 

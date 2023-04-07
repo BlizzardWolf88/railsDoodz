@@ -16,24 +16,19 @@
   
   <%# We don't want a container for the home page%>
   <% if current_page?(root_path) %>
-   <body>
-  <%= render 'home/header'%> 
-   <% if notice%>
-     <br/>
-     <%=render 'layouts/alerts'%>
-   <% end %>
-    <%= yield %>
-    <%=render 'layouts/confirm_delete'%>
-  <% else %>
-    <%= render 'home/header'%>
-    <div class ="container">
-      <% if notice%>
-        <br/>
-        <%=render 'layouts/alerts'%>
-      <% end %>
+      <body>
+      <%= render 'home/header'%>      
         <%= yield %>
-        <%=render 'layouts/confirm_delete'%>
-    </div>
+      <% else %>
+        <%= render 'home/header'%>
+        <div class ="container">
+          <% if notice%>
+            <br/>
+            <%=render 'layouts/alerts'%>
+          <% end %>
+            <%= yield %>
+            <%=render 'layouts/confirm_delete'%>
+        </div>
   <% end %>
   <body>
       
