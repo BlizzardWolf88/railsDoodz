@@ -13,12 +13,37 @@
  *= require_tree .
  *= require_self
  */
-.c-item{
+
+ /* change the height of the home page Carousel images  */
+.c-item
+{
     height: 887px;
 }
 
-.c-img{
+.c-img
+{
     height: 100%;
     object-fit: cover;
     /* filter:brightness(0.7) */
 }
+
+/******************************************************************/
+/******************************************************************/
+
+/* Increase the size of the previous and next button icons of Bootstrap Carousel  */
+.carousel-control-next-icon,
+.carousel-control-prev-icon
+{
+    height: 60px !important;
+    width: 60px !important;
+
+}
+
+.test_Bizzy
+{
+    background-color: #084298
+
+}
+
+/******************************************************************/
+/******************************************************************/
