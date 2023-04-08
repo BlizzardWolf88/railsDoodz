@@ -31,6 +31,10 @@ gem 'devise', '~> 4.9', '>= 4.9.1'
 
 gem 'popper_js', '~> 2.11', '>= 2.11.6'
 
+gem 'sendgrid-ruby', '~> 6.6', '>= 6.6.2'
+
+gem 'dotenv-rails', '~> 2.8', '>= 2.8.1'
+
 #gem 'mailcatcher', '~> 0.8.2'
 
 # Use Redis adapter to run Action Cable in production
