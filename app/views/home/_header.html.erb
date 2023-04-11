@@ -9,23 +9,17 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav w-100 mb-2 mb-lg-0">
-              <li class="nav-item">
-              <% if user_signed_in? %>  
-
-            <%= link_to 'All About Ma Doodz', home_about_path, class:"nav-link" %>
-                </li>
-                                         
-                  <li class="nav-item">
-                    <%= link_to 'Change Some Stuff',  edit_user_registration_path, class:"nav-link" %>
-                  </li>  
+           <% if user_signed_in? %> 
+                                                                
                   <li class="nav-item">
                   <%= link_to 'Show Madoodz', madoods_path, class:"nav-link" %>
-                </li>
+                  </li>
                     <li class="nav-item">
                   <%= link_to 'Add A Dood',new_madood_path, class:"nav-link" %>
                   </li>
                   
-                  <li class="nav-item dropdown">
+                  <%# Save This Dropdown For Later %>
+                  <%# <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Dropdown
                   </a>
@@ -35,16 +29,34 @@
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                   </ul>
-                  </li> 
+                  </li>  %>
                   <li class="nav-item">
                     <%= link_to 'Dip Outta Here', destroy_user_session_path, method: :delete, class:"nav-link",data: { turbo_method: :delete } %>
                   </li> 
-                  
 
+                  
                 <form class="form-inline d-flex ms-auto " role="search">
-                <input class="form-control me-2 " type="search" placeholder="Search" aria-label="Search" style="background-color:white;">
-                  <button class="btn btn-outline-light" type="submit">Search</button>
+                                                    
+                      <li class="nav-item d-flex me-3">
+                      <%= link_to edit_user_registration_path do %> 
+                      <% if current_user.image.attached? %>
+                          <%= image_tag(current_user.image ,style:" 
+                          display:inline_block;
+                          height:55px;
+                          width:55px;
+                          border-radius: 50%; 
+                          object-fit: cover;") %>
+                            
+                       <% else %>
+                           <%= link_to 'Change Some Stuff',  edit_user_registration_path, class:"nav-link" %>
+                       <% end %>
+                    <% end %>            
+                  </li>           
+               
+                <input class="form-control me-3  " type="search" placeholder="Search" aria-label="Search" style="background-color:white; width:300px!important; color:black">
+                  <button class="btn btn-outline-light" style="width:100px!important;" type="submit">Search</button>
                 </form>
+              
               <% else %>
                 <%= link_to 'Become A Dood', new_user_registration_path, class:"nav-link" %>
                   </li>
