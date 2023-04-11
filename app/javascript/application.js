@@ -8,3 +8,9 @@ import "controllers"
 //= require bootstrap
 //= require_tree.
 
+import "trix"
+import "@rails/actiontext"
+
+$("#ConfirmDeleteBtn").click(function(){
+    $("#MaybzDelete").modal({backdrop: "static"});
+  });
