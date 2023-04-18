@@ -35,9 +35,10 @@ gem 'sendgrid-ruby', '~> 6.6', '>= 6.6.2'
 
 gem 'dotenv-rails', '~> 2.8', '>= 2.8.1'
 
-gem 'mailgun-ruby', '~> 1.2', '>= 1.2.8'
 #gem 'mailcatcher', '~> 0.8.2'
 
+gem "gmaps4rails"
+gem "geocoder"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 

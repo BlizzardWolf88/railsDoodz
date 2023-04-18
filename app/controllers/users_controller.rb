@@ -44,4 +44,5 @@ class UsersController < ApplicationController
         params.require(:user).permit(:role, :user_name)
       end
 
+
 end
