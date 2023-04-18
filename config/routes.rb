@@ -14,12 +14,11 @@ Rails.application.routes.draw do
     devise_for :users, controllers: {
       sessions: 'users/sessions',
       passwords: 'users/passwords',
-      registrations: 'users/registrations',
-      confirmations: 'user/confirmations'
-     # after_sign_in_path_for  'madoods/index'   
+      registrations: 'users/registrations'
+      #confirmations: 'user/confirmations' Might need this later
     }
-  
 
+   
   resources :madoods
   resources :doodzs
  # resources :users
