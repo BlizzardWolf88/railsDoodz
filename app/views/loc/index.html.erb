@@ -1,0 +1,42 @@
+<%= form_with model: @loc, local: true, data: {controller: :maps,
+                                            action: "mapsLoaded@document->maps#initializeMap"
+                                            
+                                          } do |form| %>
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :search %>
+    <%= form.search_field :search, name: nil, class: 'form-control', data: { target: "maps.field", action: "keydown->maps#preventSubmit" } %>
+  </div>
+
+  <div class="field">
+    <%= form.label :latitude %>
+    <%= form.text_field :latitude, class: 'form-control', data: { target: "maps.latitude" } %>
+  </div>
+
+  <div class="field">
+    <%= form.label :longitude %>
+    <%= form.text_field :longitude, class: 'form-control', data: { target: "ma ps.longitude" } %>
+  </div>
+
+
+
+  <div 
+       data-action="mapsLoaded@document->maps#initializeMap"
+       data-controller ="maps"
+       data-target="field" 
+       class ="mapcss">
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: 'btn btn-primary' %>
+  </div>
+
+  
+
+
+   
+<% end %>

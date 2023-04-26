@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   root 'home#index'
   get  'home/about'
   get  'madoods/index'
+  get  'loc/index'
 
   # GET '/users/:id users'#show
   # PUT '/users/:id users'#update
