@@ -1,16 +1,16 @@
 class LocController < ApplicationController
-   
-  #Save this for the locs index page
-  # data-lat = "<%= @locs.latitude %>"
-  # data-lon ="<%= @locs.longitude %>" 
-    def index
-       @locs = Loc.all
+  
+  before_action :authenticate_user!
+  before_action :store_location
+  before_action :correct_dood, only:[:edit,:update,:destroy]
+  
+    def store_location
+      session[:user_return_to] = request.fullpath
     end
   
-    # def new
-    #   @locs = current_user.loc.build
-    # end
-
+    def index
+       @locs = Loc.all
+    end      
 
     def create
       # @madood = Madood.new(madood_params)
@@ -29,7 +29,7 @@ class LocController < ApplicationController
 
     def correct_dood 
       @loc = current_user.loc.find_by(id: params[:id])
-      redirect_to loc_path, notice: "Can't change this dood because you are NOT that dood" if @loc.nil?
+      redirect_to loc_path, notice: "Can't change this dood because you are NOT that Loc Madoo" if @loc.nil?
     end
 
     private

@@ -14,11 +14,8 @@ import "controllers"
  import "@rails/actiontext"
 
 window.dispatchMapsEvent = function() {
-  console.log("In the /javascript/application.js")
   console.log(google)
   const evt = new Event("mapsLoaded");
-  //evt.initEvent=("google-maps-callback",true,true)
-  //evt.args = args
   document.dispatchEvent(evt);
 };
 

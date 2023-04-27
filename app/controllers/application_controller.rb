@@ -4,9 +4,9 @@ class ApplicationController < ActionController::Base
         root_path
      end
 
-     #Landing page after sign in remember convetion is /example/index becomes example_path
+
     def after_sign_in_path_for(resource)
-        madoods_path
+        session[:user_return_to] || root_url
     end
 
 
