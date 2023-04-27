@@ -1,5 +1,6 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "@hotwired/turbo-rails"
+import "controllers"
 // import "popper"
 // import "bootstrap"
 
@@ -13,7 +14,7 @@ import "@hotwired/turbo-rails"
  import "@rails/actiontext"
 
 window.dispatchMapsEvent = function() {
-  console.log("TEst")
+  console.log("In the /javascript/application.js")
   console.log(google)
   const evt = new Event("mapsLoaded");
   //evt.initEvent=("google-maps-callback",true,true)
@@ -21,7 +22,5 @@ window.dispatchMapsEvent = function() {
   document.dispatchEvent(evt);
 };
 
-// $("#ConfirmDeleteBtn").click(function(){
-//     $("#MaybzDelete").modal({backdrop: "static"});
-//   });
+
 

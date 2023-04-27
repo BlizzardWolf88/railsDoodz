@@ -1,42 +1,21 @@
-<%= form_with model: @loc, local: true, data: {controller: :maps,
-                                            action: "mapsLoaded@document->maps#initializeMap"
-                                            
-                                          } do |form| %>
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: 'form-control' %>
-  </div>
+<%= form_with(model: @loc) do |form| %>
 
-  <div class="field">
-    <%= form.label :search %>
-    <%= form.search_field :search, name: nil, class: 'form-control', data: { target: "maps.field", action: "keydown->maps#preventSubmit" } %>
-  </div>
+<%# Alt + B + B to close html tag <%%> 
+<h1>Test</h1>
+<br/>
+<h2>We Did it</h2>
+<br/>
 
-  <div class="field">
-    <%= form.label :latitude %>
-    <%= form.text_field :latitude, class: 'form-control', data: { target: "maps.latitude" } %>
-  </div>
-
-  <div class="field">
-    <%= form.label :longitude %>
-    <%= form.text_field :longitude, class: 'form-control', data: { target: "ma ps.longitude" } %>
-  </div>
-
-
-
-  <div 
+  <div   
+       class ="mapcss"
+       data-controller = "maps"   
+       data-target="maps.coordinates" 
        data-action="mapsLoaded@document->maps#initializeMap"
-       data-controller ="maps"
-       data-target="field" 
-       class ="mapcss">
+       data-lat = "43.639" 
+       data-lon="-71.981">      
   </div>
 
-  <div class="actions">
-    <%= form.submit class: 'btn btn-primary' %>
-  </div>
-
-  
+<% end %>
 
 
    
-<% end %>

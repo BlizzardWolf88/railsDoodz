@@ -4,9 +4,44 @@ class LocController < ApplicationController
   # data-lat = "<%= @locs.latitude %>"
   # data-lon ="<%= @locs.longitude %>" 
     def index
-      # @locs = loc.all
+       @locs = Loc.all
     end
   
-   
+    # def new
+    #   @locs = current_user.loc.build
+    # end
+
+
+    def create
+      # @madood = Madood.new(madood_params)
+      @loc = current_user.loc.build(loc_params)
+       respond_to do |format|
+         if @loc.save
+           format.html { redirect_to madood_url(@loc), notice: "Location was successfully created." }
+           format.json { render :show, status: :created, location: @loc }
+         else
+           format.html { render :new, status: :unprocessable_entity }
+           format.json { render json: @loc.errors, status: :unprocessable_entity }
+         end
+       end
+    end
+  
+
+    def correct_dood 
+      @loc = current_user.loc.find_by(id: params[:id])
+      redirect_to loc_path, notice: "Can't change this dood because you are NOT that dood" if @loc.nil?
+    end
+
+    private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_loc
+      @loc = Loc.find(params[:id])
+    end
     
+    #Might need to refactor the loc table IDK 
+    def loc_params
+      params.require(:loc).permit(:name, :address, :position, :latitude, :longitude,:create_date,:created_at,:updated_at)
+    end
+
+
   end
