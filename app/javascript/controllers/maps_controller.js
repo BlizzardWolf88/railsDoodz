@@ -1,9 +1,7 @@
- import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["coordinates", "map", "latitude", "longitude"]
- // static targets = ["coordinates"]
-  
+  static targets = ["coordinates", "map", "latitude", "longitude","field"]
 
   connect() {
     if (typeof (google) != "undefined"){
@@ -11,75 +9,115 @@ export default class extends Controller {
     }
   }
 
+  
   initializeMap() {
     //Don't Invoke these functions for now
-
+     
+     //Lat and Lon for starting position on map
      const lat = parseFloat(this.coordinatesTarget.dataset.lat)
      const lon = parseFloat(this.coordinatesTarget.dataset.lon)
      const coordinates = {lat:lat,lng:lon}
-
-     this.map(coordinates)
-     this.marker(lat,lon)
-    // this.autocomplete()    
+     const map = new google.maps.Map(this.coordinatesTarget,{center:coordinates,zoom:15});
+     var marker
+     var infowindow
   
+    map.addListener("click", (e) => {
+
+       console.log("Map Listener")
+       this.placeMarkerAndPanTo(e.latLng, map);   
+      
+    });     
+   
+         //this.map(coordinates)
+         //this.marker(lat,lon)
+         //this.autocomplete()     
+
+  }
+
+     placeMarkerAndPanTo(latLng, map) {
+      
+     //Create Marker on the click
+     if(this.marker != undefined){
+         this.marker.setPosition(latLng);
+     } 
+     else{   
+       this.marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+        });
+        map.panTo(latLng);
+        //Create an associated InfoWindow with it
+         this.infowindow = new google.maps.InfoWindow({
+          content: "Save This Spot",
+         });
+         this.infowindow.open(map,this.marker);
+    }    
+                 
+    }   
+    
   }
 
 
-  map(cordeez) {
 
-    if(this._map == undefined) {
-      console.log("Making a Map")
-     this._map = new google.maps.Map(this.coordinatesTarget,{center:cordeez,zoom:15});
-    }
-    return this._map
-  }
 
-  marker(lat,lon) {
-    if (this._marker == undefined) {
-      this._marker = new google.maps.Marker({
-        map: this.map(),
-        anchorPoint: new google.maps.Point(0,0)
-      })
-      let mapLocation = {
-        lat: lat,
-        lng: lon
-      }
-      this._marker.setPosition(mapLocation)
-      this._marker.setVisible(true)
-    }
-    return this._marker
-  }
 
-  autocomplete() {
-    if (this._autocomplete == undefined) {
-      this._autocomplete = new google.maps.places.Autocomplete(this.fieldTarget)
-      this._autocomplete.bindTo('bounds', this.map())
-      this._autocomplete.setFields(['address_components', 'geometry', 'icon', 'name'])
-      this._autocomplete.addListener('place_changed', this.locationChanged.bind(this))
-    }
-    return this._autocomplete
-  }
+  // map(cordeez) {
 
-  locationChanged() {
-    let loc = this.autocomplete().getPlace()
+  //   if(this._map == undefined) {
+  //     console.log("Making a Map")
+  //    this._map = new google.maps.Map(this.coordinatesTarget,{center:cordeez,zoom:15});
+  //   }
 
-    if (!loc.geometry) {
-      // User entered the name of a Place that was not suggested and
-      // pressed the Enter key, or the Place Details request failed.
-      window.alert("No details available for input: '" + loc.name + "'");
-      return;
-    }
 
-    this.map().fitBounds(loc.geometry.viewport)
-    this.map().setCenter(loc.geometry.location)
-    this.marker().setPosition(loc.geometry.location)
-    this.marker().setVisible(true)
+  //   return this._map
+  // }
 
-    this.latitudeTarget.value = loc.geometry.location.lat()
-    this.longitudeTarget.value = loc.geometry.location.lng()
-  }
+//   marker(lat,lon) {
+//     if (this._marker == undefined) {
+//       this._marker = new google.maps.Marker({
+//         map: this.map(),
+//         anchorPoint: new google.maps.Point(0,0)
+//       })
+//       let mapLocation = {
+//         lat: lat,
+//         lng: lon
+//       }
+//       this._marker.setPosition(mapLocation)
+//       this._marker.setVisible(true)
+//     }
+//     return this._marker
+//   }
 
-  preventSubmit(e) {
-    if (e.key == "Enter") { e.preventDefault() }
-  }
-}
+//   autocomplete() {
+//     if (this._autocomplete == undefined) {
+//       this._autocomplete = new google.maps.places.Autocomplete(this.fieldTarget)
+//       this._autocomplete.bindTo('bounds', this.map())
+//       this._autocomplete.setFields(['address_components', 'geometry', 'icon', 'name'])
+//       this._autocomplete.addListener('place_changed', this.locationChanged.bind(this))
+//     }
+//     return this._autocomplete
+//   }
+
+//   locationChanged() {
+//     let loc = this.autocomplete().getPlace()
+
+//     if (!loc.geometry) {
+//       // User entered the name of a Place that was not suggested and
+//       // pressed the Enter key, or the Place Details request failed.
+//       window.alert("No details available for input: '" + loc.name + "'");
+//       return;
+//     }
+
+//     this.map().fitBounds(loc.geometry.viewport)
+//     this.map().setCenter(loc.geometry.location)
+//     this.marker().setPosition(loc.geometry.location)
+//     this.marker().setVisible(true)
+
+//     this.latitudeTarget.value = loc.geometry.location.lat()
+//     this.longitudeTarget.value = loc.geometry.location.lng()
+//   }
+
+//   preventSubmit(e) {
+//     if (e.key == "Enter") { e.preventDefault() }
+//   }
+// }

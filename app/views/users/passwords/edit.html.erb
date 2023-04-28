@@ -1,25 +1,35 @@
-<h2>Change your password</h2>
+
 
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
   <%= f.hidden_field :reset_password_token %>
 
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-    <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
-  </div>
+<br/>
+<div class= "container d-flex justify-content-center">
+ <div class="card text-center" style="width: 30rem;" > 
+    <div class="card-header">
+      <h2>CHANGE THAT PASSY MADDOO????</h2> 
+    </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+    <div class="card-body">
+      <div class="field">
+        <% if @minimum_password_length %>
+          <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+        <% end %>
+        <%= f.password_field :password, placeholder:"New Passy", autofocus: true, class:"form-control", autocomplete: "new-password" %>
+      </div>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
+      <div class="field">
+        <%= f.label :password_confirmation, "Confirm new password",class: "form-label" %><br />
+        <%= f.password_field :password_confirmation,placeholder:"Confirm That New Passy Madoo", class:"form-control", autocomplete: "new-password" %>
+      </div>
+      <br/> 
+      <div class="actions">
+        <%= f.submit "Out With The OLD!!!", class:"btn btn-primary btn-lg active" %>
+      </div>
+      <% end %>
+    </div>
   </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>
+<br/>
+<%= render "users/shared/links" %>
