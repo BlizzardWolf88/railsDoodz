@@ -18,8 +18,9 @@ export default class extends Controller {
      const lon = parseFloat(this.coordinatesTarget.dataset.lon)
      const coordinates = {lat:lat,lng:lon}
      const map = new google.maps.Map(this.coordinatesTarget,{center:coordinates,zoom:15});
-     var marker
-     var infowindow
+     
+     this.CreateIcons();
+     //this.CreatWinForm();
   
     map.addListener("click", (e) => {
 
@@ -28,6 +29,7 @@ export default class extends Controller {
       
     });     
    
+     
          //this.map(coordinates)
          //this.marker(lat,lon)
          //this.autocomplete()     
@@ -36,24 +38,63 @@ export default class extends Controller {
 
      placeMarkerAndPanTo(latLng, map) {
       
+     
      //Create Marker on the click
      if(this.marker != undefined){
          this.marker.setPosition(latLng);
+         this.infowindow.close();
      } 
      else{   
        this.marker = new google.maps.Marker({
           position: latLng,
           map: map,
+          icon: this.icon1,
         });
         map.panTo(latLng);
-        //Create an associated InfoWindow with it
-         this.infowindow = new google.maps.InfoWindow({
-          content: "Save This Spot",
-         });
-         this.infowindow.open(map,this.marker);
-    }    
-                 
+             
     }   
+
+    
+      this.infowindow = new google.maps.InfoWindow({
+          //content: JSON.stringify(latLng.toJSON(), null, 2) + this.contentString,
+          content:content
+      });
+      this.infowindow.open(map,this.marker);       
+  }   
+
+
+
+
+  CreateIcons(){
+
+      this.icon1 = {
+      url: "/assets/BlueWolfDood.png" + '#custom_marker', // url
+      scaledSize: new google.maps.Size(50, 50), // scaled size
+      origin: new google.maps.Point(0,0), // origin
+      anchor: new google.maps.Point(0, 0) // anchor
+    };
+
+    this.icon2 = {
+      url: "/assets/EEEIND.jpg" + '#custom_marker', // url
+      scaledSize: new google.maps.Size(50, 50), // scaled size
+      origin: new google.maps.Point(0,0), // origin
+      anchor: new google.maps.Point(0, 0) // anchor
+    };
+
+
+  }
+
+  CreatWinForm(){
+
+    this.contentString = ' <button type="button" class="btn btn-primary btn-lg active goodGood" data-bs-container="body"+'
+     'data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Right popover">+'
+      'Save This Spot +'
+     '</button>'
+    
+  }
+
+
+
     
   }
 

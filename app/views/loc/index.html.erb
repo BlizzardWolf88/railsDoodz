@@ -3,9 +3,29 @@
 <%# Alt + B + B to close html tag <%%> 
 <h1>Test</h1>
 <br/>
-<h2>We Did it</h2>
-<br/>
 
+<div class="container px-4">
+   
+        <button class="btn btn-primary btn-lg active" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          Filter Locations
+        </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="#">Stand Pins</a></li>
+            <li><a class="dropdown-item" href="#">Buck Bed Pins</a></li>
+            <li><a class="dropdown-item" href="#">Access Point Pins</a></li>
+          </ul>
+  
+  <button type="button" class="btn btn-primary btn-lg active goodGood" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Right popover">
+    Popover on right
+  </button>
+  <button type="button" class="btn btn-primary btn-lg active goodGood" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Bottom popover">
+    Popover on bottom
+  </button>
+  <button type="button" class="btn btn-primary btn-lg active goodGood" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="left" data-bs-content="Left popover">
+    Popover on left
+  </button>
+</div>
+<br/>
 
   <div   
        class ="mapcss"
@@ -15,6 +35,16 @@
        data-lat = "43.639" 
        data-lon="-71.981">      
   </div>
+ 
+
+<%= render "saveSpot", loc: @loc %>
+
+ <style>
+  img[src$="#custom_marker"]{
+      border: 2px solid #900 !important;
+      border-radius:50%;
+    }
+   </style>
 
 <% end %>
 

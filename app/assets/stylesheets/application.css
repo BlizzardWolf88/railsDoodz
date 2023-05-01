@@ -13,6 +13,10 @@
  *= require_tree .
  *= require_self
  */
+ .goodGood{
+  background-color: #084298
+
+ }
 
  /* change the height of the home page Carousel images  */
 .c-item

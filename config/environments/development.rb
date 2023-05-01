@@ -37,6 +37,7 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   config.assets.compile = true
+  config.serve_static_assets = true
 
   # ALL SETTINGS FOR SEND GRID MAIL SERVER
   config.action_mailer.raise_delivery_errors = false
