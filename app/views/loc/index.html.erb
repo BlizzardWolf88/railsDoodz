@@ -10,6 +10,7 @@
           Filter Locations
         </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="#">All My Spots</a></li>
             <li><a class="dropdown-item" href="#">Stand Pins</a></li>
             <li><a class="dropdown-item" href="#">Buck Bed Pins</a></li>
             <li><a class="dropdown-item" href="#">Access Point Pins</a></li>
@@ -33,11 +34,15 @@
        data-controller = "maps"   
        data-target="maps.coordinates"        
        data-lat = "43.639" 
+       data-remote-select-url-value="/loc/saveSpot"
+       data-remote-select-name-value="whatever_form[selected]"
        data-lon="-71.981">      
   </div>
  
-
-<%= render "saveSpot", loc: @loc %>
+ <%# This must be renderd after a button click %>
+<div style="visibility: hidden;">
+ <%= render "saveSpot", loc: @loc %>
+</div>
 
  <style>
   img[src$="#custom_marker"]{

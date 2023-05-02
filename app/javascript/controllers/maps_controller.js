@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["coordinates", "map", "latitude", "longitude","field"]
-
+  static targets = ["coordinates", "map", "latitude", "longitude"]
+  
   connect() {
     if (typeof (google) != "undefined"){
       this.initializeMap();      
@@ -18,9 +18,9 @@ export default class extends Controller {
      const lon = parseFloat(this.coordinatesTarget.dataset.lon)
      const coordinates = {lat:lat,lng:lon}
      const map = new google.maps.Map(this.coordinatesTarget,{center:coordinates,zoom:15});
+     this.content = spotContent
      
      this.CreateIcons();
-     //this.CreatWinForm();
   
     map.addListener("click", (e) => {
 
@@ -55,10 +55,12 @@ export default class extends Controller {
     }   
 
     
-      this.infowindow = new google.maps.InfoWindow({
-          //content: JSON.stringify(latLng.toJSON(), null, 2) + this.contentString,
-          content:content
-      });
+      // this.infowindow = new google.maps.InfoWindow({
+      //     //content: JSON.stringify(latLng.toJSON(), null, 2) + this.contentString,
+      //     content:spotContent
+      // });
+      this.infowindow = new google.maps.InfoWindow();
+      this.infowindow.setContent(this.content)
       this.infowindow.open(map,this.marker);       
   }   
 
@@ -83,17 +85,6 @@ export default class extends Controller {
 
 
   }
-
-  CreatWinForm(){
-
-    this.contentString = ' <button type="button" class="btn btn-primary btn-lg active goodGood" data-bs-container="body"+'
-     'data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Right popover">+'
-      'Save This Spot +'
-     '</button>'
-    
-  }
-
-
 
     
   }

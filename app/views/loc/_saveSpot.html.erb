@@ -1,13 +1,13 @@
 <%= form_with(model: loc) do |form| %>
 
-<div id ="content">
+<div id ="spotContent">
     <div class="card text-center">
       <div class="card-header">
         <h2>Save This Spot TEST</h2>
       </div>
       <div class="card-body">
         <h5 class="card-title">Special title treatment</h5>
-          <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+          <%# <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -32,23 +32,27 @@
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
-            </div> 
+            </div>  %>
+         <div class="mb-3">
+            <button type="button" class="btn btn-primary btn-lg active goodGood" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Right popover">
+               Show Spot Pics
+            </button>
+          </div>
 
 
           <div class="mb-3">  
             <%= form.text_field :name, class:"form-control", placeholder:"Spot Name" %>
           </div>
-
-          <div class="mb-3">   
-            <%= form.text_field :lattidue,class:"form-control" , placeholder:"Lat" %>
+           <div class="mb-3">  
+            <%= form.text_field :create_date, class:"form-control", placeholder:"The Date" %>
           </div>
-
           <div class="mb-3">
-            <%= form.text_field :longitude,class:"form-control", placeholder:"lon" %>
+             <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Notes" rows="3"></textarea>
           </div>
-
           <div class="mb-3">
-            <%= form.text_field :create_date,class:"form-control", placeholder:"Ya Digits!!" %>
+            <button type="button" class="btn btn-primary btn-lg active goodGood" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Right popover">
+               Save Spot
+            </button>
           </div>
         
       </div>
