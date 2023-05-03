@@ -1,56 +1,59 @@
 <%= form_with(model: @loc) do |form| %>
 
 <%# Alt + B + B to close html tag <%%> 
-<h1>Test</h1>
 <br/>
-
-<div class="container px-4">
-   
+<div data-controller = "maps">
+  <div class="container">
+    <div class = "row">
+      <div class = "col">
+          <button class="btn btn-primary btn-lg active" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            Filter Locations   
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#">All My Spots</a></li>
+              <li><a class="dropdown-item" href="#">Stand Pins</a></li>
+              <li><a class="dropdown-item" href="#">Buck Bed Pins</a></li>
+              <li><a class="dropdown-item" href="#">Access Point Pins</a></li>
+            </ul>
+          </button>
+      </div>
+      <div class = "col">
         <button class="btn btn-primary btn-lg active" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          Filter Locations
-        </button>
+          Filter Winds
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="#">All My Spots</a></li>
-            <li><a class="dropdown-item" href="#">Stand Pins</a></li>
-            <li><a class="dropdown-item" href="#">Buck Bed Pins</a></li>
-            <li><a class="dropdown-item" href="#">Access Point Pins</a></li>
+            <li><a class="dropdown-item" href="#">North</a></li>
+            <li><a class="dropdown-item" href="#">West</a></li>
+            <li><a class="dropdown-item" href="#">South</a></li>
+            <li><a class="dropdown-item" href="#">East</a></li>
           </ul>
-  
-  <button type="button" class="btn btn-primary btn-lg active goodGood" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Right popover">
-    Popover on right
-  </button>
-  <button type="button" class="btn btn-primary btn-lg active goodGood" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Bottom popover">
-    Popover on bottom
-  </button>
-  <button type="button" class="btn btn-primary btn-lg active goodGood" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="left" data-bs-content="Left popover">
-    Popover on left
-  </button>
-</div>
-<br/>
-
-  <div   
-       class ="mapcss"
-       data-action="mapsLoaded@document->maps#initializeMap"
-       data-controller = "maps"   
-       data-target="maps.coordinates"        
-       data-lat = "43.639" 
-       data-remote-select-url-value="/loc/saveSpot"
-       data-remote-select-name-value="whatever_form[selected]"
-       data-lon="-71.981">      
+          </button>
+        </div>
+      </div>
   </div>
- 
- <%# This must be renderd after a button click %>
-<div style="visibility: hidden;">
- <%= render "saveSpot", loc: @loc %>
+  <br/>
+    <div   
+        class ="mapcss"
+        data-action="mapsLoaded@document->maps#initializeMap"
+        data-target="maps.coordinates"        
+        data-lat = "43.639"        
+        data-lon="-71.981">            
+    </div>
+  
+  <%#Here is our form to save a loc %>
+  <div style="display:none">
+    <%= render "saveSpot", loc: @loc %> 
+  </div>
+
+   <%=render 'open_pics'%>
+
+
+   <style>
+      img[src$="#custom_marker"]{
+          border: 2px solid #900 !important;
+          border-radius:50%;
+        }
+    </style>
+
 </div>
-
- <style>
-  img[src$="#custom_marker"]{
-      border: 2px solid #900 !important;
-      border-radius:50%;
-    }
-   </style>
-
 <% end %>
 
 

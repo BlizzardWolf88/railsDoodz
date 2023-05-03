@@ -1,45 +1,65 @@
 <%= form_with(model: loc) do |form| %>
 
-<div id ="spotContent">
-    <div class="card text-center">
+<div id ="formContent"  >
+    <div class="card text-center h-600" >
       <div class="card-header">
-        <h2>Save This Spot TEST</h2>
+        <h2>Save This Spot Ghetto Force</h2>
       </div>
       <div class="card-body">
-        <h5 class="card-title">Special title treatment</h5>
-          <%# <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                    <img src="..." class="d-block w-100" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                    <img src="..." class="d-block w-100" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                    <img src="..." class="d-block w-100" alt="...">
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
+         <br/>  
+         <div>    
+          <div class="container">
+            <div class = "row">
+              <div class ="col">
+                <button type="button" id= "showPicsBtn" class="btn btn-primary btn-lg active" data-bs-toggle="modal" data-bs-target="#ViewPics">
+                  Show Pics
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
+                </div>
+                <div class ="col">
+                <button type="button" id= "showPicsBtn" class="btn btn-primary btn-lg active">
+                  Loc Type
                 </button>
-            </div>  %>
-         <div class="mb-3">
-            <button type="button" class="btn btn-primary btn-lg active goodGood" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Right popover">
-               Show Spot Pics
-            </button>
+                </div>
+              </div>
+            </div>
           </div>
-
-
+          <br/>
+          <div class="container lg">
+              <div class="row">
+                  <div class="col">
+                    <%# North West %>
+                  </div>
+                   <div class="col" data-action="click->maps#sendNorth" data-target="maps.north" data-north = "N">                
+                    <%= image_tag 'North.png',class:'compassBtnNorthSouth' %>
+                   </div>
+                  <div class="col">
+                  <%# North East %>
+                  </div>
+              </div>
+              <div class="row">
+                <div class="col" data-action="click->maps#sendWest" data-target="maps.west" data-west = "W">
+                 <%= image_tag 'West.png',class:'compassBtnWestEast' %>
+                </div>
+                <div class="col">
+                  <%# Center %>
+                </div>
+                <div class="col" data-action="click->maps#sendEast" data-target="maps.east" data-east = "E">
+                <%= image_tag 'East.png',class:'compassBtnWestEast' %>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                 <%# South West %>
+                </div>
+                <div class="col "data-action="click->maps#sendSouth" data-target="maps.south" data-south = "S">
+                 <%= image_tag 'South.png',class:'compassBtnNorthSouth' %>
+                </div>
+                <div class="col">
+                  <%# South East %>
+                </div>
+              </div>
+            </div>
+            <br/>
           <div class="mb-3">  
             <%= form.text_field :name, class:"form-control", placeholder:"Spot Name" %>
           </div>

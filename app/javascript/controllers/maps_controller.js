@@ -1,7 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
 
+
+
 export default class extends Controller {
-  static targets = ["coordinates", "map", "latitude", "longitude"]
+  //static targets = ["coordinates", "map", "latitude", "longitude","wind"]
+  static targets = ["coordinates","north","south","east","west"]
   
   connect() {
     if (typeof (google) != "undefined"){
@@ -10,7 +13,7 @@ export default class extends Controller {
   }
 
   
-  initializeMap() {
+  initializeMap(evt) {
     //Don't Invoke these functions for now
      
      //Lat and Lon for starting position on map
@@ -18,23 +21,19 @@ export default class extends Controller {
      const lon = parseFloat(this.coordinatesTarget.dataset.lon)
      const coordinates = {lat:lat,lng:lon}
      const map = new google.maps.Map(this.coordinatesTarget,{center:coordinates,zoom:15});
-     this.content = spotContent
-     
+     this.content = formContent
+        
      this.CreateIcons();
   
-    map.addListener("click", (e) => {
+      map.addListener("click", (e) => {
 
-       console.log("Map Listener")
-       this.placeMarkerAndPanTo(e.latLng, map);   
-      
-    });     
+        console.log("Map Listener")
+        this.placeMarkerAndPanTo(e.latLng, map);   
+        
+      });     
    
-     
-         //this.map(coordinates)
-         //this.marker(lat,lon)
-         //this.autocomplete()     
-
   }
+
 
      placeMarkerAndPanTo(latLng, map) {
       
@@ -53,103 +52,69 @@ export default class extends Controller {
         map.panTo(latLng);
              
     }   
-
-    
-      // this.infowindow = new google.maps.InfoWindow({
-      //     //content: JSON.stringify(latLng.toJSON(), null, 2) + this.contentString,
-      //     content:spotContent
-      // });
+        
       this.infowindow = new google.maps.InfoWindow();
       this.infowindow.setContent(this.content)
       this.infowindow.open(map,this.marker);       
   }   
 
 
+    CreateIcons(){
+
+        this.icon1 = {
+        url: "/assets/BlueWolfDood.png" + '#custom_marker', // url
+        scaledSize: new google.maps.Size(50, 50), // scaled size
+        origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(0, 0) // anchor
+      };
+
+      this.icon2 = {
+        url: "/assets/EEEIND.jpg" + '#custom_marker', // url
+        scaledSize: new google.maps.Size(50, 50), // scaled size
+        origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(0, 0) // anchor
+      };
 
 
-  CreateIcons(){
+    }
 
-      this.icon1 = {
-      url: "/assets/BlueWolfDood.png" + '#custom_marker', // url
-      scaledSize: new google.maps.Size(50, 50), // scaled size
-      origin: new google.maps.Point(0,0), // origin
-      anchor: new google.maps.Point(0, 0) // anchor
-    };
+    sendNorth(){
+      if(this.NorthWind == undefined){
+        this.NorthWind = this.northTarget.dataset.north
+      }
+      else{
+        this.NorthWind = null  
+      }       
+    }
 
-    this.icon2 = {
-      url: "/assets/EEEIND.jpg" + '#custom_marker', // url
-      scaledSize: new google.maps.Size(50, 50), // scaled size
-      origin: new google.maps.Point(0,0), // origin
-      anchor: new google.maps.Point(0, 0) // anchor
-    };
+    sendWest(){
+      if(this.WestWind == undefined){
+        this.WestWind = this.westTarget.dataset.west
+      }
+      else{
+        this.WestWind = null  
+      }       
+    }
 
+    sendEast(){      
+      if(this.EastWind == undefined){
+        this.EastWind  = this.eastTarget.dataset.east
+      }
+      else{
+        this.EastWind = null  
+      }    
+    }
 
-  }
-
+    sendSouth(){
+      if(this.SouthWind == undefined){
+        this.SouthWind  = this.southTarget.dataset.south
+      }
+      else{
+        this.SouthWind = null  
+      }  
+    }    
     
   }
 
 
 
-
-
-  // map(cordeez) {
-
-  //   if(this._map == undefined) {
-  //     console.log("Making a Map")
-  //    this._map = new google.maps.Map(this.coordinatesTarget,{center:cordeez,zoom:15});
-  //   }
-
-
-  //   return this._map
-  // }
-
-//   marker(lat,lon) {
-//     if (this._marker == undefined) {
-//       this._marker = new google.maps.Marker({
-//         map: this.map(),
-//         anchorPoint: new google.maps.Point(0,0)
-//       })
-//       let mapLocation = {
-//         lat: lat,
-//         lng: lon
-//       }
-//       this._marker.setPosition(mapLocation)
-//       this._marker.setVisible(true)
-//     }
-//     return this._marker
-//   }
-
-//   autocomplete() {
-//     if (this._autocomplete == undefined) {
-//       this._autocomplete = new google.maps.places.Autocomplete(this.fieldTarget)
-//       this._autocomplete.bindTo('bounds', this.map())
-//       this._autocomplete.setFields(['address_components', 'geometry', 'icon', 'name'])
-//       this._autocomplete.addListener('place_changed', this.locationChanged.bind(this))
-//     }
-//     return this._autocomplete
-//   }
-
-//   locationChanged() {
-//     let loc = this.autocomplete().getPlace()
-
-//     if (!loc.geometry) {
-//       // User entered the name of a Place that was not suggested and
-//       // pressed the Enter key, or the Place Details request failed.
-//       window.alert("No details available for input: '" + loc.name + "'");
-//       return;
-//     }
-
-//     this.map().fitBounds(loc.geometry.viewport)
-//     this.map().setCenter(loc.geometry.location)
-//     this.marker().setPosition(loc.geometry.location)
-//     this.marker().setVisible(true)
-
-//     this.latitudeTarget.value = loc.geometry.location.lat()
-//     this.longitudeTarget.value = loc.geometry.location.lng()
-//   }
-
-//   preventSubmit(e) {
-//     if (e.key == "Enter") { e.preventDefault() }
-//   }
-// }

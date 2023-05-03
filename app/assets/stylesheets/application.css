@@ -18,6 +18,22 @@
 
  }
 
+ .compassBtnWestEast{
+    display:inline_block;
+    height:60px;
+    width:88px;
+    object-fit: cover;
+ }
+
+ .compassBtnNorthSouth{
+  display:inline_block;
+  height:88px;
+  width:60px;
+  object-fit: cover;
+}
+
+
+
  /* change the height of the home page Carousel images  */
 .c-item
 {

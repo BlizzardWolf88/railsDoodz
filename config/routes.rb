@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get  'home/about'
   get  'madoods/index'
   get  'loc/index'
+  get  'loc/saveSpot'
+
 
   # GET '/users/:id users'#show
   # PUT '/users/:id users'#update

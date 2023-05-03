@@ -10,7 +10,17 @@ class LocController < ApplicationController
   
     def index
        @locs = Loc.all
-    end      
+    end     
+    
+    
+
+    def saveSpot
+      # render "saveSpot"
+      render partial: 'saveSpot', locals: {loc: params[:loc]}, layout: false
+      
+      #render partial: 'saveSpot', locals: {loc: @loc}, layout: false
+    end
+
 
     def create
       # @madood = Madood.new(madood_params)
