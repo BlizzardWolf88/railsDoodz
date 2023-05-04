@@ -5,7 +5,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   //static targets = ["coordinates", "map", "latitude", "longitude","wind"]
   static targets = ["coordinates","north","south","east","west"]
-  
+ 
   connect() {
     if (typeof (google) != "undefined"){
       this.initializeMap();      
@@ -15,6 +15,11 @@ export default class extends Controller {
   
   initializeMap(evt) {
     //Don't Invoke these functions for now
+     
+
+     
+   
+     
      
      //Lat and Lon for starting position on map
      const lat = parseFloat(this.coordinatesTarget.dataset.lat)
@@ -36,7 +41,8 @@ export default class extends Controller {
 
 
      placeMarkerAndPanTo(latLng, map) {
-      
+     
+    
      
      //Create Marker on the click
      if(this.marker != undefined){
@@ -55,7 +61,17 @@ export default class extends Controller {
         
       this.infowindow = new google.maps.InfoWindow();
       this.infowindow.setContent(this.content)
-      this.infowindow.open(map,this.marker);       
+      this.infowindow.open(map,this.marker);   
+      
+    let northLogo = document.getElementById('northLogo').src = "/assets/North.png";
+    let southLogo = document.getElementById('southLogo').src = "/assets/South.png";
+    let westLogo = document.getElementById('westLogo').src = "/assets/West.png";
+    let eastLogo = document.getElementById('eastLogo').src = "/assets/East.png";
+
+    //  northLogo.src = "/assets/North.png";
+    //  logoSouth.src = "/assets/South.png";
+    //  logoWest.src = "/assets/West.png";
+    //  logoEast.src = "/assets/East.png";
   }   
 
 
@@ -79,40 +95,54 @@ export default class extends Controller {
     }
 
     sendNorth(){
+      
+
+
       if(this.NorthWind == undefined){
         this.NorthWind = this.northTarget.dataset.north
+        northLogo.src = "/assets/NorthAfter.png"
       }
       else{
-        this.NorthWind = null  
+        this.NorthWind = null
+        northLogo.src = "/assets/North.png"  
       }       
     }
 
     sendWest(){
       if(this.WestWind == undefined){
         this.WestWind = this.westTarget.dataset.west
+        westLogo.src = "/assets/WestAfter.png"
       }
       else{
         this.WestWind = null  
+        westLogo.src = "/assets/West.png"
       }       
     }
 
     sendEast(){      
       if(this.EastWind == undefined){
         this.EastWind  = this.eastTarget.dataset.east
+        eastLogo.src = "/assets/EastAfter.png"
       }
       else{
         this.EastWind = null  
+        eastLogo.src = "/assets/East.png"
       }    
     }
 
     sendSouth(){
       if(this.SouthWind == undefined){
         this.SouthWind  = this.southTarget.dataset.south
+        southLogo.src = "/assets/SouthAfter.png"
       }
       else{
         this.SouthWind = null  
+        southLogo.src = "/assets/South.png"
       }  
     }    
+
+ 
+
     
   }
 

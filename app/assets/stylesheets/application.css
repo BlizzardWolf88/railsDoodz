@@ -28,6 +28,8 @@
     height:60px;
     width:88px;
     object-fit: cover;
+    color:transparent;
+    cursor: pointer;
  }
 
  .compassBtnNorthSouth{
@@ -35,7 +37,18 @@
   height:88px;
   width:60px;
   object-fit: cover;
+  color:transparent;
+  cursor: pointer;
 }
+
+/* .compassBtnSouth{
+  display:inline_block;
+  height:88px;
+  width:60px;
+  object-fit: cover;
+  color:transparent;
+  cursor: pointer;
+} */
 
 
 

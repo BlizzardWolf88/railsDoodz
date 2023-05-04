@@ -33,8 +33,8 @@
                   <div class="col">
                     <%# North West %>
                   </div>
-                   <div class="col" data-action="click->maps#sendNorth" data-target="maps.north" data-north = "N">                
-                    <%= image_tag 'North.png',class:'compassBtnNorthSouth' %>
+                   <div  class="col" data-action="click->maps#sendNorth" data-target="maps.north" data-north = "N">                
+                    <img id="northLogo" class="compassBtnNorthSouth"> 
                    </div>
                   <div class="col">
                   <%# North East %>
@@ -42,13 +42,13 @@
               </div>
               <div class="row">
                 <div class="col" data-action="click->maps#sendWest" data-target="maps.west" data-west = "W">
-                 <%= image_tag 'West.png',class:'compassBtnWestEast' %>
+                  <img id="westLogo" class="compassBtnWestEast"> 
                 </div>
                 <div class="col">
                   <%# Center %>
                 </div>
-                <div class="col" data-action="click->maps#sendEast" data-target="maps.east" data-east = "E">
-                <%= image_tag 'East.png',class:'compassBtnWestEast' %>
+                <div class="col" data-action="click->maps#sendEast" data-target="maps.east" data-east = "E">               
+                   <img id="eastLogo" class="compassBtnWestEast"> 
                 </div>
               </div>
               <div class="row">
@@ -56,7 +56,7 @@
                  <%# South West %>
                 </div>
                 <div class="col "data-action="click->maps#sendSouth" data-target="maps.south" data-south = "S">
-                 <%= image_tag 'South.png',class:'compassBtnNorthSouth' %>
+                   <img id="southLogo" class="compassBtnNorthSouth"> 
                 </div>
                 <div class="col">
                   <%# South East %>
