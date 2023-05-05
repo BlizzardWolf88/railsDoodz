@@ -40,13 +40,12 @@
                       <li class="nav-item d-flex me-3">
                       <%= link_to edit_user_registration_path do %> 
                       <% if current_user.image.attached? %>
-                          <%= image_tag(current_user.image ,style:" 
+                         <%= image_tag(current_user.image ,style:" 
                           display:inline_block;
                           height:55px;
                           width:55px;
                           border-radius: 50%; 
-                          object-fit: cover;") %>
-                            
+                          object-fit: cover;")%>                              
                        <% else %>
                            <%= link_to 'Change Some Stuff',  edit_user_registration_path, class:"nav-link" %>
                        <% end %>

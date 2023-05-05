@@ -95,9 +95,6 @@ export default class extends Controller {
     }
 
     sendNorth(){
-      
-
-
       if(this.NorthWind == undefined){
         this.NorthWind = this.northTarget.dataset.north
         northLogo.src = "/assets/NorthAfter.png"

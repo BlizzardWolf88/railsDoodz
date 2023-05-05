@@ -18,6 +18,13 @@
 
  }
 
+ .userIcon{
+  display:inline_block;
+  height:55px;
+  width:55px;
+  border-radius: 50%; 
+  object-fit: cover;
+ }
  /* .custom_marker{
   border: 2px solid #900 !important;
   border-radius:50%;

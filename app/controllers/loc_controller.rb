@@ -50,7 +50,7 @@ class LocController < ApplicationController
     
     #Might need to refactor the loc table IDK 
     def loc_params
-      params.require(:loc).permit(:name, :address, :position, :latitude, :longitude,:create_date,:created_at,:updated_at)
+      params.require(:loc).permit(:name, :address, :position, :latitude, :longitude,:create_date,:created_at,:updated_at,:wind)
     end
 
 
