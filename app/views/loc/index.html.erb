@@ -4,7 +4,7 @@
 <br/>
 <div data-controller = "maps">
   <div class="container">
-    <div class = "row">
+    <div class = "row mb-3">
       <div class = "col">
           <button class="btn btn-primary btn-lg active" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
             Filter Locations   
@@ -15,6 +15,13 @@
               <li><a class="dropdown-item" href="#">Access Point Pins</a></li>
             </ul>
           </button>
+      </div>     
+      <div class ="col">
+          <%= form.text_field :latitude, class:"form-control fw-bold ",data: {target: "maps.lat"} %>
+      </div>
+     
+      <div class ="col">
+        <%= form.text_field :longtitude, class:"form-control fw-bold " ,data: {target: "maps.lon"} %>
       </div>
       <div class = "col">
         <button class="btn btn-primary btn-lg active" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -30,12 +37,13 @@
       </div>
   </div>
   <br/>
+
+  
     <div   
         class ="mapcss"
         data-action="mapsLoaded@document->maps#initializeMap"
-        data-target="maps.coordinates"        
-        data-lat = "43.639"        
-        data-lon="-71.981">            
+        data-target="maps.map"        
+       >            
     </div>
   
   <%#Here is our form to save a loc %>

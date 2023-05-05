@@ -4,7 +4,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   //static targets = ["coordinates", "map", "latitude", "longitude","wind"]
-  static targets = ["coordinates","north","south","east","west"]
+  static targets = ["map","lat","lon","north","northwest","northeast","west","east","southwest","southeast","south"]
  
   connect() {
     if (typeof (google) != "undefined"){
@@ -14,19 +14,15 @@ export default class extends Controller {
 
   
   initializeMap(evt) {
-    //Don't Invoke these functions for now
-     
-
-     
-   
-     
-     
+    //Don't Invoke these functions for now 
      //Lat and Lon for starting position on map
-     const lat = parseFloat(this.coordinatesTarget.dataset.lat)
-     const lon = parseFloat(this.coordinatesTarget.dataset.lon)
-     const coordinates = {lat:lat,lng:lon}
-     const map = new google.maps.Map(this.coordinatesTarget,{center:coordinates,zoom:15});
-     this.content = formContent
+      this.lat = parseFloat("43.639")
+      this.lon = parseFloat("-71.981" )
+      const coordinates = {lat: this.lat,lng: this.lon}
+      const map = new google.maps.Map(this.mapTarget,{center:coordinates,zoom:15});
+  
+
+     this.content = formContent //HTML for the info Window
         
      this.CreateIcons();
   
@@ -40,10 +36,11 @@ export default class extends Controller {
   }
 
 
-     placeMarkerAndPanTo(latLng, map) {
+     placeMarkerAndPanTo(latLng, map) {   
+      //let place = this.getPlace()
+
      
     
-     
      //Create Marker on the click
      if(this.marker != undefined){
          this.marker.setPosition(latLng);
@@ -59,21 +56,29 @@ export default class extends Controller {
              
     }   
         
+      const cords = JSON.stringify(latLng.toJSON(), null, 2)
+      const parsee = JSON.parse(cords);
+
+      this.latTarget.value = parsee.lat
+      this.lonTarget.value = parsee.lng 
+
+
       this.infowindow = new google.maps.InfoWindow();
       this.infowindow.setContent(this.content)
-      this.infowindow.open(map,this.marker);   
+      this.infowindow.open(map,this.marker);
       
-    let northLogo = document.getElementById('northLogo').src = "/assets/North.png";
-    let southLogo = document.getElementById('southLogo').src = "/assets/South.png";
-    let westLogo = document.getElementById('westLogo').src = "/assets/West.png";
-    let eastLogo = document.getElementById('eastLogo').src = "/assets/East.png";
+       
 
-    //  northLogo.src = "/assets/North.png";
-    //  logoSouth.src = "/assets/South.png";
-    //  logoWest.src = "/assets/West.png";
-    //  logoEast.src = "/assets/East.png";
+      let northLogo = document.getElementById('northLogo').src = "/assets/wind/North.png";
+      let northWestLogo = document.getElementById('northWestLogo').src = "/assets/wind/NorthWest.png";
+      let northEastLogo = document.getElementById('northEastLogo').src = "/assets/wind/NorthEast.png";
+      let westLogo = document.getElementById('westLogo').src = "/assets/wind/West.png";
+      let eastLogo = document.getElementById('eastLogo').src = "/assets/wind/East.png";
+      let southWestlogo = document.getElementById('southWestLogo').src = "/assets/wind/SouthWest.png";
+      let southEeastlogo = document.getElementById('southEastLogo').src = "/assets/wind/SouthEast.png";
+      let southLogo = document.getElementById('southLogo').src = "/assets/wind/South.png";
+          
   }   
-
 
     CreateIcons(){
 
@@ -97,44 +102,89 @@ export default class extends Controller {
     sendNorth(){
       if(this.NorthWind == undefined){
         this.NorthWind = this.northTarget.dataset.north
-        northLogo.src = "/assets/NorthAfter.png"
+        northLogo.src = "/assets/wind/NorthAfter.png"
       }
       else{
         this.NorthWind = null
-        northLogo.src = "/assets/North.png"  
+        northLogo.src = "/assets/wind/North.png"  
+      }       
+    }
+   
+    sendNorthWest(){
+      if(this.NorthWestWind == undefined){
+        this.NorthWestWind = this.northwestTarget.dataset.northwest
+        northWestLogo.src = "/assets/wind/NorthWestAfter.png"
+      }
+      else{
+        this.NorthWestWind = null
+        northWestLogo.src = "/assets/wind/NorthWest.png"  
+      }       
+    }
+
+    sendNorthEast(){
+      if(this.NorthEastWind == undefined){
+        this.NorthEastWind = this.northeastTarget.dataset.northeast
+        northEastLogo.src = "/assets/wind/NorthEastAfter.png"
+      }
+      else{
+        this.NorthEastWind = null
+        northEastLogo.src = "/assets/wind/NorthEast.png"  
       }       
     }
 
     sendWest(){
       if(this.WestWind == undefined){
         this.WestWind = this.westTarget.dataset.west
-        westLogo.src = "/assets/WestAfter.png"
+        westLogo.src = "/assets/wind/WestAfter.png"
       }
       else{
         this.WestWind = null  
-        westLogo.src = "/assets/West.png"
+        westLogo.src = "/assets/wind/West.png"
       }       
     }
 
     sendEast(){      
       if(this.EastWind == undefined){
         this.EastWind  = this.eastTarget.dataset.east
-        eastLogo.src = "/assets/EastAfter.png"
+        eastLogo.src = "/assets/wind/EastAfter.png"
       }
       else{
         this.EastWind = null  
-        eastLogo.src = "/assets/East.png"
+        eastLogo.src = "/assets/wind/East.png"
       }    
     }
+
+    sendSouthWest(){      
+      if(this.SouthWestWind == undefined){
+        this.SouthWestWind  = this.southwestTarget.dataset.southwest
+        southWestLogo.src = "/assets/wind/SouthWestAfter.png"
+      }
+      else{
+        this.SouthWestWind = null  
+        southWestLogo.src = "/assets/wind/SouthWest.png"
+      }    
+    }
+
+    sendSouthEast(){      
+      if(this.SouthEastWind == undefined){
+        this.SouthEastWind  = this.southeastTarget.dataset.southeast
+        southEastLogo.src = "/assets/wind/SouthEastAfter.png"
+      }
+      else{
+        this.SouthEastWind = null  
+        southEastLogo.src = "/assets/wind/SouthEast.png"
+      }    
+    }
+
 
     sendSouth(){
       if(this.SouthWind == undefined){
         this.SouthWind  = this.southTarget.dataset.south
-        southLogo.src = "/assets/SouthAfter.png"
+        southLogo.src = "/assets/wind/SouthAfter.png"
       }
       else{
         this.SouthWind = null  
-        southLogo.src = "/assets/South.png"
+        southLogo.src = "/assets/wind/South.png"
       }  
     }    
 

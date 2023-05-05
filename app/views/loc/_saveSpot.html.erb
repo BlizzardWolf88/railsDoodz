@@ -7,39 +7,45 @@
       </div>
       <div class="card-body">
          <br/>  
-         <div>    
-          <div class="container">
+            
+          <div class="container">           
             <div class = "row">
               <div class ="col">
                 <button type="button" id= "showPicsBtn" class="btn btn-primary btn-lg active" data-bs-toggle="modal" data-bs-target="#ViewPics">
                   Show Pics
                 </button>
-                </div>
-                <div class ="col">
+              </div>
+              <div class ="col">
                 <button type="button" id= "showPicsBtn" class="btn btn-primary btn-lg active">
                   Loc Type
                 </button>
-                </div>
               </div>
             </div>
+            </div>               
+           <br/>
           </div>
-          <br/>
-          <div class="container lg">
+          <br/>        
+           <%# Compass Starts Here %>
+          <div class="container md"> 
               <div class = "row">
                <h3>Select Wind Direction(s)</h3>
               </div>
               <br/>
-              <div class="row">
-                  <div class="col">
-                    <%# North West %>
-                  </div>
+              <div class="row">                                                                        
                    <div  class="col" data-action="click->maps#sendNorth" data-target="maps.north" data-north = "N">                
                     <img id="northLogo" class="compassBtnNorthSouth"> 
-                   </div>
-                  <div class="col">
-                  <%# North East %>
-                  </div>
+                   </div>                                            
               </div>
+
+              <div class = "row">
+                  <div  class="col" data-action="click->maps#sendNorthWest" data-target="maps.northwest" data-northwest = "NW">                     
+                       <img id="northWestLogo" class="compassBtnsIntermediate">
+                  </div>
+                   <div  class="col" data-action="click->maps#sendNorthEast" data-target="maps.northeast" data-northeast = "NE">                
+                       <img id="northEastLogo" class="compassBtnsIntermediate">
+                   </div>            
+              </div>
+
               <div class="row">
                 <div class="col" data-action="click->maps#sendWest" data-target="maps.west" data-west = "W">
                   <img id="westLogo" class="compassBtnWestEast"> 
@@ -47,23 +53,31 @@
                 <div class="col">
                   <%# Center %>
                 </div>
+                <div class = "col">
+                  <%# Need this spacing for compass "symmetry" %>
+                </div>
                 <div class="col" data-action="click->maps#sendEast" data-target="maps.east" data-east = "E">               
                    <img id="eastLogo" class="compassBtnWestEast"> 
                 </div>
               </div>
-              <div class="row">
-                <div class="col">
-                 <%# South West %>
-                </div>
+              
+              <div class ="row">
+                <div  class="col" data-action="click->maps#sendSouthWest" data-target="maps.southwest" data-southwest = "SW">                
+                   <img id="southWestLogo" class="compassBtnsIntermediate">
+                </div>  
+                <div  class="col" data-action="click->maps#sendSouthEast" data-target="maps.southeast" data-southeast = "SE">                
+                  <img id="southEastLogo" class="compassBtnsIntermediate">
+                </div>                 
+              </div>
+
+              <div class="row">           
                 <div class="col "data-action="click->maps#sendSouth" data-target="maps.south" data-south = "S">
                    <img id="southLogo" class="compassBtnNorthSouth"> 
-                </div>
-                <div class="col">
-                  <%# South East %>
-                </div>
+                </div>             
               </div>
-            </div>
-            <br/>
+
+             </div> <%# End of Compass %>
+          <br/>
           <div class="mb-3">  
             <%= form.text_field :name, class:"form-control", placeholder:"Spot Name" %>
           </div>
@@ -81,7 +95,7 @@
         
       </div>
       <div class="card-footer text-muted">
-        2 days ago
+       
       </div>
     </div>
 </div> 
