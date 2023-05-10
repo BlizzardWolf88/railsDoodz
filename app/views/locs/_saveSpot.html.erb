@@ -14,12 +14,17 @@
                 <button type="button" id= "showPicsBtn" class="btn btn-primary btn-lg active" data-bs-toggle="modal" data-bs-target="#ViewPics">
                   Show Pics
                 </button>
-              </div>
-              <div class ="col">
-                <button type="button" id= "showPicsBtn" class="btn btn-primary btn-lg active">
-                  Loc Type
+              </div>            
+              <div class = "col">
+                <button class="btn btn-primary btn-lg active" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                 Loc Type   
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="#">Stand Pins</a></li>
+                    <li><a class="dropdown-item" href="#">Buck Bed Pins</a></li>
+                    <li><a class="dropdown-item" href="#">Access Point Pins</a></li>
+                  </ul>
                 </button>
-              </div>
+            </div>     
             </div>
             </div>               
            <br/>
@@ -82,17 +87,19 @@
             <%= form.text_field :name, class:"form-control", placeholder:"Spot Name",data: {target: "maps.name"} %>
           </div>
            <div class="mb-3">  
-            <%= form.text_field :create_date, class:"form-control", placeholder:"The Date",data: {target: "maps.name"} %>
+            <%= form.text_field :create_date, class:"form-control", placeholder:"The Date",data: {target: "maps.date"} %>
           </div>
           <div class="mb-3" >
              <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Notes" rows="3" data-target="maps.notes"></textarea>
           </div>
+          <div class = "mb-3">
+           <%= form.text_field :num_sits, class:"form-control", placeholder:"Number of Times Hunted",data: {target: "maps.numsits"} %>           
+          </div>     
           <div class="mb-3" data-action="click->maps#saveSpot">
             <button type="button" class="btn btn-primary btn-lg active goodGood" >
                Save Spot
             </button>          
-          </div>
-        
+          </div>      
       </div>
       <div class="card-footer text-muted">
        

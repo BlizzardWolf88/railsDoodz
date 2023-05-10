@@ -1,4 +1,4 @@
-class LocController < ApplicationController
+class LocsController < ApplicationController
   
   before_action :authenticate_user!
   before_action :store_location
@@ -12,13 +12,16 @@ class LocController < ApplicationController
        @locs = Loc.all
     end     
     
-    
+    def show
+    end
+
+    def new
+      @loc = current_user.madood.build
+    end
 
     def saveSpot
       # render "saveSpot"
-      #render partial: 'saveSpot', locals: {loc: params[:loc]}, layout: false
-      
-      
+      #render partial: 'saveSpot', locals: {loc: params[:loc]}, layout: false    
     end
 
 
@@ -39,7 +42,7 @@ class LocController < ApplicationController
 
     def correct_dood 
       @loc = current_user.loc.find_by(id: params[:id])
-      redirect_to loc_path, notice: "Can't change this Loc because you are NOT that Loc Madoo" if @loc.nil?
+      redirect_to loc_path, notice: "Can't change this Loc because that is NOT your Loc Madoo" if @loc.nil?
     end
 
     private
@@ -50,7 +53,7 @@ class LocController < ApplicationController
     
     #Might need to refactor the loc table IDK 
     def loc_params
-      params.require(:loc).permit(:name, :address, :position, :latitude, :longitude,:create_date,:created_at,:updated_at,:wind)
+      params.require(:loc).permit(:name, :latitude, :longitude,:create_date,:created_at,:updated_at,:wind,:notes,:loc_type,:num_sits)
     end
 
 

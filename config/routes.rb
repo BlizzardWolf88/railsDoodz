@@ -4,9 +4,10 @@ Rails.application.routes.draw do
   root 'home#index'
   get  'home/about'
   get  'madoods/index'
-  get  'loc/index'
-  get  'loc/saveSpot'
-  post 'loc/create'
+  get  'locs/index'
+  get  'locs/saveSpot'
+  #get  'loc/new'
+  post "locs/create", to: "locs#create"
 
 
   # GET '/users/:id users'#show

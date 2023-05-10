@@ -4,8 +4,8 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   //static targets = ["coordinates", "map", "latitude", "longitude","wind"]
-  static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east","southwest","southeast","south"]
- 
+  static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east","southwest","southeast","south","loctype","numsits"]
+
   connect() {
     if (typeof (google) != "undefined"){
       this.initializeMap();      
@@ -15,6 +15,16 @@ export default class extends Controller {
   
   initializeMap(evt) {
     //Don't Invoke these functions for now 
+
+    let northLogo = document.getElementById('northLogo').src = "/assets/wind/North.png";
+    let northWestLogo = document.getElementById('northWestLogo').src = "/assets/wind/NorthWest.png";
+    let northEastLogo = document.getElementById('northEastLogo').src = "/assets/wind/NorthEast.png";
+    let westLogo = document.getElementById('westLogo').src = "/assets/wind/West.png";
+    let eastLogo = document.getElementById('eastLogo').src = "/assets/wind/East.png";
+    let southWestlogo = document.getElementById('southWestLogo').src = "/assets/wind/SouthWest.png";
+    let southEeastlogo = document.getElementById('southEastLogo').src = "/assets/wind/SouthEast.png";
+    let southLogo = document.getElementById('southLogo').src = "/assets/wind/South.png";
+
      //Lat and Lon for starting position on map
       const lat = parseFloat("43.639")
       const lon = parseFloat("-71.981" )
@@ -22,7 +32,7 @@ export default class extends Controller {
       this.map = new google.maps.Map(this.mapTarget,{center:coordinates,zoom:15});
   
 
-     this.content = formContent //HTML for the info Window
+     this.content = formContent //HTML for the info Window marker form
         
      this.CreateIcons();
   
@@ -65,14 +75,7 @@ export default class extends Controller {
       this.infowindow.setContent(this.content)
       this.infowindow.open(map,this.marker);
       
-      let northLogo = document.getElementById('northLogo').src = "/assets/wind/North.png";
-      let northWestLogo = document.getElementById('northWestLogo').src = "/assets/wind/NorthWest.png";
-      let northEastLogo = document.getElementById('northEastLogo').src = "/assets/wind/NorthEast.png";
-      let westLogo = document.getElementById('westLogo').src = "/assets/wind/West.png";
-      let eastLogo = document.getElementById('eastLogo').src = "/assets/wind/East.png";
-      let southWestlogo = document.getElementById('southWestLogo').src = "/assets/wind/SouthWest.png";
-      let southEeastlogo = document.getElementById('southEastLogo').src = "/assets/wind/SouthEast.png";
-      let southLogo = document.getElementById('southLogo').src = "/assets/wind/South.png";
+     
           
   }   
 
@@ -96,36 +99,38 @@ export default class extends Controller {
 
   }
 
-   
+    //INSTANIATE ALL THIS._WIND TO with let and set to "" 
     sendNorth(){
-      if(this.NorthWind == undefined){
+      if(this.NorthWind == undefined || this.NorthWind == "" ){
         this.NorthWind = this.northTarget.dataset.north
         northLogo.src = "/assets/wind/NorthAfter.png"
       }
       else{
-        this.NorthWind = null
+        this.NorthWind = ""
         northLogo.src = "/assets/wind/North.png"  
       }       
     }
+
+     
    
     sendNorthWest(){
-      if(this.NorthWestWind == undefined){
+      if(this.NorthWestWind == undefined || this.NorthWestWind == ""){
         this.NorthWestWind = this.northwestTarget.dataset.northwest
         northWestLogo.src = "/assets/wind/NorthWestAfter.png"
       }
       else{
-        this.NorthWestWind = null
+        this.NorthWestWind = ""
         northWestLogo.src = "/assets/wind/NorthWest.png"  
       }       
     }
 
     sendNorthEast(){
-      if(this.NorthEastWind == undefined){
+      if(this.NorthEastWind == undefined || this.NorthEastWind == ""){
         this.NorthEastWind = this.northeastTarget.dataset.northeast
         northEastLogo.src = "/assets/wind/NorthEastAfter.png"
       }
       else{
-        this.NorthEastWind = null
+        this.NorthEastWind = " "
         northEastLogo.src = "/assets/wind/NorthEast.png"  
       }       
     }
@@ -208,6 +213,8 @@ export default class extends Controller {
 
   saveSpot(event) {
 
+    //var sendWind = this.NorthWind +"," + this.NorthEastWind + "," + this.NorthWestWind
+    var sendWind = "NW"
     const id = event.target.dataset.id
     const csrfToken = document.querySelector("[name='csrf-token']").content
 
@@ -225,16 +232,21 @@ export default class extends Controller {
           name: this.nameTarget.value, 
           latitude: this.latTarget.value,
           longitude:this.lonTarget.value,
-          notes: this.notesTarget.value }) // body data type must match "Content-Type" header
+          notes: this.notesTarget.value,
+          num_sits: this.numsitsTarget.value,
+          wind: sendWind
+            }) // body data type must match "Content-Type" header
     })
-      .then(response => response.json())
-      .then(data => {
-         alert(data.message)
-       })
+       //.then(response => response.json())
+       //.then(data => {alert(data.message)})
 
+       //CALL A RESET FUNCTION
+        this.nameTarget.value = ""
+        this.dateTarget.value = ""
+        this.notesTarget.value = ""
+        this.numsitsTarget.value = ""
 
-
-  
+        this.infowindow.close();
 
   }
  
