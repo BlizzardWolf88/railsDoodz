@@ -17,11 +17,15 @@
           </button>
       </div>     
       <div class ="col">
-          <%= form.text_field :latitude, class:"form-control fw-bold ",data: {target: "maps.lat"} %>
+          <%= form.text_field :latitude,placeholder:"Enter Latitude", class:"form-control fw-bold ",data: {target: "maps.lat"} %>
       </div>
      
-      <div class ="col">
-        <%= form.text_field :longtitude, class:"form-control fw-bold " ,data: {target: "maps.lon"} %>
+      <div class ="col" data-action="keydown->maps#keydown" >
+        <%= form.text_field :longtitude,placeholder:"Enter Longitude" ,class:"form-control fw-bold " ,data: {target: "maps.lon"} %>
+      </div>
+
+      <div class = "col" data-action="click->maps#goToSpot">
+         <button type="button" class="btn btn-lg btn-primary active px-4 py-2">Go To Spot</button>
       </div>
       <div class = "col">
         <button class="btn btn-primary btn-lg active" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

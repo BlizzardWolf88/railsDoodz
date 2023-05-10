@@ -79,18 +79,18 @@
              </div> <%# End of Compass %>
           <br/>
           <div class="mb-3">  
-            <%= form.text_field :name, class:"form-control", placeholder:"Spot Name" %>
+            <%= form.text_field :name, class:"form-control", placeholder:"Spot Name",data: {target: "maps.name"} %>
           </div>
            <div class="mb-3">  
-            <%= form.text_field :create_date, class:"form-control", placeholder:"The Date" %>
+            <%= form.text_field :create_date, class:"form-control", placeholder:"The Date",data: {target: "maps.name"} %>
           </div>
-          <div class="mb-3">
-             <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Notes" rows="3"></textarea>
+          <div class="mb-3" >
+             <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Notes" rows="3" data-target="maps.notes"></textarea>
           </div>
-          <div class="mb-3">
-            <button type="button" class="btn btn-primary btn-lg active goodGood" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Right popover">
+          <div class="mb-3" data-action="click->maps#saveSpot">
+            <button type="button" class="btn btn-primary btn-lg active goodGood" >
                Save Spot
-            </button>
+            </button>          
           </div>
         
       </div>

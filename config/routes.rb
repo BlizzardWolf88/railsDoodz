@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get  'madoods/index'
   get  'loc/index'
   get  'loc/saveSpot'
+  post 'loc/create'
 
 
   # GET '/users/:id users'#show

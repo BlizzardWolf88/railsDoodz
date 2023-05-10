@@ -16,9 +16,9 @@ class LocController < ApplicationController
 
     def saveSpot
       # render "saveSpot"
-      render partial: 'saveSpot', locals: {loc: params[:loc]}, layout: false
+      #render partial: 'saveSpot', locals: {loc: params[:loc]}, layout: false
       
-      #render partial: 'saveSpot', locals: {loc: @loc}, layout: false
+      
     end
 
 
@@ -27,7 +27,7 @@ class LocController < ApplicationController
       @loc = current_user.loc.build(loc_params)
        respond_to do |format|
          if @loc.save
-           format.html { redirect_to madood_url(@loc), notice: "Location was successfully created." }
+           format.html { redirect_to loc_url(@loc), notice: "Location was successfully created." }
            format.json { render :show, status: :created, location: @loc }
          else
            format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +39,7 @@ class LocController < ApplicationController
 
     def correct_dood 
       @loc = current_user.loc.find_by(id: params[:id])
-      redirect_to loc_path, notice: "Can't change this dood because you are NOT that Loc Madoo" if @loc.nil?
+      redirect_to loc_path, notice: "Can't change this Loc because you are NOT that Loc Madoo" if @loc.nil?
     end
 
     private

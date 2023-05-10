@@ -4,7 +4,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   //static targets = ["coordinates", "map", "latitude", "longitude","wind"]
-  static targets = ["map","lat","lon","north","northwest","northeast","west","east","southwest","southeast","south"]
+  static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east","southwest","southeast","south"]
  
   connect() {
     if (typeof (google) != "undefined"){
@@ -16,20 +16,20 @@ export default class extends Controller {
   initializeMap(evt) {
     //Don't Invoke these functions for now 
      //Lat and Lon for starting position on map
-      this.lat = parseFloat("43.639")
-      this.lon = parseFloat("-71.981" )
-      const coordinates = {lat: this.lat,lng: this.lon}
-      const map = new google.maps.Map(this.mapTarget,{center:coordinates,zoom:15});
+      const lat = parseFloat("43.639")
+      const lon = parseFloat("-71.981" )
+      const coordinates = {lat: lat,lng: lon}
+      this.map = new google.maps.Map(this.mapTarget,{center:coordinates,zoom:15});
   
 
      this.content = formContent //HTML for the info Window
         
      this.CreateIcons();
   
-      map.addListener("click", (e) => {
+     this.map.addListener("click", (e) => {
 
         console.log("Map Listener")
-        this.placeMarkerAndPanTo(e.latLng, map);   
+        this.placeMarkerAndPanTo(e.latLng, this.map);   
         
       });     
    
@@ -37,10 +37,7 @@ export default class extends Controller {
 
 
      placeMarkerAndPanTo(latLng, map) {   
-      //let place = this.getPlace()
-
      
-    
      //Create Marker on the click
      if(this.marker != undefined){
          this.marker.setPosition(latLng);
@@ -59,6 +56,7 @@ export default class extends Controller {
       const cords = JSON.stringify(latLng.toJSON(), null, 2)
       const parsee = JSON.parse(cords);
 
+      //send coords to testfields
       this.latTarget.value = parsee.lat
       this.lonTarget.value = parsee.lng 
 
@@ -67,8 +65,6 @@ export default class extends Controller {
       this.infowindow.setContent(this.content)
       this.infowindow.open(map,this.marker);
       
-       
-
       let northLogo = document.getElementById('northLogo').src = "/assets/wind/North.png";
       let northWestLogo = document.getElementById('northWestLogo').src = "/assets/wind/NorthWest.png";
       let northEastLogo = document.getElementById('northEastLogo').src = "/assets/wind/NorthEast.png";
@@ -80,25 +76,27 @@ export default class extends Controller {
           
   }   
 
-    CreateIcons(){
 
-        this.icon1 = {
-        url: "/assets/BlueWolfDood.png" + '#custom_marker', // url
-        scaledSize: new google.maps.Size(50, 50), // scaled size
-        origin: new google.maps.Point(0,0), // origin
-        anchor: new google.maps.Point(0, 0) // anchor
-      };
+  keydown(event){
 
-      this.icon2 = {
-        url: "/assets/EEEIND.jpg" + '#custom_marker', // url
-        scaledSize: new google.maps.Size(50, 50), // scaled size
-        origin: new google.maps.Point(0,0), // origin
-        anchor: new google.maps.Point(0, 0) // anchor
-      };
+    if (event.key == "Enter"){      
+        this.goToSpot();
+    }
+  }
 
+  goToSpot(){
 
+    //validate coords
+    var reg = RegExp("^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,10})$");
+
+    if( reg.exec(this.latTarget.value) && reg.exec(this.lonTarget.value) ) {
+      var latLng = new google.maps.LatLng(this.latTarget.value, this.lonTarget.value);
+      this.placeMarkerAndPanTo(latLng, this.map);
     }
 
+  }
+
+   
     sendNorth(){
       if(this.NorthWind == undefined){
         this.NorthWind = this.northTarget.dataset.north
@@ -176,7 +174,6 @@ export default class extends Controller {
       }    
     }
 
-
     sendSouth(){
       if(this.SouthWind == undefined){
         this.SouthWind  = this.southTarget.dataset.south
@@ -188,6 +185,58 @@ export default class extends Controller {
       }  
     }    
 
+
+
+    CreateIcons(){
+
+      this.icon1 = {
+      url: "/assets/BlueWolfDood.png" + '#custom_marker', // url
+      scaledSize: new google.maps.Size(50, 50), // scaled size
+      origin: new google.maps.Point(0,0), // origin
+      anchor: new google.maps.Point(0, 0) // anchor
+    };
+
+    this.icon2 = {
+      url: "/assets/EEEIND.jpg" + '#custom_marker', // url
+      scaledSize: new google.maps.Size(50, 50), // scaled size
+      origin: new google.maps.Point(0,0), // origin
+      anchor: new google.maps.Point(0, 0) // anchor
+    };
+
+
+  }
+
+  saveSpot(event) {
+
+    const id = event.target.dataset.id
+    const csrfToken = document.querySelector("[name='csrf-token']").content
+
+    fetch(`create`, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({ 
+          id:this.id,
+          name: this.nameTarget.value, 
+          latitude: this.latTarget.value,
+          longitude:this.lonTarget.value,
+          notes: this.notesTarget.value }) // body data type must match "Content-Type" header
+    })
+      .then(response => response.json())
+      .then(data => {
+         alert(data.message)
+       })
+
+
+
+  
+
+  }
  
 
     
