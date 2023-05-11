@@ -10,6 +10,8 @@ import "controllers"
 //= require bootstrap
 //= require_tree.
 
+window.Turbo = Turbo
+
  import "trix"
  import "@rails/actiontext"
  import "@rails/request.js"

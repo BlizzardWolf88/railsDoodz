@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import{ get } from '@rails/request.js'
+import{FetchRequest, get, post, put, patch, destroy } from '@rails/request.js'
 
 
 
@@ -16,10 +16,6 @@ export default class extends Controller {
 
   initializeMap(evt) {
 
-    // get(`/locs/index?user_id`,{
-    //   respondKind:"turbo-stream"
-    // })
-
     this.setCompassImages();
 
     this.NorthWind = ""
@@ -35,9 +31,10 @@ export default class extends Controller {
       const lat = parseFloat("43.639")
       const lon = parseFloat("-71.981" )
       const coordinates = {lat: lat,lng: lon}
-      this.map = new google.maps.Map(this.mapTarget,{center:coordinates,zoom:15});
+      this.map = new google.maps.Map(this.mapTarget,{center:coordinates,zoom:12});
       this.content = formContent //HTML for the info Window marker form
 
+      this.displayMarkers();
      this.CreateIcons();
 
      this.map.addListener("click", (e) => {
@@ -49,6 +46,49 @@ export default class extends Controller {
 
   }
 
+  async displayMarkers(){
+     let markers
+     
+    //const request = new FetchRequest("get","/locs/getMarkers", { responseKind: "turbo-stream" })
+    const request = new FetchRequest("get","/locs/getMarkers", { responseKind: "json" })
+    const response = await request.perform()
+
+    if (response.ok){
+      const data = await response.json
+      markers = data 
+    }
+
+     markers.forEach((marker) => {
+
+      var sendIcon 
+      switch(marker.loc_type){
+        case("Access Point"):
+          sendIcon = this.icon1
+          break;
+        
+        case("Buck Bed Pin"):
+          sendIcon = this.icon2
+          break;
+        case("Stand Pin"):
+          sendIcon = this.icon3
+          break;
+        
+        default:
+          sendIcon = this.icon4
+        
+      }
+        var latLng = new google.maps.LatLng(marker.latitude, marker.longitude);
+
+        var gmarker = new google.maps.Marker({
+        position: latLng,
+        map: this.map,
+        icon: sendIcon,
+      });
+
+     });
+
+     
+  }
 
      placeMarkerAndPanTo(latLng, map) {
      
@@ -61,7 +101,7 @@ export default class extends Controller {
        this.marker = new google.maps.Marker({
           position: latLng,
           map: map,
-          icon: this.icon1,
+          icon: this.icon4,
         });
         map.panTo(latLng);
 
@@ -213,19 +253,32 @@ export default class extends Controller {
     CreateIcons(){
 
       this.icon1 = {
-      url: "/assets/BlueWolfDood.png" + '#custom_marker', // url
+      url: "/assets/huntingIcons/AccessPoint.png" + '#custom_marker', // url
       scaledSize: new google.maps.Size(50, 50), // scaled size
       origin: new google.maps.Point(0,0), // origin
       anchor: new google.maps.Point(0, 0) // anchor
     };
 
     this.icon2 = {
-      url: "/assets/EEEIND.jpg" + '#custom_marker', // url
+      url: "/assets/huntingIcons/BuckBed.png"  + '#custom_marker', // url
       scaledSize: new google.maps.Size(50, 50), // scaled size
       origin: new google.maps.Point(0,0), // origin
       anchor: new google.maps.Point(0, 0) // anchor
     };
 
+    this.icon3 = {
+      url: "/assets/huntingIcons/StandLoc.png"  + '#custom_marker', // url
+      scaledSize: new google.maps.Size(50, 50), // scaled size
+      origin: new google.maps.Point(0,0), // origin
+      anchor: new google.maps.Point(0, 0) // anchor
+    };
+
+    this.icon4 = {
+      url: "/assets/OleBuckington.jpg"  + '#custom_marker', // url
+      scaledSize: new google.maps.Size(50, 50), // scaled size
+      origin: new google.maps.Point(0,0), // origin
+      anchor: new google.maps.Point(0, 0) // anchor
+    };
 
   }
 

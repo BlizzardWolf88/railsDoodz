@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get  'madoods/index'
   get  'locs/index'
   get  'locs/saveSpot'
-  #get  'loc/new'
+  get  'locs/getMarkers'
   post "locs/create", to: "locs#create"
 
   

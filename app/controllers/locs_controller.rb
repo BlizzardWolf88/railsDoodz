@@ -3,13 +3,13 @@ class LocsController < ApplicationController
   before_action :authenticate_user!
   before_action :store_location
   before_action :correct_dood, only:[:edit,:update,:destroy]
+
   
     def store_location
       session[:user_return_to] = request.fullpath
     end
   
-    def index
-       @locs = Loc.all
+    def index        
     end     
     
     def show
@@ -19,9 +19,13 @@ class LocsController < ApplicationController
       @loc = current_user.madood.build
     end
 
-    def saveSpot
-      # render "saveSpot"
-      #render partial: 'saveSpot', locals: {loc: params[:loc]}, layout: false    
+    def saveSpot    
+    end
+
+    def getMarkers
+      @locs = current_user.loc
+      #format.turbo_stream {render turbo_stream: turbo_stream.update("locMarker", @loc.id) }
+      render json: @locs
     end
 
 
@@ -41,6 +45,7 @@ class LocsController < ApplicationController
   
 
     def correct_dood 
+    
       @loc = current_user.loc.find_by(id: params[:id])
       redirect_to loc_path, notice: "Can't change this Loc because that is NOT your Loc Madoo" if @loc.nil?
     end
@@ -53,7 +58,7 @@ class LocsController < ApplicationController
     
     #Might need to refactor the loc table IDK 
     def loc_params
-      params.require(:loc).permit(:name, :latitude, :longitude,:create_date,:created_at,:updated_at,:wind,:notes,:loc_type,:num_sits)
+      params.require(:loc).permit(:name, :latitude, :longitude,:create_date,:created_at,:user_id,:updated_at,:wind,:notes,:loc_type,:num_sits)
     end
 
 
