@@ -28,14 +28,14 @@ export default class extends Controller {
     this.NorthWestWind = ""
 
      //Lat and Lon for starting position on map
-      const lat = parseFloat("43.639")
-      const lon = parseFloat("-71.981" )
-      const coordinates = {lat: lat,lng: lon}
-      this.map = new google.maps.Map(this.mapTarget,{center:coordinates,zoom:12});
-      this.content = formContent //HTML for the info Window marker form
+    const lat = parseFloat("43.639")
+    const lon = parseFloat("-71.981" )
+    const coordinates = {lat: lat,lng: lon}
+    this.map = new google.maps.Map(this.mapTarget,{center:coordinates,zoom:12});
+    this.content = formContent //HTML for the info Window marker form
 
-      this.displayMarkers();
-     this.CreateIcons();
+    this.displayMarkers();
+    this.CreateIcons();
 
      this.map.addListener("click", (e) => {
 
@@ -46,9 +46,11 @@ export default class extends Controller {
 
   }
 
+ 
+
   async displayMarkers(){
      let markers
-     
+
     //const request = new FetchRequest("get","/locs/getMarkers", { responseKind: "turbo-stream" })
     const request = new FetchRequest("get","/locs/getMarkers", { responseKind: "json" })
     const response = await request.perform()
@@ -57,10 +59,12 @@ export default class extends Controller {
       const data = await response.json
       markers = data 
     }
-
+    
+    this.userLocs = []
      markers.forEach((marker) => {
 
-      var sendIcon 
+      this.userLocs.push(marker)
+      let sendIcon 
       switch(marker.loc_type){
         case("Access Point"):
           sendIcon = this.icon1
@@ -77,18 +81,33 @@ export default class extends Controller {
           sendIcon = this.icon4
         
       }
-        var latLng = new google.maps.LatLng(marker.latitude, marker.longitude);
+        let latLng = new google.maps.LatLng(marker.latitude, marker.longitude);
 
-        var gmarker = new google.maps.Marker({
+        let gmarker = new google.maps.Marker({
         position: latLng,
         map: this.map,
         icon: sendIcon,
+        title: marker.id.toString() //location ID
       });
+      
+      google.maps.event.addListener(gmarker, 'click', (e) => {
+        //console.log("Here We Are " + gmarker.position.lat + " " + gmarker.position.lon )
+        this.showMarker(gmarker);
+    });
 
      });
 
-     
+     console.log(this.userLocs)
   }
+
+  showMarker(userGMarker){
+
+    console.log("Are We CLEAR JACCKKKIEEE" +userGMarker)
+    //match userGMarker with element in UserLoc Array
+    //create infowindow add the content 
+   
+  }
+
 
      placeMarkerAndPanTo(latLng, map) {
      
@@ -113,7 +132,6 @@ export default class extends Controller {
       //send coords to testfields
       this.latTarget.value = parsee.lat
       this.lonTarget.value = parsee.lng
-
 
       this.infowindow = new google.maps.InfoWindow();
 
@@ -145,10 +163,10 @@ export default class extends Controller {
   goToSpot(){
 
     //validate coords
-    var reg = RegExp("^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,10})$");
+    let reg = RegExp("^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,10})$");
 
     if( reg.exec(this.latTarget.value) && reg.exec(this.lonTarget.value) ) {
-      var latLng = new google.maps.LatLng(this.latTarget.value, this.lonTarget.value);
+      let latLng = new google.maps.LatLng(this.latTarget.value, this.lonTarget.value);
       this.placeMarkerAndPanTo(latLng, this.map);
     }
 
