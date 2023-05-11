@@ -4,33 +4,25 @@
 <br/>
 <div data-controller = "maps">
   <div class="container">
-    <div class = "row mb-3">
-      <div class = "col">
-          <button class="btn btn-primary btn-lg active" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            Filter Locations   
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">All My Spots</a></li>
-              <li><a class="dropdown-item" href="#">Stand Pins</a></li>
-              <li><a class="dropdown-item" href="#">Buck Bed Pins</a></li>
-              <li><a class="dropdown-item" href="#">Access Point Pins</a></li>
-            </ul>
-          </button>
-      </div>     
-      <div class ="col">
+    <div class = "row mb-3">     
+      <div class = "col-2">  
+         <%= form.select :loc_type,['ALL','Stand Pin','Buck Bed Pin','Access Point'] ,{prompt:"Filter Loc Type"}, {class:"form-select btn btn-primary btn-lg active dropdown-toggle",data:{action:"click->maps#filterLocType"}} %>                     
+      </div>
+      <div class ="col-3" >
           <%= form.text_field :latitude,placeholder:"Enter Latitude", class:"form-control fw-bold ",data: {target: "maps.lat"} %>
       </div>
      
-      <div class ="col" data-action="keydown->maps#keydown" >
+      <div class ="col-3" data-action="keydown->maps#keydown" >
         <%= form.text_field :longtitude,placeholder:"Enter Longitude" ,class:"form-control fw-bold " ,data: {target: "maps.lon"} %>
       </div>
 
-      <div class = "col" data-action="click->maps#goToSpot">
+      <div class = "col-2" data-action="click->maps#goToSpot">
          <button type="button" class="btn btn-lg btn-primary active px-4 py-2">Go To Spot</button>
       </div>
-      <div class = "col">
-        <button class="btn btn-primary btn-lg active" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      <div class = "col-2">
+        <button class="btn btn-primary btn-lg active dropdown-toggle" type="button" id="filterWinds" data-bs-toggle="dropdown" aria-expanded="false">
           Filter Winds
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <ul class="dropdown-menu" aria-labelledby="filterWinds">
             <li><a class="dropdown-item" href="#">North</a></li>
             <li><a class="dropdown-item" href="#">West</a></li>
             <li><a class="dropdown-item" href="#">South</a></li>
@@ -42,6 +34,9 @@
   </div>
   <br/>
 
+      <div class="mb-3">  
+        <%= form.number_field :user_id,id: :loc_user_id ,class:"form-control" , value:current_user.id,type: :hidden %>
+      </div>
   
     <div   
         class ="mapcss"
@@ -52,7 +47,7 @@
   
   <%#Here is our form to save a loc %>
   <div style="display:none">
-    <%= render "saveSpot", loc: @loc %> 
+    <%= render "saveSpot", loc: @loc, id: :loc_user_id  %> 
   </div>
 
    <%=render 'open_pics'%>

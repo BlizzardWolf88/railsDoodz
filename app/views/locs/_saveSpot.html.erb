@@ -8,23 +8,13 @@
       <div class="card-body">
          <br/>  
             
-          <div class="container">           
-            <div class = "row">
+          <div class="container-lg">           
+            <div class = "row g-1">
               <div class ="col">
                 <button type="button" id= "showPicsBtn" class="btn btn-primary btn-lg active" data-bs-toggle="modal" data-bs-target="#ViewPics">
                   Show Pics
                 </button>
-              </div>            
-              <div class = "col">
-                <button class="btn btn-primary btn-lg active" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                 Loc Type   
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" href="#">Stand Pins</a></li>
-                    <li><a class="dropdown-item" href="#">Buck Bed Pins</a></li>
-                    <li><a class="dropdown-item" href="#">Access Point Pins</a></li>
-                  </ul>
-                </button>
-            </div>     
+              </div>              
             </div>
             </div>               
            <br/>
@@ -83,6 +73,9 @@
 
              </div> <%# End of Compass %>
           <br/>
+          <div class = "mb-3">  
+                <%= form.select :loc_type,['Stand Pin','Buck Bed Pin','Access Point'] ,{prompt:"Select A Loc Type"}, {class:"form-select",data:{action:"click->maps#setLocType"}} %>                     
+          </div>   
           <div class="mb-3">  
             <%= form.text_field :name, class:"form-control", placeholder:"Spot Name",data: {target: "maps.name"} %>
           </div>

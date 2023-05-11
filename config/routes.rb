@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   #get  'loc/new'
   post "locs/create", to: "locs#create"
 
+  
 
   # GET '/users/:id users'#show
   # PUT '/users/:id users'#update

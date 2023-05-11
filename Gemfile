@@ -37,6 +37,9 @@ gem 'dotenv-rails', '~> 2.8', '>= 2.8.1'
 
 #gem 'mailcatcher', '~> 0.8.2'
 
+gem 'requestjs-rails'
+
+
 gem "gmaps4rails"
 gem "geocoder"
 # Use Redis adapter to run Action Cable in production

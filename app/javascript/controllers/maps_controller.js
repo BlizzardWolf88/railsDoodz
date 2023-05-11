@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import{ get } from '@rails/request.js'
 
 
 
@@ -14,16 +15,12 @@ export default class extends Controller {
 
 
   initializeMap(evt) {
-    //Don't Invoke these functions for now
 
-    const northLogo = document.getElementById('northLogo').src = "/assets/wind/North.png";
-    const northWestLogo = document.getElementById('northWestLogo').src = "/assets/wind/NorthWest.png";
-     const northEastLogo = document.getElementById('northEastLogo').src = "/assets/wind/NorthEast.png";
-     const westLogo = document.getElementById('westLogo').src = "/assets/wind/West.png";
-     const eastLogo = document.getElementById('eastLogo').src = "/assets/wind/East.png";
-     const southWestlogo = document.getElementById('southWestLogo').src = "/assets/wind/SouthWest.png";
-     const southEeastlogo = document.getElementById('southEastLogo').src = "/assets/wind/SouthEast.png";
-     const southLogo = document.getElementById('southLogo').src = "/assets/wind/South.png";
+    // get(`/locs/index?user_id`,{
+    //   respondKind:"turbo-stream"
+    // })
+
+    this.setCompassImages();
 
     this.NorthWind = ""
     this.NorthEastWind = ""
@@ -39,9 +36,7 @@ export default class extends Controller {
       const lon = parseFloat("-71.981" )
       const coordinates = {lat: lat,lng: lon}
       this.map = new google.maps.Map(this.mapTarget,{center:coordinates,zoom:15});
-
-
-     this.content = formContent //HTML for the info Window marker form
+      this.content = formContent //HTML for the info Window marker form
 
      this.CreateIcons();
 
@@ -56,9 +51,7 @@ export default class extends Controller {
 
 
      placeMarkerAndPanTo(latLng, map) {
-
-
-
+     
      //Create Marker on the click
      if(this.marker != undefined){
          this.marker.setPosition(latLng);
@@ -73,8 +66,7 @@ export default class extends Controller {
         map.panTo(latLng);
 
     }
-
-   
+  
       const cords = JSON.stringify(latLng.toJSON(), null, 2)
       const parsee = JSON.parse(cords);
 
@@ -90,6 +82,18 @@ export default class extends Controller {
 
   }
 
+  setCompassImages(){
+
+    const northLogo = document.getElementById('northLogo').src = "/assets/wind/North.png";
+    const northWestLogo = document.getElementById('northWestLogo').src = "/assets/wind/NorthWest.png";
+    const northEastLogo = document.getElementById('northEastLogo').src = "/assets/wind/NorthEast.png";
+    const westLogo = document.getElementById('westLogo').src = "/assets/wind/West.png";
+    const eastLogo = document.getElementById('eastLogo').src = "/assets/wind/East.png";
+    const southWestlogo = document.getElementById('southWestLogo').src = "/assets/wind/SouthWest.png";
+    const southEeastlogo = document.getElementById('southEastLogo').src = "/assets/wind/SouthEast.png";
+    const southLogo = document.getElementById('southLogo').src = "/assets/wind/South.png";
+
+  }
 
   keydown(event){
 
@@ -200,6 +204,11 @@ export default class extends Controller {
       }
     }
 
+    setLocType(event){
+
+     this.locType = event.target.selectedOptions[0].value
+     
+    }
 
     CreateIcons(){
 
@@ -222,7 +231,7 @@ export default class extends Controller {
 
   saveSpot(event) {
 
-    var sendWind = this.NorthWind +"," + this.NorthEastWind + "," + this.EastWind + "," +
+    this.sendWind = this.NorthWind +"," + this.NorthEastWind + "," + this.EastWind + "," +
     this.SouthEastWind + "," + this.SouthWind +"," + this.SouthWestWind + "," + this.WestWind +"," + this.NorthWestWind
 
     const id = event.target.dataset.id
@@ -239,12 +248,13 @@ export default class extends Controller {
         },
         body: JSON.stringify({
           id:this.id,
+          loc_type: this.locType,
           name: this.nameTarget.value,
           latitude: this.latTarget.value,
           longitude:this.lonTarget.value,
           notes: this.notesTarget.value,
           num_sits: this.numsitsTarget.value,
-          wind: sendWind
+          wind: this.sendWind
             }) // body data type must match "Content-Type" header
     })
        //.then(response => response.json())
@@ -252,7 +262,6 @@ export default class extends Controller {
 
        //CALL A RESET FUNCTION
         this.clearMarker();
-
         this.infowindow.close();
 
   }
@@ -260,15 +269,18 @@ export default class extends Controller {
   clearMarker(){
 
     //DON'T FORGET TO ADD THE TYPE OF ICON FOR
-    //  northLogo.src = "/assets/wind/North.png";
-    //  northWestLogo.src = "/assets/wind/NorthWest.png";
-    //  northEastLogo.src = "/assets/wind/NorthEast.png";
-    //  westLogo.src = "/assets/wind/West.png";
-    //  eastLogo.src = "/assets/wind/East.png";
-    //  southWestlogo.src = "/assets/wind/SouthWest.png";
-    //  southEeastlogo.src = "/assets/wind/SouthEast.png";
-    //  southLogo.src = "/assets/wind/South.png";
+   
+    this.setCompassImages();
+    this.NorthWind = ""
+    this.NorthEastWind = ""
+    this.EastWind = ""
+    this.SouthEastWind = ""
+    this.SouthWind = ""
+    this.SouthWestWind = ""
+    this.WestWind = ""
+    this.NorthWestWind = ""
 
+    this.sendWind = "";
 
     this.nameTarget.value = ""
     this.dateTarget.value = ""

@@ -12,6 +12,7 @@ import "controllers"
 
  import "trix"
  import "@rails/actiontext"
+ import "@rails/request.js"
 
 window.dispatchMapsEvent = function() {
   console.log(google)
