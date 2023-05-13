@@ -91,20 +91,43 @@ export default class extends Controller {
       });
       
       google.maps.event.addListener(gmarker, 'click', (e) => {
-        //console.log("Here We Are " + gmarker.position.lat + " " + gmarker.position.lon )
         this.showMarker(gmarker);
     });
 
      });
 
-     console.log(this.userLocs)
   }
 
   showMarker(userGMarker){
 
     console.log("Are We CLEAR JACCKKKIEEE" +userGMarker)
-    //match userGMarker with element in UserLoc Array
-    //create infowindow add the content 
+    
+
+    this.userLocs.forEach((loc) => {
+      if(userGMarker.title == loc.id){
+          
+        console.log("This is our Marker create content " + loc.id)
+          
+          if(this.infowindow != undefined){
+            this.infowindow.close();
+          }
+
+          this.infowindow = new google.maps.InfoWindow();
+          this.infowindow.setContent(this.content) 
+
+          this.nameTarget.value = loc.name;
+          this.latTarget.value = loc.latitude;
+          this.lonTarget.value = loc.longitude;
+          this.dateTarget.value = Date(loc.create_at);
+          this.notesTarget.value = loc.notes;
+          this.numsitsTarget.value = loc.num_sits;
+
+            
+          this.infowindow.open(this.map,userGMarker);
+      }
+
+    });
+      
    
   }
 
@@ -113,6 +136,7 @@ export default class extends Controller {
      
      //Create Marker on the click
      if(this.marker != undefined){
+         this.clearMarker();
          this.marker.setPosition(latLng);
          this.infowindow.close();
      }
