@@ -113,6 +113,10 @@
   height: 786px;
 }
 
+/* THIS WORKS */
+button.gm-ui-hover-effect {
+  visibility: hidden;
+}
 
 
 

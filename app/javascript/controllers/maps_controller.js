@@ -32,7 +32,8 @@ export default class extends Controller {
     const lon = parseFloat("-71.981" )
     const coordinates = {lat: lat,lng: lon}
     this.map = new google.maps.Map(this.mapTarget,{center:coordinates,zoom:12});
-    this.content = formContent //HTML for the info Window marker form
+    this.holdContent = formContent //HTML for the info Window marker form
+    this.userContent = formContent
 
     this.displayMarkers();
     this.CreateIcons();
@@ -50,6 +51,7 @@ export default class extends Controller {
 
   async displayMarkers(){
      let markers
+     let userInfoWin;
 
     //const request = new FetchRequest("get","/locs/getMarkers", { responseKind: "turbo-stream" })
     const request = new FetchRequest("get","/locs/getMarkers", { responseKind: "json" })
@@ -90,18 +92,38 @@ export default class extends Controller {
         title: marker.id.toString() //location ID
       });
       
+      gmarker.info = new google.maps.InfoWindow({content:this.userContent});
+      //this.infowindow.setContent(this.userContent) 
+      //adding a a click event to each of the user's markers
       google.maps.event.addListener(gmarker, 'click', (e) => {
         this.showMarker(gmarker);
+
+
     });
 
      });
 
   }
 
+  //If removing an empty marker remove it from map
+  closeSpot(){
+    //this.userContent = this.holdContent
+    this.infowindow.close();
+
+    if (this.marker.title == undefined){
+      this.marker.setVisible(false);
+      this.marker = null;
+
+    }
+    this.infowindow = new google.maps.InfoWindow();
+    this.infowindow.setContent(this.userContent) 
+
+  }
+
   showMarker(userGMarker){
 
-    console.log("Are We CLEAR JACCKKKIEEE" +userGMarker)
-    
+   
+    let userInfoWin;
 
     this.userLocs.forEach((loc) => {
       if(userGMarker.title == loc.id){
@@ -109,11 +131,19 @@ export default class extends Controller {
         console.log("This is our Marker create content " + loc.id)
           
           if(this.infowindow != undefined){
-            this.infowindow.close();
-          }
+            this.userContent = this.holdContent
+            //
 
-          this.infowindow = new google.maps.InfoWindow();
-          this.infowindow.setContent(this.content) 
+          }
+          else{
+            this.infowindow = new google.maps.InfoWindow();
+            this.infowindow.setContent(this.userContent)            
+          }
+          
+          this.marker = userGMarker
+
+        
+          this.infowindow.open(this.map,this.marker);
 
           this.nameTarget.value = loc.name;
           this.latTarget.value = loc.latitude;
@@ -122,8 +152,7 @@ export default class extends Controller {
           this.notesTarget.value = loc.notes;
           this.numsitsTarget.value = loc.num_sits;
 
-            
-          this.infowindow.open(this.map,userGMarker);
+        
       }
 
     });
@@ -136,19 +165,24 @@ export default class extends Controller {
      
      //Create Marker on the click
      if(this.marker != undefined){
-         this.clearMarker();
          this.marker.setPosition(latLng);
-         this.infowindow.close();
+          //this.infowindow.close();
+          this.marker.setVisible(true);
+         this.userContent = this.holdContent
      }
      else{
        this.marker = new google.maps.Marker({
           position: latLng,
-          map: map,
+          map: this.map,
           icon: this.icon4,
         });
         map.panTo(latLng);
 
     }
+    
+      this.infowindow = new google.maps.InfoWindow();
+      this.clearMarker();
+
   
       const cords = JSON.stringify(latLng.toJSON(), null, 2)
       const parsee = JSON.parse(cords);
@@ -157,9 +191,8 @@ export default class extends Controller {
       this.latTarget.value = parsee.lat
       this.lonTarget.value = parsee.lng
 
-      this.infowindow = new google.maps.InfoWindow();
 
-      this.infowindow.setContent(this.content)   
+      this.infowindow.setContent(this.userContent)   
       this.infowindow.open(map,this.marker);
 
   }
@@ -357,15 +390,24 @@ export default class extends Controller {
 
        //CALL A RESET FUNCTION
         this.clearMarker();
-        this.infowindow.close();
+        //this.infowindow.close();
 
   }
 
-  clearMarker(){
+  async clearMarker(){
 
     //DON'T FORGET TO ADD THE TYPE OF ICON FOR
-   
-    this.setCompassImages();
+    // const request = new FetchRequest("get","/locs/saveSpot", { responseKind: "html" })
+    // const response = await request.perform()
+
+    // if (response.ok){
+    //   const data = await response.html
+    //  // markers = data 
+    // }
+
+
+
+    //this.setCompassImages();
     this.NorthWind = ""
     this.NorthEastWind = ""
     this.EastWind = ""

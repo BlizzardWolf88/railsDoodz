@@ -1,9 +1,15 @@
-<%= form_with(model: loc) do |form| %>
+<%= form_with() do |form| %>
 <div > 
-<div id ="formContent"  >
+<div id ="formContent"   >
     <div class="card text-center h-600" >
       <div class="card-header">
-        <h2>Save This Spot Ghetto Force</h2>
+        <div style = "float: right">
+          <button data-action="click->maps#closeSpot" type="button" class="btn btn-close btn-lg active goodGood" >
+        </div>
+        <div class ="row">     
+          <h2>Save This Spot Ghetto Force</h2>                  
+         </button> 
+        </div>
       </div>
       <div class="card-body" >
          <br/>  
@@ -88,11 +94,13 @@
           <div class = "mb-3">
            <%= form.text_field :num_sits, class:"form-control", placeholder:"Number of Times Hunted",data: {target: "maps.numsits"} %>           
           </div>     
-          <div class="mb-3" data-action="click->maps#saveSpot">
-            <button type="button" class="btn btn-primary btn-lg active goodGood" >
+          <div class="mb-3" >
+            <button data-action="click->maps#saveSpot" type="button" class="btn btn-primary btn-lg active goodGood" >
                Save Spot
-            </button>          
-          </div>      
+            </button> 
+                   
+          </div>  
+               
       </div>
       <div class="card-footer text-muted">
        

@@ -19,7 +19,9 @@ class LocsController < ApplicationController
       @loc = current_user.madood.build
     end
 
-    def saveSpot    
+    def saveSpot  
+      #We need to re-render save-spot HTML
+      render partial: 'saveSpot'
     end
 
     def getMarkers
