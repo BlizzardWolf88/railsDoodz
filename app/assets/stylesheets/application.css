@@ -26,32 +26,7 @@
   object-fit: cover;
  }
 
- .compassBtnWestEast{
-    display:inline_block;
-    height:60px;
-    width:88px;
-    object-fit: cover;
-    color:transparent;
-    cursor: pointer;
- }
-
- .compassBtnNorthSouth{
-  display:inline_block;
-  height:88px;
-  width:60px;
-  object-fit: cover;
-  color:transparent;
-  cursor: pointer;
-}
-
-.compassBtnsIntermediate{
-  display:inline_block;
-  height:90px;
-  width:80px;
-  object-fit: cover;
-  color:transparent;
-  cursor: pointer;
-}
+ 
 
 
 
@@ -107,17 +82,6 @@
 
 /******************************************************************/
 /******************************************************************/
-
-.mapcss {
-  width: 1370px;
-  height: 786px;
-}
-
-/* THIS WORKS */
-button.gm-ui-hover-effect {
-  visibility: hidden;
-}
-
 
 
 

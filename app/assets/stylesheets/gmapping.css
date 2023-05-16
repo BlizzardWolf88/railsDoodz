@@ -1,0 +1,64 @@
+.container{
+    max-width: 2320px;
+    max-height: 1000px;
+
+}
+
+.containerComp{
+    height: 100px;
+    width: 300px;
+
+}
+  
+   .compassBtnWestEast{
+      display:inline_block;
+      height:60px;
+      width:88px;
+      object-fit: cover;
+      color:transparent;
+      cursor: pointer;
+   }
+  
+   .compassBtnNorthSouth{
+    display:inline_block;
+    height:88px;
+    width:60px;
+    object-fit: cover;
+    color:transparent;
+    cursor: pointer;
+  }
+  
+  .compassBtnsIntermediate{
+    display:inline_block;
+    height:90px;
+    width:80px;
+    object-fit: cover;
+    color:transparent;
+    cursor: pointer;
+  }
+  
+
+  .mapcss {
+  width: 1260px;
+  height: 760px;
+  float: right;
+  margin-top: 0%;
+  
+}
+
+/* THIS WORKS */
+button.gm-ui-hover-effect {
+  visibility: hidden;
+}
+
+.sizeCard{
+
+  width:610px;
+  
+}
+
+.scrollable{
+    overflow-y: auto;
+    max-height: 510px;
+  }
+

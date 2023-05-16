@@ -1,106 +1,117 @@
+<%= stylesheet_link_tag "gmapping", "data-turbo-track": "reload",defer:true %>
 <%= form_with() do |form| %>
-<div > 
-<div id ="formContent"   >
-    <div class="card text-center h-600" >
-      <div class="card-header">
-        <div style = "float: right">
-          <button data-action="click->maps#closeSpot" type="button" class="btn btn-close btn-lg active goodGood" >
-        </div>
+
+<div id ="formContent" class = "sizeCard">
+    <div class="card text-center" >
+      <div class="card-header">      
         <div class ="row">     
-          <h2>Save This Spot Ghetto Force</h2>                  
+          <h2>Location Information!!!</h2>                  
          </button> 
         </div>
       </div>
-      <div class="card-body" >
-         <br/>  
-            
-          <div class="container-lg">           
-            <div class = "row g-1">
+      <div class="card-body" >         
+          <div class="container-sm">           
+            <div class = "row g-8 mb-3">
               <div class ="col">
                 <button type="button" id= "showPicsBtn" class="btn btn-primary btn-lg active" data-bs-toggle="modal" data-bs-target="#ViewPics">
                   Show Pics
                 </button>
-              </div>              
-            </div>
-            </div>               
+            </div>          
+            <div class = "row g-1">
+               <div class ="col-5" >
+                 <%= form.text_field :latitude,placeholder:"Enter Latitude", class:"form-control fw-bold ",data: {target: "maps.lat"} %>
+               </div>    
+               <div class ="col-5" data-action="keydown->maps#keydown" >
+                  <%= form.text_field :longtitude,placeholder:"Enter Longitude" ,class:"form-control fw-bold " ,data: {target: "maps.lon"} %>
+                </div>
+                <div class = "col-2" data-action="click->maps#goToSpot">
+                  <button type="button" class="btn btn-lg btn-primary active px-4 py-1">Go!</button>
+                </div>
+          </div>              
+          </div>
+          </div>               
            <br/>
           </div>
-          <br/>        
+          <br/> 
+          <div class="scrollable">       
            <%# Compass Starts Here %>
-          <div class="container md"> 
-              <div class = "row">
-               <h3>Select Wind Direction(s)</h3>
-              </div>
-              <br/>
-              <div class="row">                                                                        
-                   <div  class="col" data-action="click->maps#sendNorth" data-target="maps.north" data-north = "N">                
-                    <img id="northLogo" class="compassBtnNorthSouth"> 
-                   </div>                                            
-              </div>
-
-              <div class = "row">
-                  <div  class="col" data-action="click->maps#sendNorthWest" data-target="maps.northwest" data-northwest = "NW">                     
-                       <img id="northWestLogo" class="compassBtnsIntermediate">
+              <div class="container-sm"> 
+                  <div class = "row">
+                  <h3>Select Wind Direction(s)</h3>
                   </div>
-                   <div  class="col" data-action="click->maps#sendNorthEast" data-target="maps.northeast" data-northeast = "NE">                
-                       <img id="northEastLogo" class="compassBtnsIntermediate">
-                   </div>            
-              </div>
+                  <br/>
+                  <div class="row">                                                                        
+                      <div  class="col" data-action="click->maps#sendNorth" data-target="maps.north" data-north = "N">                
+                        <img id="northLogo" class="compassBtnNorthSouth"> 
+                      </div>                                            
+                  </div>
 
-              <div class="row">
-                <div class="col" data-action="click->maps#sendWest" data-target="maps.west" data-west = "W">
-                  <img id="westLogo" class="compassBtnWestEast"> 
-                </div>
-                <div class="col">
-                  <%# Center %>
-                </div>
-                <div class = "col">
-                  <%# Need this spacing for compass "symmetry" %>
-                </div>
-                <div class="col" data-action="click->maps#sendEast" data-target="maps.east" data-east = "E">               
-                   <img id="eastLogo" class="compassBtnWestEast"> 
-                </div>
-              </div>
-              
-              <div class ="row">
-                <div  class="col" data-action="click->maps#sendSouthWest" data-target="maps.southwest" data-southwest = "SW">                
-                   <img id="southWestLogo" class="compassBtnsIntermediate">
-                </div>  
-                <div  class="col" data-action="click->maps#sendSouthEast" data-target="maps.southeast" data-southeast = "SE">                
-                  <img id="southEastLogo" class="compassBtnsIntermediate">
-                </div>                 
-              </div>
+                  <div class = "row">
+                      <div  class="col" data-action="click->maps#sendNorthWest" data-target="maps.northwest" data-northwest = "NW">                     
+                          <img id="northWestLogo" class="compassBtnsIntermediate">
+                      </div>
+                      <div  class="col" data-action="click->maps#sendNorthEast" data-target="maps.northeast" data-northeast = "NE">                
+                          <img id="northEastLogo" class="compassBtnsIntermediate">
+                      </div>            
+                  </div>
 
-              <div class="row">           
-                <div class="col "data-action="click->maps#sendSouth" data-target="maps.south" data-south = "S">
-                   <img id="southLogo" class="compassBtnNorthSouth"> 
-                </div>             
-              </div>
+                  <div class="row">
+                    <div class="col" data-action="click->maps#sendWest" data-target="maps.west" data-west = "W">
+                      <img id="westLogo" class="compassBtnWestEast"> 
+                    </div>
+                    <div class="col">
+                      <%# Center %>
+                    </div>
+                    <div class = "col">
+                      <%# Need this spacing for compass "symmetry" %>
+                    </div>
+                    <div class="col" data-action="click->maps#sendEast" data-target="maps.east" data-east = "E">               
+                      <img id="eastLogo" class="compassBtnWestEast"> 
+                    </div>
+                  </div>
+                  
+                  <div class ="row">
+                    <div  class="col" data-action="click->maps#sendSouthWest" data-target="maps.southwest" data-southwest = "SW">                
+                      <img id="southWestLogo" class="compassBtnsIntermediate">
+                    </div>  
+                    <div  class="col" data-action="click->maps#sendSouthEast" data-target="maps.southeast" data-southeast = "SE">                
+                      <img id="southEastLogo" class="compassBtnsIntermediate">
+                    </div>                 
+                  </div>
 
-             </div> <%# End of Compass %>
-          <br/>
-          <div class = "mb-3">  
-                <%= form.select :loc_type,['Stand Pin','Buck Bed Pin','Access Point'] ,{prompt:"Select A Loc Type"}, {class:"form-select",data:{action:"click->maps#setLocType"}} %>                     
-          </div>   
-          <div class="mb-3">  
-            <%= form.text_field :name, class:"form-control", placeholder:"Spot Name",data: {target: "maps.name"} %>
-          </div>
-           <div class="mb-3">  
-            <%= form.text_field :create_date, class:"form-control", placeholder:"The Date",data: {target: "maps.date"} %>
-          </div>
-          <div class="mb-3" >
-             <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Notes" rows="3" data-target="maps.notes"></textarea>
-          </div>
-          <div class = "mb-3">
-           <%= form.text_field :num_sits, class:"form-control", placeholder:"Number of Times Hunted",data: {target: "maps.numsits"} %>           
+                  <div class="row">           
+                    <div class="col "data-action="click->maps#sendSouth" data-target="maps.south" data-south = "S">
+                      <img id="southLogo" class="compassBtnNorthSouth"> 
+                    </div>             
+                  </div>
+
+              </div> <%# End of Compass %>
+              <br/>
+              <%# Form Container %>
+              <div class="container-sm">
+                <div class = "mb-3">  
+                      <%= form.select :loctype,['Stand Pin','Buck Bed Pin','Access Point'] ,{prompt:"Select A Loc Type"}, {class:"form-select fw-bold",data:{action:"click->maps#setLocType",target:"maps.loctype"}} %>                     
+                </div>   
+                <div class="mb-3">  
+                  <%= form.text_field :name, class:"form-control fw-bold", placeholder:"Spot Name",data: {target: "maps.name"} %>
+                </div>
+                <div class="mb-3">  
+                  <%= form.text_field :create_date, class:"form-control fw-bold", placeholder:"The Date",data: {target: "maps.date"} %>
+                </div>
+                <div class="mb-3" >
+                  <textarea class="form-control fw-bold" id="exampleFormControlTextarea1" placeholder="Notes" rows="3" data-target="maps.notes"></textarea>
+                </div>
+                <div class = "mb-3">
+                <%= form.text_field :num_sits, class:"form-control fw-bold", placeholder:"Number of Times Hunted",data: {target: "maps.numsits"} %>           
+                </div>     
+                <div class="mb-3" >
+                  <button data-action="click->maps#saveSpot" type="button" class="btn btn-primary btn-lg active goodGood" >
+                    Save Spot
+                </button> 
+                </div>
+                      
+              </div>  
           </div>     
-          <div class="mb-3" >
-            <button data-action="click->maps#saveSpot" type="button" class="btn btn-primary btn-lg active goodGood" >
-               Save Spot
-            </button> 
-                   
-          </div>  
-               
       </div>
       <div class="card-footer text-muted">
        
@@ -108,6 +119,5 @@
     </div>
 </div> 
 
-</div>
 
 <% end %>

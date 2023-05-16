@@ -105,46 +105,18 @@ export default class extends Controller {
 
   }
 
-  //If removing an empty marker remove it from map
-  closeSpot(){
-    //this.userContent = this.holdContent
-    this.infowindow.close();
-
-    if (this.marker.title == undefined){
-      this.marker.setVisible(false);
-      this.marker = null;
-
-    }
-    this.infowindow = new google.maps.InfoWindow();
-    this.infowindow.setContent(this.userContent) 
-
-  }
-
   showMarker(userGMarker){
 
+    //change button name to update spot
+    // change button to add/delete pics
+    this.clearMarker();
    
-    let userInfoWin;
-
-    this.userLocs.forEach((loc) => {
+    this.userLocs.forEach( (loc) => {
       if(userGMarker.title == loc.id){
           
         console.log("This is our Marker create content " + loc.id)
           
-          if(this.infowindow != undefined){
-            this.userContent = this.holdContent
-            //
-
-          }
-          else{
-            this.infowindow = new google.maps.InfoWindow();
-            this.infowindow.setContent(this.userContent)            
-          }
           
-          this.marker = userGMarker
-
-        
-          this.infowindow.open(this.map,this.marker);
-
           this.nameTarget.value = loc.name;
           this.latTarget.value = loc.latitude;
           this.lonTarget.value = loc.longitude;
@@ -152,6 +124,48 @@ export default class extends Controller {
           this.notesTarget.value = loc.notes;
           this.numsitsTarget.value = loc.num_sits;
 
+          this.loctypeTarget.value = loc.loc_type;
+
+          this.windArr = loc.wind.split(",")
+
+          this.windArr.forEach( (direc) =>{
+            switch(direc){
+              case("N"):
+                this.NorthWind = direc
+                northLogo.src = "/assets/wind/NorthAfter.png"
+                break;    
+              case("NE"):
+                this.NorthEastWind = direc
+                northEastLogo.src = "/assets/wind/NorthEastAfter.png"
+                break;
+              case("E"):
+                this.EastWind = direc
+                northEastLogo.src = "/assets/wind/NorthEastAfter.png"
+                break;
+              case("SE"):
+                this.SouthEastWind = direc
+                southEastLogo.src = "/assets/wind/SouthEastAfter.png"
+              break;
+              case("S"):
+                this.SouthWind = direc
+                southLogo.src = "/assets/wind/SouthAfter.png"
+              break;
+              case("SW"):
+                this.SouthWestWind = direc
+                southWestLogo.src = "/assets/wind/SouthWestAfter.png"
+              break;
+              case("W"):
+                this.WestWind = direc
+                westLogo.src = "/assets/wind/WestAfter.png"
+              break;
+              case("NW"):
+                this.NorthWestWind = direc
+                northWestLogo.src = "/assets/wind/NorthWestAfter.png"
+                break;         
+              default:
+              
+            }
+          });
         
       }
 
@@ -166,21 +180,18 @@ export default class extends Controller {
      //Create Marker on the click
      if(this.marker != undefined){
          this.marker.setPosition(latLng);
-          //this.infowindow.close();
-          this.marker.setVisible(true);
-         this.userContent = this.holdContent
+          this.marker.setVisible(true);      
      }
      else{
        this.marker = new google.maps.Marker({
           position: latLng,
           map: this.map,
-          icon: this.icon4,
+          icon: this.icon5,
         });
         map.panTo(latLng);
 
     }
     
-      this.infowindow = new google.maps.InfoWindow();
       this.clearMarker();
 
   
@@ -191,9 +202,6 @@ export default class extends Controller {
       this.latTarget.value = parsee.lat
       this.lonTarget.value = parsee.lng
 
-
-      this.infowindow.setContent(this.userContent)   
-      this.infowindow.open(map,this.marker);
 
   }
 
@@ -354,6 +362,13 @@ export default class extends Controller {
       origin: new google.maps.Point(0,0), // origin
       anchor: new google.maps.Point(0, 0) // anchor
     };
+    
+    this.icon5 = {
+      url: "/assets/BlueWolfDood.png"  + '#custom_marker', // url
+      scaledSize: new google.maps.Size(50, 50), // scaled size
+      origin: new google.maps.Point(0,0), // origin
+      anchor: new google.maps.Point(0, 0) // anchor
+    };
 
   }
 
@@ -390,9 +405,20 @@ export default class extends Controller {
 
        //CALL A RESET FUNCTION
         this.clearMarker();
-        //this.infowindow.close();
 
   }
+
+  filterLocType(){
+    //manipulate markers based on wind
+
+
+  }
+
+  filterLocType(){
+    //filter the markers based on location type
+
+  }
+
 
   async clearMarker(){
 
@@ -405,9 +431,8 @@ export default class extends Controller {
     //  // markers = data 
     // }
 
-
-
-    //this.setCompassImages();
+    this.loctypeTarget.value = ""
+    this.setCompassImages();
     this.NorthWind = ""
     this.NorthEastWind = ""
     this.EastWind = ""
