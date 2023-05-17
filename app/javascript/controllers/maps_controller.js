@@ -47,11 +47,8 @@ export default class extends Controller {
 
   }
 
- 
-
   async displayMarkers(){
      let markers
-     let userInfoWin;
 
     //const request = new FetchRequest("get","/locs/getMarkers", { responseKind: "turbo-stream" })
     const request = new FetchRequest("get","/locs/getMarkers", { responseKind: "json" })
@@ -66,40 +63,47 @@ export default class extends Controller {
     this.filterMarker =[]
      markers.forEach((marker) => {
 
-      this.userLocs.push(marker)
-      let sendIcon 
-      switch(marker.loc_type){
-        case("Access Point"):
-          sendIcon = this.icon1
-          break;
-        
-        case("Buck Bed Pin"):
-          sendIcon = this.icon2
-          break;
-        case("Stand Pin"):
-          sendIcon = this.icon3
-          break;
-        
-        default:
-          sendIcon = this.icon4
-        
-      }
+        this.userLocs.push(marker)
+        let sendIcon 
+        switch(marker.loc_type){
+          case("Access Point"):
+            sendIcon = this.icon1
+            break;
+          
+          case("Buck Bed Pin"):
+            sendIcon = this.icon2
+            break;
+          case("Stand Pin"):
+            sendIcon = this.icon3
+            break;       
+          default:
+            sendIcon = this.icon4      
+        }
+
         let latLng = new google.maps.LatLng(marker.latitude, marker.longitude);
 
         let gmarker = new google.maps.Marker({
         position: latLng,
         map: this.map,
         icon: sendIcon,
-        title: marker.id.toString() + "," + marker.loc_type //location ID we need this for filtering and showing
+        title: "DON'T GET DISCOURAGED WHEN THE SEASON GETS TOUGH"
+
       });
+        
+        //Save these values to the marker for filtering and showing marker
+        gmarker.set("id", marker.id.toString())
+        gmarker.set("locType", marker.loc_type)
+        gmarker.set("wind", marker.wind)
+        gmarker.set("numSits", marker.num_sits)
       
-      this.filterMarker.push(gmarker)
-      //adding a a click event to each of the user's markers
-      google.maps.event.addListener(gmarker, 'click', (e) => {
-        this.showMarker(gmarker);
+
+        this.filterMarker.push(gmarker)
+        //adding a a click event to each of the user's markers
+        google.maps.event.addListener(gmarker, 'click', (e) => {
+          this.showMarker(gmarker);
 
 
-    });
+        });
 
      });
 
@@ -111,14 +115,12 @@ export default class extends Controller {
     // change button to add/delete pics
     this.clearMarker();
 
-    markerId = userGMarker.title.split(",")
+    //markerId = userGMarker.title.split(",")
+    markerId = userGMarker.get("id")
 
     this.userLocs.forEach( (loc) => {
-      if(markerId[0] == loc.id){
-          
-        console.log("This is our Marker create content " + loc.id)
-          
-          
+      if(markerId == loc.id){
+               
           this.nameTarget.value = loc.name;
           this.latTarget.value = loc.latitude;
           this.lonTarget.value = loc.longitude;
@@ -195,8 +197,6 @@ export default class extends Controller {
     }
     
       this.clearMarker();
-
-  
       const cords = JSON.stringify(latLng.toJSON(), null, 2)
       const parsee = JSON.parse(cords);
 
@@ -239,7 +239,6 @@ export default class extends Controller {
 
   }
 
-    //INSTANIATE ALL THIS._WIND TO with let and set to ""
     sendNorth(){
       if(this.NorthWind == "" ){
         this.NorthWind = this.northTarget.dataset.north
@@ -330,9 +329,7 @@ export default class extends Controller {
     }
 
     setLocType(event){
-
-     this.locType = event.target.selectedOptions[0].value
-     
+     this.locType = event.target.selectedOptions[0].value   
     }
 
     CreateIcons(){
@@ -410,26 +407,53 @@ export default class extends Controller {
 
   }
 
+  filterTimesHunted(event){
+    let timesHunted
+    let found  
+
+    this.filterMarker.forEach( (marker) =>{    
+      timesHunted = marker.get("numSits"); //The last value in the title are the times sat
+      found = (event.target.selectedOptions[0].value == timesHunted 
+        || event.target.selectedOptions[0].value == "" 
+        || (event.target.selectedOptions[0].value == "5+" && timesHunted >= 5  )) ? this.map : null; 
+      marker.setMap(found)
+    });
+
+  }
+
   filterLocType(event){
     //manipulate markers based on wind
       let markerLocT
+      let found
       
-        this.filterMarker.forEach( (marker) =>{    
-         markerLocT = marker.title.split(","); 
-        if(event.target.selectedOptions[0].value == markerLocT[1] || event.target.selectedOptions[0].value == "ALL" ) //find if this db record has the loc type
-         { //find a match db record id == the marker title (where I stored id)  
-           marker.setMap(this.map)
-        }
-        else
-        {
-          marker.setMap(null)
-        }  
-          
+      this.filterMarker.forEach( (marker) =>{    
+        markerLocT = marker.get("locType"); //Get the Loc Type Element from the marker 
+        found = (event.target.selectedOptions[0].value == markerLocT || event.target.selectedOptions[0].value == "" ) ? this.map : null; 
+        marker.setMap(found)
       });
-  }
+       
+  }  
 
-  filterWinds(){
+  filterWinds(event){
     //filter the markers based on location type
+    let splitWind
+    
+    this.filterMarker.forEach( (marker) =>{ 
+    
+      splitWind = marker.get("wind");
+      splitWind = splitWind.split(",");//Now we can create array of each wind direction after substring extraction
+
+      for(let i = 0; i < splitWind.length; i++){
+        if(event.target.selectedOptions[0].value == splitWind[i] || event.target.selectedOptions[0].value == "" ){
+          marker.setMap(this.map)
+          break;
+        }
+        else{
+          marker.setMap(null)
+        }
+       }
+        
+    });
 
   }
 

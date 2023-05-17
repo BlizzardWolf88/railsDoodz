@@ -1,0 +1,51 @@
+    <div class="container-sm"> 
+        <div class = "row">
+        <h3>Select Wind Direction(s)</h3>
+        </div>
+        <br/>
+        <div class="row">                                                                        
+            <div  class="col" data-action="click->maps#sendNorth" data-target="maps.north" data-north = "N">                
+            <img id="northLogo" class="compassBtnNorthSouth"> 
+            </div>                                            
+        </div>
+
+        <div class = "row">
+            <div  class="col" data-action="click->maps#sendNorthWest" data-target="maps.northwest" data-northwest = "NW">                     
+                <img id="northWestLogo" class="compassBtnsIntermediate">
+            </div>
+            <div  class="col" data-action="click->maps#sendNorthEast" data-target="maps.northeast" data-northeast = "NE">                
+                <img id="northEastLogo" class="compassBtnsIntermediate">
+            </div>            
+        </div>
+
+        <div class="row">
+        <div class="col" data-action="click->maps#sendWest" data-target="maps.west" data-west = "W">
+            <img id="westLogo" class="compassBtnWestEast"> 
+        </div>
+        <div class="col">
+            <%# Center %>
+        </div>
+        <div class = "col">
+            <%# Need this spacing for compass "symmetry" %>
+        </div>
+        <div class="col" data-action="click->maps#sendEast" data-target="maps.east" data-east = "E">               
+            <img id="eastLogo" class="compassBtnWestEast"> 
+        </div>
+        </div>
+        
+        <div class ="row">
+        <div  class="col" data-action="click->maps#sendSouthWest" data-target="maps.southwest" data-southwest = "SW">                
+            <img id="southWestLogo" class="compassBtnsIntermediate">
+        </div>  
+        <div  class="col" data-action="click->maps#sendSouthEast" data-target="maps.southeast" data-southeast = "SE">                
+            <img id="southEastLogo" class="compassBtnsIntermediate">
+        </div>                 
+        </div>
+
+        <div class="row">           
+        <div class="col "data-action="click->maps#sendSouth" data-target="maps.south" data-south = "S">
+            <img id="southLogo" class="compassBtnNorthSouth"> 
+        </div>             
+        </div>
+
+    </div> <%# End of Compass %>

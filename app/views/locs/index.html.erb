@@ -6,13 +6,27 @@
 <div data-controller = "maps">
   <div class="container">
     <div class = "row mb-3">
-      <div class = "col-8">
-      </div>     
-      <div class = "col-2">  
-         <%= form.select :filterLoctype,['ALL','Stand Pin','Buck Bed Pin','Access Point'] ,{prompt:"Filter Loc Type"}, {class:"form-select btn btn-primary btn-lg active dropdown-toggle",data:{action:"change->maps#filterLocType"}} %>                     
+      <div class = "col-5">
+      </div>    
+      <div class = "col-1 g-1">
+         <%# <button type="button" id= "filtWindBtn" class="btn btn-primary btn-lg active w-100" data-bs-toggle="modal" data-bs-target="#FiltWind">
+             Filter Wind
+         </button> %>
+      </div> 
+      <div class = "col-2 g-1">  
+         <%= form.select :filterTimesSat,['0','1','2','3','4','5+'] ,{prompt:"Filter Times Hunted (All)"}, 
+         {class:"form-select btn btn-primary btn-lg active dropdown-toggle",
+         data:{action:"change->maps#filterTimesHunted"}} %>                     
+      </div> 
+      <div class = "col-2 g-1">  
+         <%= form.select :filterLoctype,['Stand Pin','Buck Bed Pin','Access Point'] ,{prompt:"Filter Loc Type (All)"}, 
+         {class:"form-select btn btn-primary btn-lg active dropdown-toggle",
+         data:{action:"change->maps#filterLocType"}} %>                     
       </div>   
-      <div class = "col-2">
-         <%= form.select :loc_type,['ALL','North','West','South','East'] ,{prompt:"Filter Winds"}, {class:"form-select btn btn-primary btn-lg active dropdown-toggle",data:{action:"click->maps#filterWinds"}} %>                     
+      <div class = "col-2 g-1">
+         <%= form.select :loc_type,['N','NE','E','SE','S','SW','W','NW'] ,{prompt:"Filter Winds (All)"}, 
+         {class:"form-select btn btn-primary btn-lg active dropdown-toggle",
+         data:{action:"change->maps#filterWinds"}} %>                     
       </div>     
     </div>
   </div>
@@ -28,7 +42,9 @@
      
   </div>
   <br/>
-   <%=render 'open_pics'%>
+   <%=render 'openPics'%>
+   <%=render 'filterWind'%>
+
 </div>
 <% end %>
    
