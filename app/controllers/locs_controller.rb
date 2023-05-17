@@ -26,7 +26,8 @@ class LocsController < ApplicationController
 
     def getMarkers
       @locs = current_user.loc
-      #format.turbo_stream {render turbo_stream: turbo_stream.update("locMarker", @loc.id) }
+      
+      #format.turbo_stream {render turbo_stream: turbo_stream.update("locMarker", @loc) }
       render json: @locs
     end
 
@@ -37,7 +38,8 @@ class LocsController < ApplicationController
        respond_to do |format|
          if @loc.save
            format.html { redirect_to loc_url(@loc), notice: "Location was successfully created." }
-           format.json { render :show, status: :created, location: @loc }
+           msg = { :status => "ok", :message => "Location was successfully created." }
+           format.json {  render  json: @loc }
          else
            format.html { render :new, status: :unprocessable_entity }
            format.json { render json: @loc.errors, status: :unprocessable_entity }

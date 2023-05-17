@@ -57,8 +57,61 @@ export default class extends Controller {
     if (response.ok){
       const data = await response.json
       markers = data 
+      this.renderMarkers(markers)
     }
     
+    // this.userLocs = []
+    // this.filterMarker =[]
+    //  markers.forEach((marker) => {
+
+    //     this.userLocs.push(marker)
+    //     let sendIcon 
+    //     switch(marker.loc_type){
+    //       case("Access Point"):
+    //         sendIcon = this.icon1
+    //         break;
+          
+    //       case("Buck Bed Pin"):
+    //         sendIcon = this.icon2
+    //         break;
+    //       case("Stand Pin"):
+    //         sendIcon = this.icon3
+    //         break;       
+    //       default:
+    //         sendIcon = this.icon4      
+    //     }
+
+    //     let latLng = new google.maps.LatLng(marker.latitude, marker.longitude);
+
+    //     let gmarker = new google.maps.Marker({
+    //     position: latLng,
+    //     map: this.map,
+    //     icon: sendIcon,
+    //     title: "DON'T GET DISCOURAGED WHEN THE SEASON GETS TOUGH"
+
+    //   });
+        
+    //     //Save these values to the marker for filtering and showing marker
+    //     gmarker.set("id", marker.id.toString())
+    //     gmarker.set("locType", marker.loc_type)
+    //     gmarker.set("wind", marker.wind)
+    //     gmarker.set("numSits", marker.num_sits)
+      
+
+    //     this.filterMarker.push(gmarker)
+    //     //adding a a click event to each of the user's markers
+    //     google.maps.event.addListener(gmarker, 'click', (e) => {
+    //       this.showMarker(gmarker);
+
+
+    //     });
+
+    //  });
+
+  }
+
+  renderMarkers(markers){
+
     this.userLocs = []
     this.filterMarker =[]
      markers.forEach((marker) => {
@@ -371,40 +424,49 @@ export default class extends Controller {
 
   }
 
-  saveSpot(event) {
+ async saveSpot() {
 
     this.sendWind = this.NorthWind +"," + this.NorthEastWind + "," + this.EastWind + "," +
     this.SouthEastWind + "," + this.SouthWind +"," + this.SouthWestWind + "," + this.WestWind +"," + this.NorthWestWind
 
-    const id = event.target.dataset.id
-    const csrfToken = document.querySelector("[name='csrf-token']").content
+   
+   let markers = []
+   let marker = { 
+      loc_type: this.locType,
+      name: this.nameTarget.value,
+      latitude: this.latTarget.value,
+      longitude:this.lonTarget.value,
+      notes: this.notesTarget.value,
+      num_sits: this.numsitsTarget.value,
+      wind: this.sendWind}
 
-    fetch(`create`, {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrfToken
-        },
-        body: JSON.stringify({
-          id:this.id,
-          loc_type: this.locType,
-          name: this.nameTarget.value,
-          latitude: this.latTarget.value,
-          longitude:this.lonTarget.value,
-          notes: this.notesTarget.value,
-          num_sits: this.numsitsTarget.value,
-          wind: this.sendWind
-            }) // body data type must match "Content-Type" header
-    })
-       //.then(response => response.json())
-       //.then(data => {alert(data.message)})
+    const response = await post('create',{
+        body: {
+                //marker
+                loc_type: this.locType,
+                name: this.nameTarget.value,
+                latitude: this.latTarget.value,
+                longitude:this.lonTarget.value,
+                notes: this.notesTarget.value,
+                num_sits: this.numsitsTarget.value,
+                wind: this.sendWind
+              }
+              , responseKind: 'json'
+            })
 
+            if (response.ok) {
+              console.log(response)
+            }
+         //.then((response) =>{ this.dataP = response.json
+          
+        //})
+
+        markers.push(marker)
+        //this.renderMarkers(markers)
+            
        //CALL A RESET FUNCTION
         this.clearMarker();
-
+       
   }
 
   filterTimesHunted(event){
