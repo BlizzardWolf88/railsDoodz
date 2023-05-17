@@ -9,7 +9,7 @@
       <div class = "col-8">
       </div>     
       <div class = "col-2">  
-         <%= form.select :loc_type,['ALL','Stand Pin','Buck Bed Pin','Access Point'] ,{prompt:"Filter Loc Type"}, {class:"form-select btn btn-primary btn-lg active dropdown-toggle",data:{action:"click->maps#filterLocType"}} %>                     
+         <%= form.select :filterLoctype,['ALL','Stand Pin','Buck Bed Pin','Access Point'] ,{prompt:"Filter Loc Type"}, {class:"form-select btn btn-primary btn-lg active dropdown-toggle",data:{action:"change->maps#filterLocType"}} %>                     
       </div>   
       <div class = "col-2">
          <%= form.select :loc_type,['ALL','North','West','South','East'] ,{prompt:"Filter Winds"}, {class:"form-select btn btn-primary btn-lg active dropdown-toggle",data:{action:"click->maps#filterWinds"}} %>                     

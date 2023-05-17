@@ -63,6 +63,7 @@ export default class extends Controller {
     }
     
     this.userLocs = []
+    this.filterMarker =[]
      markers.forEach((marker) => {
 
       this.userLocs.push(marker)
@@ -89,11 +90,10 @@ export default class extends Controller {
         position: latLng,
         map: this.map,
         icon: sendIcon,
-        title: marker.id.toString() //location ID
+        title: marker.id.toString() + "," + marker.loc_type //location ID we need this for filtering and showing
       });
       
-      gmarker.info = new google.maps.InfoWindow({content:this.userContent});
-      //this.infowindow.setContent(this.userContent) 
+      this.filterMarker.push(gmarker)
       //adding a a click event to each of the user's markers
       google.maps.event.addListener(gmarker, 'click', (e) => {
         this.showMarker(gmarker);
@@ -106,13 +106,15 @@ export default class extends Controller {
   }
 
   showMarker(userGMarker){
-
+    let markerId
     //change button name to update spot
     // change button to add/delete pics
     this.clearMarker();
-   
+
+    markerId = userGMarker.title.split(",")
+
     this.userLocs.forEach( (loc) => {
-      if(userGMarker.title == loc.id){
+      if(markerId[0] == loc.id){
           
         console.log("This is our Marker create content " + loc.id)
           
@@ -140,7 +142,7 @@ export default class extends Controller {
                 break;
               case("E"):
                 this.EastWind = direc
-                northEastLogo.src = "/assets/wind/NorthEastAfter.png"
+                eastLogo.src = "/assets/wind/EastAfter.png"
                 break;
               case("SE"):
                 this.SouthEastWind = direc
@@ -408,13 +410,25 @@ export default class extends Controller {
 
   }
 
-  filterLocType(){
+  filterLocType(event){
     //manipulate markers based on wind
-
-
+      let markerLocT
+      
+        this.filterMarker.forEach( (marker) =>{    
+         markerLocT = marker.title.split(","); 
+        if(event.target.selectedOptions[0].value == markerLocT[1] || event.target.selectedOptions[0].value == "ALL" ) //find if this db record has the loc type
+         { //find a match db record id == the marker title (where I stored id)  
+           marker.setMap(this.map)
+        }
+        else
+        {
+          marker.setMap(null)
+        }  
+          
+      });
   }
 
-  filterLocType(){
+  filterWinds(){
     //filter the markers based on location type
 
   }
