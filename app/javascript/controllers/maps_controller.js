@@ -15,6 +15,8 @@ export default class extends Controller {
 
 
   initializeMap(evt) {
+    this.userLocs = []
+    this.filterMarker =[]
 
     this.setCompassImages();
 
@@ -35,7 +37,7 @@ export default class extends Controller {
     this.holdContent = formContent //HTML for the info Window marker form
     this.userContent = formContent
 
-    this.displayMarkers();
+    this.fetchMarkers();
     this.CreateIcons();
 
      this.map.addListener("click", (e) => {
@@ -47,7 +49,7 @@ export default class extends Controller {
 
   }
 
-  async displayMarkers(){
+  async fetchMarkers(){
      let markers
 
     //const request = new FetchRequest("get","/locs/getMarkers", { responseKind: "turbo-stream" })
@@ -60,60 +62,11 @@ export default class extends Controller {
       this.renderMarkers(markers)
     }
     
-    // this.userLocs = []
-    // this.filterMarker =[]
-    //  markers.forEach((marker) => {
-
-    //     this.userLocs.push(marker)
-    //     let sendIcon 
-    //     switch(marker.loc_type){
-    //       case("Access Point"):
-    //         sendIcon = this.icon1
-    //         break;
-          
-    //       case("Buck Bed Pin"):
-    //         sendIcon = this.icon2
-    //         break;
-    //       case("Stand Pin"):
-    //         sendIcon = this.icon3
-    //         break;       
-    //       default:
-    //         sendIcon = this.icon4      
-    //     }
-
-    //     let latLng = new google.maps.LatLng(marker.latitude, marker.longitude);
-
-    //     let gmarker = new google.maps.Marker({
-    //     position: latLng,
-    //     map: this.map,
-    //     icon: sendIcon,
-    //     title: "DON'T GET DISCOURAGED WHEN THE SEASON GETS TOUGH"
-
-    //   });
-        
-    //     //Save these values to the marker for filtering and showing marker
-    //     gmarker.set("id", marker.id.toString())
-    //     gmarker.set("locType", marker.loc_type)
-    //     gmarker.set("wind", marker.wind)
-    //     gmarker.set("numSits", marker.num_sits)
-      
-
-    //     this.filterMarker.push(gmarker)
-    //     //adding a a click event to each of the user's markers
-    //     google.maps.event.addListener(gmarker, 'click', (e) => {
-    //       this.showMarker(gmarker);
-
-
-    //     });
-
-    //  });
-
   }
 
   renderMarkers(markers){
 
-    this.userLocs = []
-    this.filterMarker =[]
+   
      markers.forEach((marker) => {
 
         this.userLocs.push(marker)
@@ -425,7 +378,7 @@ export default class extends Controller {
   }
 
  async saveSpot() {
-
+   
     this.sendWind = this.NorthWind +"," + this.NorthEastWind + "," + this.EastWind + "," +
     this.SouthEastWind + "," + this.SouthWind +"," + this.SouthWestWind + "," + this.WestWind +"," + this.NorthWestWind
 
@@ -452,19 +405,16 @@ export default class extends Controller {
                 wind: this.sendWind
               }
               , responseKind: 'json'
+         
             })
-
-            if (response.ok) {
-              console.log(response)
-            }
-         //.then((response) =>{ this.dataP = response.json
-          
-        //})
-
-        markers.push(marker)
-        //this.renderMarkers(markers)
             
-       //CALL A RESET FUNCTION
+            if (response.ok) {
+              const data = await response.json
+               markers.push(data)// The render markers function is exptecting an array
+               this.renderMarkers(markers)
+
+            }
+             
         this.clearMarker();
        
   }

@@ -25,9 +25,7 @@ class LocsController < ApplicationController
     end
 
     def getMarkers
-      @locs = current_user.loc
-      
-      #format.turbo_stream {render turbo_stream: turbo_stream.update("locMarker", @loc) }
+      @locs = current_user.loc    
       render json: @locs
     end
 
