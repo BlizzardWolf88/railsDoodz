@@ -12,10 +12,16 @@
       <div class="card-body" >         
           <div class="container-sm">           
             <div class = "row g-8 mb-3">
-              <div class ="col">
-                <button type="button" id= "showPicsBtn" class="btn btn-primary btn-lg active" data-bs-toggle="modal" data-bs-target="#ViewPics">
-                  Show Pics
-                </button>
+              <div class ="col"  data-maps-target="picsbtn">
+              
+                  <button type="button" id= "showPicsBtn" data-maps-target="showpicsbtn" class="btn btn-primary btn-lg active" data-bs-toggle="modal" data-bs-target="#ViewPics">
+                    Show Pics           
+                  </button> 
+               
+                  <button type="button" id= "showPicsBtn" data-maps-target="addpicsbtn" class="btn btn-primary btn-lg active" data-bs-toggle="modal" data-bs-target="#ViewPics">
+                    Add Pics           
+                  </button> 
+               
             </div>          
             <div class = "row g-1">
                <div class ="col-5" >
@@ -47,7 +53,7 @@
                   <%= form.text_field :name, class:"form-control fw-bold", placeholder:"Spot Name",data: {target: "maps.name"} %>
                 </div>
                 <div class="mb-3">  
-                  <%= form.text_field :create_date, class:"form-control fw-bold", placeholder:"The Date",data: {target: "maps.date"} %>
+                  <%= form.text_field :create_date,disabled: true, class:"form-control fw-bold", placeholder:"Date",data: {target: "maps.date"} %>
                 </div>
                 <div class="mb-3" >
                   <textarea class="form-control fw-bold" id="exampleFormControlTextarea1" placeholder="Notes" rows="3" data-target="maps.notes"></textarea>
@@ -55,12 +61,17 @@
                 <div class = "mb-3">
                 <%= form.text_field :num_sits, class:"form-control fw-bold", placeholder:"Number of Times Hunted",data: {target: "maps.numsits"} %>           
                 </div>     
-                <div class="mb-3" >
-                  <button data-action="click->maps#saveSpot" type="button" class="btn btn-primary btn-lg active goodGood" >
+                <div class="mb-3" data-maps-target="savebtn" >
+                  <button data-action="click->maps#saveSpot" data-maps-target="createbtn" type="button" class="btn btn-primary btn-lg active goodGood" >
                     Save Spot
-                </button> 
+                  </button> 
+                   <button data-action="click->maps#saveSpot" data-maps-target="updatebtn" type="button" class="btn btn-primary btn-lg active goodGood" >
+                    Update Spot
+                  </button> 
+                  <button data-action="click->maps#destroySpot" data-maps-target="deletebtn" type="button" class="btn btn-danger btn-lg active goodGood" >
+                    Destroy Spot
+                  </button> 
                 </div>
-                      
               </div>  
           </div>     
       </div>

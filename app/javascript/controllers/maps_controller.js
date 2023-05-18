@@ -4,7 +4,8 @@ import{FetchRequest, get, post, put, patch, destroy } from '@rails/request.js'
 
 
 export default class extends Controller {
-  static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east","southwest","southeast","south","loctype","numsits"]
+  static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east","southwest",
+  "southeast","south","loctype","numsits","showpicsbtn","addpicsbtn","createbtn","updatebtn","deletebtn"]
 
   connect() {
     if (typeof (google) != "undefined"){
@@ -14,8 +15,14 @@ export default class extends Controller {
 
 
   initializeMap(evt) {
-    this.userLocs = []
-    this.filterMarker =[]
+    this.myMarkers =[]
+
+    this.showpicsbtnTarget.hidden = true;
+    this.addpicsbtnTarget.hidden = false;
+
+    this.updatebtnTarget.hidden = true;
+    this.createbtnTarget.hidden = false;
+    this.deletebtnTarget.hidden = true
 
     this.setCompassImages();
 
@@ -67,7 +74,6 @@ export default class extends Controller {
    
      markers.forEach((marker) => {
 
-        this.userLocs.push(marker)
         let sendIcon 
         switch(marker.loc_type){
           case("Access Point"):
@@ -94,14 +100,19 @@ export default class extends Controller {
 
       });
         
-        //Save these values to the marker for filtering and showing marker
+        //ADD ALL VALUES FROM db
         gmarker.set("id", marker.id.toString())
+        gmarker.set("name", marker.name)
+        gmarker.set("lat", marker.latitude)
+        gmarker.set("lon", marker.longitude)
         gmarker.set("locType", marker.loc_type)
         gmarker.set("wind", marker.wind)
         gmarker.set("numSits", marker.num_sits)
-      
+        gmarker.set("date", marker.created_at)
+        gmarker.set("notes", marker.notes)
+   
 
-        this.filterMarker.push(gmarker)
+        this.myMarkers.push(gmarker)
         //adding a a click event to each of the user's markers
         google.maps.event.addListener(gmarker, 'click', (e) => {
           this.showMarker(gmarker);
@@ -113,71 +124,68 @@ export default class extends Controller {
   }
 
   showMarker(userGMarker){
-    let markerId
-    //change button name to update spot
-    // change button to add/delete pics
+    
+    this.myMarker = userGMarker
     this.clearMarker();
 
-    //markerId = userGMarker.title.split(",")
-    markerId = userGMarker.get("id")
+    this.markerId = userGMarker.get("id")
+    this.nameTarget.value = userGMarker.get("name")
+    this.latTarget.value = userGMarker.get("lat")
+    this.lonTarget.value = userGMarker.get("lon")
+    this.loctypeTarget.value = userGMarker.get("locType")
+    this.windArr = userGMarker.get("wind").split(",")
+    this.numsitsTarget.value = userGMarker.get("numSits")
+    this.dateTarget.value = Date(userGMarker.get("date"))
+    this.notesTarget.value = userGMarker.get("notes")
 
-    this.userLocs.forEach( (loc) => {
-      if(markerId == loc.id){
-               
-          this.nameTarget.value = loc.name;
-          this.latTarget.value = loc.latitude;
-          this.lonTarget.value = loc.longitude;
-          this.dateTarget.value = Date(loc.create_at);
-          this.notesTarget.value = loc.notes;
-          this.numsitsTarget.value = loc.num_sits;
-
-          this.loctypeTarget.value = loc.loc_type;
-
-          this.windArr = loc.wind.split(",")
-
-          this.windArr.forEach( (direc) =>{
-            switch(direc){
-              case("N"):
-                this.NorthWind = direc
-                northLogo.src = "/assets/wind/NorthAfter.png"
-                break;    
-              case("NE"):
-                this.NorthEastWind = direc
-                northEastLogo.src = "/assets/wind/NorthEastAfter.png"
-                break;
-              case("E"):
-                this.EastWind = direc
-                eastLogo.src = "/assets/wind/EastAfter.png"
-                break;
-              case("SE"):
-                this.SouthEastWind = direc
-                southEastLogo.src = "/assets/wind/SouthEastAfter.png"
-              break;
-              case("S"):
-                this.SouthWind = direc
-                southLogo.src = "/assets/wind/SouthAfter.png"
-              break;
-              case("SW"):
-                this.SouthWestWind = direc
-                southWestLogo.src = "/assets/wind/SouthWestAfter.png"
-              break;
-              case("W"):
-                this.WestWind = direc
-                westLogo.src = "/assets/wind/WestAfter.png"
-              break;
-              case("NW"):
-                this.NorthWestWind = direc
-                northWestLogo.src = "/assets/wind/NorthWestAfter.png"
-                break;         
-              default:
-              
-            }
-          });
+    this.windArr.forEach( (direc) =>{
+      switch(direc){
+        case("N"):
+          this.NorthWind = direc
+          northLogo.src = "/assets/wind/NorthAfter.png"
+          break;    
+        case("NE"):
+          this.NorthEastWind = direc
+          northEastLogo.src = "/assets/wind/NorthEastAfter.png"
+          break;
+        case("E"):
+          this.EastWind = direc
+          eastLogo.src = "/assets/wind/EastAfter.png"
+          break;
+        case("SE"):
+          this.SouthEastWind = direc
+          southEastLogo.src = "/assets/wind/SouthEastAfter.png"
+        break;
+        case("S"):
+          this.SouthWind = direc
+          southLogo.src = "/assets/wind/SouthAfter.png"
+        break;
+        case("SW"):
+          this.SouthWestWind = direc
+          southWestLogo.src = "/assets/wind/SouthWestAfter.png"
+        break;
+        case("W"):
+          this.WestWind = direc
+          westLogo.src = "/assets/wind/WestAfter.png"
+        break;
+        case("NW"):
+          this.NorthWestWind = direc
+          northWestLogo.src = "/assets/wind/NorthWestAfter.png"
+          break;         
+        default:
         
       }
+     });
+  
+       //show correct buttons (Create or Edit)
+       this.addpicsbtnTarget.hidden = true;
+       this.showpicsbtnTarget.hidden = false;
 
-    });
-      
+       this.updatebtnTarget.hidden = false;
+       this.createbtnTarget.hidden = true;
+       this.deletebtnTarget.hidden = false
+
+       
    
   }
 
@@ -206,6 +214,7 @@ export default class extends Controller {
       //send coords to testfields
       this.latTarget.value = parsee.lat
       this.lonTarget.value = parsee.lng
+
 
 
   }
@@ -375,44 +384,90 @@ export default class extends Controller {
   }
 
  async saveSpot() {
-   
-    let sendWind = this.NorthWind +"," + this.NorthEastWind + "," + this.EastWind + "," +
-    this.SouthEastWind + "," + this.SouthWind +"," + this.SouthWestWind + "," + this.WestWind +"," + this.NorthWestWind
-
-   
-   let markers = []
   
-  const response = await post('create',{
-        body: {
-                //marker
-                loc_type: this.locType,
-                name: this.nameTarget.value,
-                latitude: this.latTarget.value,
-                longitude:this.lonTarget.value,
-                notes: this.notesTarget.value,
-                num_sits: this.numsitsTarget.value,
-                wind: sendWind
-              }
-              , responseKind: 'json'
-         
-            })
-            
-            if (response.ok) {
-              const data = await response.json
-               markers.push(data)// The render markers function is exptecting an array
-               this.renderMarkers(markers)
+  let markers = []
+  let body
 
-            }
+  let sendWind = this.NorthWind +"," + this.NorthEastWind + "," + this.EastWind + "," +
+  this.SouthEastWind + "," + this.SouthWind +"," + this.SouthWestWind + "," + this.WestWind +"," + this.NorthWestWind
+
+   let updateOrCreate = (this.updatebtnTarget.hidden == true)? "create":"update";
+   
+   if(this.updatebtnTarget.hidden == true){
+      updateOrCreate = "create"
+        body = { loc_type: this.locType,
+        name: this.nameTarget.value,
+        latitude: this.latTarget.value,
+        longitude:this.lonTarget.value,
+        notes: this.notesTarget.value,
+        num_sits: this.numsitsTarget.value,
+        wind: sendWind
+      }
+   }
+   else{
+        updateOrCreate = "update"
+          body = { 
+          id:  this.markerId, 
+          loc_type: this.locType,
+          name: this.nameTarget.value,
+          latitude: this.latTarget.value,
+          longitude:this.lonTarget.value,
+          notes: this.notesTarget.value,
+          num_sits: this.numsitsTarget.value,
+          wind: sendWind
+        }
+   }
+
+   
+  
+  const response = await post(updateOrCreate,{
+        body: body,
+        responseKind: 'json'
+         
+       })
+            
+      if (response.ok) {
+        const data = await response.json
+          markers.push(data)// The render markers function is exptecting an array
+          this.renderMarkers(markers)
+      }
              
         this.clearMarker();
        
+  }
+
+  async destroySpot() {
+  
+    const response = await post('destroy',{
+      body:{id:this.markerId},
+      responseKind: 'json'
+       
+     })
+          
+    if (response.ok) {
+     
+    }
+
+    this.myMarkers.forEach((marker) => {
+      if(this.markerId == marker.id){
+        
+        const index = this.myMarkers.indexOf(marker);
+        if (index > -1) { // only splice array when item is found
+          this.myMarkers.splice(index, 1); // 2nd parameter means remove one item only
+        }
+      }
+    });
+
+    this.myMarker.setMap(null)    
+    this.clearMarker();
+  
   }
 
   filterTimesHunted(event){
     let timesHunted
     let found  
 
-    this.filterMarker.forEach( (marker) =>{    
+    this.myMarkers.forEach( (marker) =>{    
       timesHunted = marker.get("numSits"); //The last value in the title are the times sat
       found = (event.target.selectedOptions[0].value == timesHunted 
         || event.target.selectedOptions[0].value == "" 
@@ -427,7 +482,7 @@ export default class extends Controller {
       let markerLocT
       let found
       
-      this.filterMarker.forEach( (marker) =>{    
+      this.myMarkers.forEach( (marker) =>{    
         markerLocT = marker.get("locType"); //Get the Loc Type Element from the marker 
         found = (event.target.selectedOptions[0].value == markerLocT || event.target.selectedOptions[0].value == "" ) ? this.map : null; 
         marker.setMap(found)
@@ -439,7 +494,7 @@ export default class extends Controller {
     //filter the markers based on location type
     let splitWind
     
-    this.filterMarker.forEach( (marker) =>{ 
+    this.myMarkers.forEach( (marker) =>{ 
     
       splitWind = marker.get("wind");
       splitWind = splitWind.split(",");//Now we can create array of each wind direction after substring extraction
@@ -479,6 +534,14 @@ export default class extends Controller {
     this.dateTarget.value = ""
     this.notesTarget.value = ""
     this.numsitsTarget.value = ""
+
+    
+    this.addpicsbtnTarget.hidden = false;
+    this.showpicsbtnTarget.hidden = true;
+    this.updatebtnTarget.hidden = true;
+    this.createbtnTarget.hidden = false;
+    this.deletebtnTarget.hidden = true
+
 
   }
 

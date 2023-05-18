@@ -44,14 +44,34 @@ class LocsController < ApplicationController
          end
        end
     end
+
+    def update
+      respond_to do |format|
+        if @loc.update(loc_params)
+          format.html { redirect_to loc_url(@loc), notice: "Loc was successfully updated." }
+          msg = { :status => "ok", :message => "Location was successfully updated." }
+          format.json {  render  json: @loc }
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @loc.errors, status: :unprocessable_entity }
+        end
+      end
+    end
   
+    def destroy
+      @loc.destroy 
+      respond_to do |format|
+        format.html { redirect_to madoods_url, notice: "Loc was successfully destroyed." }
+        format.json { head :no_content }
+      end
+    end
 
     def correct_dood 
-    
       @loc = current_user.loc.find_by(id: params[:id])
       redirect_to loc_path, notice: "Can't change this Loc because that is NOT your Loc Madoo" if @loc.nil?
     end
 
+    
     private
     # Use callbacks to share common setup or constraints between actions.
     def set_loc

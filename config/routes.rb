@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   get  'locs/saveSpot', to: "locs#saveSpot"
   get  'locs/getMarkers'
   post "locs/create", to: "locs#create"
+  post "locs/update", to: "locs#update"
+  post "locs/destroy", to: "locs#destroy"
+
 
   
 
