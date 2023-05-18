@@ -4,7 +4,6 @@ import{FetchRequest, get, post, put, patch, destroy } from '@rails/request.js'
 
 
 export default class extends Controller {
-  //static targets = ["coordinates", "map", "latitude", "longitude","wind"]
   static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east","southwest","southeast","south","loctype","numsits"]
 
   connect() {
@@ -52,7 +51,6 @@ export default class extends Controller {
   async fetchMarkers(){
      let markers
 
-    //const request = new FetchRequest("get","/locs/getMarkers", { responseKind: "turbo-stream" })
     const request = new FetchRequest("get","/locs/getMarkers", { responseKind: "json" })
     const response = await request.perform()
 
@@ -107,7 +105,6 @@ export default class extends Controller {
         //adding a a click event to each of the user's markers
         google.maps.event.addListener(gmarker, 'click', (e) => {
           this.showMarker(gmarker);
-
 
         });
 
@@ -379,21 +376,13 @@ export default class extends Controller {
 
  async saveSpot() {
    
-    this.sendWind = this.NorthWind +"," + this.NorthEastWind + "," + this.EastWind + "," +
+    let sendWind = this.NorthWind +"," + this.NorthEastWind + "," + this.EastWind + "," +
     this.SouthEastWind + "," + this.SouthWind +"," + this.SouthWestWind + "," + this.WestWind +"," + this.NorthWestWind
 
    
    let markers = []
-   let marker = { 
-      loc_type: this.locType,
-      name: this.nameTarget.value,
-      latitude: this.latTarget.value,
-      longitude:this.lonTarget.value,
-      notes: this.notesTarget.value,
-      num_sits: this.numsitsTarget.value,
-      wind: this.sendWind}
-
-    const response = await post('create',{
+  
+  const response = await post('create',{
         body: {
                 //marker
                 loc_type: this.locType,
@@ -402,7 +391,7 @@ export default class extends Controller {
                 longitude:this.lonTarget.value,
                 notes: this.notesTarget.value,
                 num_sits: this.numsitsTarget.value,
-                wind: this.sendWind
+                wind: sendWind
               }
               , responseKind: 'json'
          
@@ -472,15 +461,7 @@ export default class extends Controller {
 
   async clearMarker(){
 
-    //DON'T FORGET TO ADD THE TYPE OF ICON FOR
-    // const request = new FetchRequest("get","/locs/saveSpot", { responseKind: "html" })
-    // const response = await request.perform()
-
-    // if (response.ok){
-    //   const data = await response.html
-    //  // markers = data 
-    // }
-
+   
     this.loctypeTarget.value = ""
     this.setCompassImages();
     this.NorthWind = ""
@@ -499,11 +480,7 @@ export default class extends Controller {
     this.notesTarget.value = ""
     this.numsitsTarget.value = ""
 
-
-
   }
-
-
 
   }
 
