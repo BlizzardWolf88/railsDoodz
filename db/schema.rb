@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_10_085229) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_18_194224) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -72,6 +72,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_10_085229) do
     t.string "notes"
     t.string "loc_type"
     t.integer "num_sits"
+    t.index ["user_id"], name: "index_locs_on_user_id"
   end
 
   create_table "madoods", force: :cascade do |t|
@@ -84,6 +85,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_10_085229) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_madoods_on_user_id"
+  end
+
+  create_table "marker_images", force: :cascade do |t|
+    t.string "name"
+    t.string "record_type"
+    t.bigint "record_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "loc_id"
+    t.index ["loc_id"], name: "index_marker_images_on_loc_id"
   end
 
   create_table "users", force: :cascade do |t|

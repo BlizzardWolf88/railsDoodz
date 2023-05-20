@@ -1,0 +1,3 @@
+class MarkerPicsController < ApplicationController
+
+end

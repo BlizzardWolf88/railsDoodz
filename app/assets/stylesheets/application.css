@@ -60,7 +60,7 @@
 /******************************************************************/
 
 /* This will change the style of the Select Image Button for profile   */
-.custom-file-button input[type=file] {
+ .custom-file-button input[type=file] {
     margin-left: -2px !important;
   }
   
