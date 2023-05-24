@@ -1,3 +1,4 @@
+import { Application } from "@hotwired/stimulus";
 import { Controller } from "@hotwired/stimulus"
 import{FetchRequest, get, post, put, patch, destroy } from '@rails/request.js'
 
@@ -5,12 +6,13 @@ import{FetchRequest, get, post, put, patch, destroy } from '@rails/request.js'
 
 export default class extends Controller {
   static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east","southwest",
-  "southeast","south","loctype","numsits","showpicsbtn","addpicsbtn","createbtn","updatebtn","deletebtn"]
+  "southeast","south","loctype","numsits","showpicsbtn","addpicsbtn","createbtn","updatebtn","deletebtn","markerimages"]
 
   connect() {
     if (typeof (google) != "undefined"){
       this.initializeMap();
     }
+    
   }
 
 
@@ -183,8 +185,7 @@ export default class extends Controller {
 
        this.updatebtnTarget.hidden = false;
        this.createbtnTarget.hidden = true;
-       this.deletebtnTarget.hidden = false
-
+       this.deletebtnTarget.hidden = false  
        
    
   }
@@ -214,9 +215,6 @@ export default class extends Controller {
       //send coords to testfields
       this.latTarget.value = parsee.lat
       this.lonTarget.value = parsee.lng
-
-
-
   }
 
   setCompassImages(){
@@ -383,7 +381,7 @@ export default class extends Controller {
 
   }
 
- async saveSpot() {
+ async saveSpot(event) {
   
   let markers = []
   let body
@@ -430,6 +428,11 @@ export default class extends Controller {
         const data = await response.json
           markers.push(data)// The render markers function is exptecting an array
           this.renderMarkers(markers)
+          
+          //Invoke the marker Images controller to save images associated if there are any
+          const control = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimagesID'), "markerimages" )
+          control.saveMarkerID(data.id,updateOrCreate)// we need the location id as a foriegn key for marker images 
+         
       }
              
         this.clearMarker();

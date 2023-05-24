@@ -66,6 +66,13 @@ class LocsController < ApplicationController
       end
     end
 
+    def confirm_delete
+      respond_to do |format|
+        format.html
+        format.js
+      end
+    end
+
     def correct_dood 
       @loc = current_user.loc.find_by(id: params[:id])
       redirect_to loc_path, notice: "Can't change this Loc because that is NOT your Loc Madoo" if @loc.nil?

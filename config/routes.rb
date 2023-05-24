@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   post "locs/update", to: "locs#update"
   post "locs/destroy", to: "locs#destroy"
 
-
+  post "markerpics/create", to: "markerpics#create"
+  post "markerpics/update", to: "markerpics#update"
+  post "markerpics/destroy", to: "markerpics#destroy"
   
 
   # GET '/users/:id users'#show
@@ -31,6 +33,7 @@ Rails.application.routes.draw do
   resources :madoods
   resources :doodzs
   resources :locs
+  resources :markerpics
  # resources :users
   
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

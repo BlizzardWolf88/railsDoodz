@@ -1,57 +1,33 @@
+<%= stylesheet_link_tag "gmapping", "data-turbo-track": "reload",defer:true %>
 <%= form_with(model: @MarkerImage) do |f| %>
-<div data-controller = "marker_images" class="modal fade" id="ViewPics" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
+<div  data-maps-target="markerimages" class="modal fade" id="ViewPics" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg"  data-controller = "markerimages" id="markerimagesID" data-maps-target="updatebtn" >
         <div class="modal-content container d-flex justify-content-center">
           <div class="modal-header container d-flex justify-content-center">
             <h1 class="modal-title container d-flex justify-content-center" id="exampleModalLabel">Spot Pics!!</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-        
+          </div> 
               <div class="modal-body container d-flex justify-content-center">
                <div class ="container">
                     <div class = "row">
-                      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                          <div class="carousel-indicators">
-                              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                          </div>
-                          <div class="carousel-inner">
-                              <div class="carousel-item active">
-                              <%= image_tag 'Magalloway.jpg', class:' d-block w-100 c-img', alt: "slide 1"  %> 
-                              </div>
-                              <div class="carousel-item">
-                              <img src="..." class="d-block w-100" alt="...">
-                              </div>
-                              <div class="carousel-item">
-                              <img src="..." class="d-block w-100" alt="...">
-                              </div>
-                          </div>
-                      
-                        
-                          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                              <span class="visually-hidden">Previous</span>
-                          </button>
-                          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                              <span class="visually-hidden">Next</span>
-                          </button>
+                      <div class="scrollable" data-markerimages-target="mypics">
+                        <%= f.rich_text_area :body%>
+                        </div>
                     </div> 
                </div>
                 <br/> 
-               <div class ="container">
+               <%# <div class ="container">
                   <div class = "row">
                     <div class="col input-group custom-file-button">                 
                         <label class="input-group-text" for="inputGroupFile">Select Image</label>
-                         <%= f.file_field :image, class: "form-control",id:"inputGroupFile" %>   
+                         <%= f.file_field :pictures,multiple: true, class: "form-control",id:"inputGroupFile"  
                     </div>          
-               </div>
+               </div> %>
               </div>            
           <div class="modal-footer container d-flex justify-content-center">
            <button type="button" class="btn btn-primary active btn-lg" data-bs-dismiss="modal">Finished!!</button> 
           
-           <button data-marker_images-target="deletebtn" type="button" class="btn btn-danger btn-lg active goodGood" >
+           <button data-markerimages-target="deletebtn" type="button" class="btn btn-danger btn-lg active goodGood" >
              Delete Pic
           </button> 
           
