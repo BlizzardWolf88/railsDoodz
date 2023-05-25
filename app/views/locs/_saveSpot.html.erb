@@ -1,7 +1,7 @@
 <%= stylesheet_link_tag "gmapping", "data-turbo-track": "reload",defer:true %>
 <%= form_with() do |form| %>
 
-<div id ="formContent" class = "sizeCard">
+<div id ="formContent" class = "sizeCard" data-maps-target="markerimages">
     <div class="card text-center" >
       <div class="card-header">      
         <div class ="row">     
@@ -23,7 +23,7 @@
                   </button> 
                
             </div>          
-            <div class = "row g-1" data-maps-target="markerimages">
+            <div class = "row g-1" >
                <div class ="col-5" >
                  <%= form.text_field :latitude,placeholder:"Enter Latitude", class:"form-control fw-bold ", data: {target: "maps.lat"} %>
                </div>    

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_18_194224) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_25_203340) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -87,14 +87,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_18_194224) do
     t.index ["user_id"], name: "index_madoods_on_user_id"
   end
 
-  create_table "marker_images", force: :cascade do |t|
+  create_table "markerimages", force: :cascade do |t|
     t.string "name"
     t.string "record_type"
-    t.bigint "record_id"
+    t.integer "record_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "loc_id"
-    t.index ["loc_id"], name: "index_marker_images_on_loc_id"
+    t.integer "blob_id"
+    t.index ["blob_id"], name: "index_markerimages_on_blob_id"
+    t.index ["loc_id"], name: "index_markerimages_on_loc_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -116,4 +118,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_18_194224) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "markerimages", "active_storage_blobs", column: "blob_id"
 end

@@ -1,5 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 import{FetchRequest, get, post, put, patch, destroy } from '@rails/request.js'
+import {
+  getMetaValue,
+  toArray,
+  findElement,
+  removeElement,
+  insertAfter
+} from "helpers";
+
 
 // Connects to data-controller="marker-images"
 export default class extends Controller {
@@ -20,12 +28,12 @@ export default class extends Controller {
       let body      
       const test = marker
       
-      url = (newOrUpdate == "update") ?  "../markerpics/update":  "../markerpics/create"
+      url = (newOrUpdate == "update") ?  "../markerimages/update":  "../markerimages/create"
         
  
       body = { 
-        loc_id: marker,
-        pictures: this.mypicsTarget.value
+        loc_id: marker
+        //pictures: this.mypicsTarget.value
       }
 
       const response = await post(url,{

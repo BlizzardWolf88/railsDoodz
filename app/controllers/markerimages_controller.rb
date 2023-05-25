@@ -1,4 +1,4 @@
-class MarkerpicsController < ApplicationController
+class MarkerimagesController < ApplicationController
 #before_action :correct_loc
 
 def show
@@ -6,7 +6,7 @@ end
 
 def create
     # @madood = Madood.new(madood_params)
-    @pics = current_user.image.build(markerPic_param)
+    @pics = Markerimage.new(markerPic_param)
      respond_to do |format|
        if @pics.save
          format.html { redirect_to loc_url(@pics), notice: "Location was successfully created." }
@@ -33,10 +33,10 @@ end
 private
 
     def set_imag
-        @image = MarkerImage.find(params[:id]) 
+        @image = Markerimage.find(params[:id]) 
     end
 
     def markerPic_param
-        params.require(:markerimage).permit(:pictures[],:loc_id) 
+        params.require(:markerimage).permit(:loc_id) 
     end
 end

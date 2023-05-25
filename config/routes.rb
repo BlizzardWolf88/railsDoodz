@@ -11,9 +11,9 @@ Rails.application.routes.draw do
   post "locs/update", to: "locs#update"
   post "locs/destroy", to: "locs#destroy"
 
-  post "markerpics/create", to: "markerpics#create"
-  post "markerpics/update", to: "markerpics#update"
-  post "markerpics/destroy", to: "markerpics#destroy"
+  post "markerimages/create", to: "markerimages#create"
+  post "markerimages/update", to: "markerimages#update"
+  post "markerimages/destroy", to: "markerimages#destroy"
   
 
   # GET '/users/:id users'#show
