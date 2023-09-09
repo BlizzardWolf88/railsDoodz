@@ -1,5 +1,6 @@
 <%= stylesheet_link_tag "gmapping", "data-turbo-track": "reload",defer:true %>
-<%= form_with() do |form| %>
+<%# <%= form_with() do |form| %> 
+<%= form_with(model: @loc) do |form| %>
 
 <div id ="formContent" class = "sizeCard" data-maps-target="markerimages">
     <div class="card text-center" >
@@ -60,7 +61,14 @@
                 </div>
                 <div class = "mb-3">
                 <%= form.text_field :num_sits, class:"form-control fw-bold", placeholder:"Number of Times Hunted",data: {target: "maps.numsits"} %>           
-                </div>     
+                </div>   
+                 <%# Add this Here  %>
+                  <div class = "mb-3 input-group custom-file-button">
+                     <label class="input-group-text" for="inputGroupFile">Select Image</label>
+                       <%= form.file_field :images ,multiple: true,id:"inputGroupFile",data: {target: "maps.inputGroupFile"} %>                       
+                      <%= form.hidden_field loc: @loc, id: :loc_user_id  %> 
+                  </div>
+
                 <div class="mb-3" data-maps-target="savebtn" >
                   <button data-action="click->maps#saveSpot" data-maps-target="createbtn" type="button" class="btn btn-primary btn-lg active goodGood" >
                     Save Spot

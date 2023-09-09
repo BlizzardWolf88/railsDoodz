@@ -1,7 +1,9 @@
 <%= stylesheet_link_tag "gmapping", "data-turbo-track": "reload",defer:true %>
-<%= form_with(model: @MarkerImage) do |f| %>
-<div  data-maps-target="markerimages" class="modal fade" id="ViewPics" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg"  data-controller = "markerimages" id="markerimagesID" data-maps-target="updatebtn" >
+<%= form_with(model: @loc) do |form| %>
+<div class="modal fade" id="ViewPics" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+       <%# Re-inject this into the line below if test fails %>
+       <%# data-controller = "maps" id="markerimagesID" data-maps-target="pics" %>
+      <div class="modal-dialog modal-lg" >
         <div class="modal-content container d-flex justify-content-center">
           <div class="modal-header container d-flex justify-content-center">
             <h1 class="modal-title container d-flex justify-content-center" id="exampleModalLabel">Spot Pics!!</h1>
@@ -11,17 +13,18 @@
                <div class ="container">
                     <div class = "row">
                       <div class="scrollable">
-                        <%= f.rich_text_area :image, data: {target: "markerimages.mypics"} %>
+                        <div class="col input-group custom-file-button">                 
+                        <label class="input-group-text" for="inputGroupFile"  data-target="maps.inputGroupFile">Select Image</label>
+                         <%= form.file_field :images ,multiple: true,id:"inputGroupFile" %>
+                  
+                    </div>  
                         </div>
                     </div> 
                </div>
                 <br/> 
                <%# <div class ="container">
                   <div class = "row">
-                    <div class="col input-group custom-file-button">                 
-                        <label class="input-group-text" for="inputGroupFile">Select Image</label>
-                         <%= f.file_field :pictures,multiple: true, class: "form-control",id:"inputGroupFile"  
-                    </div>          
+                            
                </div> %>
               </div>            
           <div class="modal-footer container d-flex justify-content-center">

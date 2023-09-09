@@ -6,7 +6,7 @@ import{FetchRequest, get, post, put, patch, destroy } from '@rails/request.js'
 
 export default class extends Controller {
   static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east","southwest",
-  "southeast","south","loctype","numsits","showpicsbtn","addpicsbtn","createbtn","updatebtn","deletebtn","markerimages"]
+  "southeast","south","loctype","numsits","showpicsbtn","addpicsbtn","createbtn","updatebtn","deletebtn","markerimages","inputGroupFile"]
 
   connect() {
     if (typeof (google) != "undefined"){
@@ -55,6 +55,7 @@ export default class extends Controller {
 
       });
 
+      
   }
 
   async fetchMarkers(){
@@ -73,7 +74,6 @@ export default class extends Controller {
 
   renderMarkers(markers){
 
-   
      markers.forEach((marker) => {
 
         let sendIcon 
@@ -186,6 +186,11 @@ export default class extends Controller {
        this.updatebtnTarget.hidden = false;
        this.createbtnTarget.hidden = true;
        this.deletebtnTarget.hidden = false  
+
+       //Fetch images asscociated with this marker
+
+       //const control = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimagesID'), "markerimages" )
+      // control.fetchImages(this.markerId)// we need the location id as a foriegn key for marker images 
        
    
   }
@@ -339,7 +344,9 @@ export default class extends Controller {
     }
 
     setLocType(event){
-     this.locType = event.target.selectedOptions[0].value   
+      if(event.target.selectedOptions[0] != undefined){
+        this.locType = event.target.selectedOptions[0].value 
+      }       
     }
 
     CreateIcons(){
@@ -382,24 +389,32 @@ export default class extends Controller {
   }
 
  async saveSpot(event) {
-  
   let markers = []
   let body
+  let updateOrCreate //= (this.updatbtnTarget.hidden == true)? "create":"update"; DON'T THINK i NEED THIS
+  const fileInput = this.inputGroupFileTarget;
+  const files = fileInput.files;
 
   let sendWind = this.NorthWind +"," + this.NorthEastWind + "," + this.EastWind + "," +
   this.SouthEastWind + "," + this.SouthWind +"," + this.SouthWestWind + "," + this.WestWind +"," + this.NorthWestWind
 
-   let updateOrCreate = (this.updatebtnTarget.hidden == true)? "create":"update";
-   
+  let locPics = new FormData();
+    
+  for (let i = 0; i < files.length; i++) {
+    locPics.append("images[]", files[i])
+    //locPics.append("loc_user_id", loc_user_id)
+  }
+  
    if(this.updatebtnTarget.hidden == true){
-      updateOrCreate = "create"
+       updateOrCreate = "create"
         body = { loc_type: this.locType,
         name: this.nameTarget.value,
         latitude: this.latTarget.value,
         longitude:this.lonTarget.value,
         notes: this.notesTarget.value,
         num_sits: this.numsitsTarget.value,
-        wind: sendWind
+        wind: sendWind,
+        images: locPics
       }
    }
    else{
@@ -412,7 +427,8 @@ export default class extends Controller {
           longitude:this.lonTarget.value,
           notes: this.notesTarget.value,
           num_sits: this.numsitsTarget.value,
-          wind: sendWind
+          wind: sendWind,
+          images: this.picsTarget.files[0]
         }
    }
 
@@ -426,17 +442,63 @@ export default class extends Controller {
             
       if (response.ok) {
         const data = await response.json
-          markers.push(data)// The render markers function is exptecting an array
-          this.renderMarkers(markers)
+       // this.saveImages();
+        markers.push(data)// The render markers function is exptecting an array
+        this.renderMarkers(markers)
           
           //Invoke the marker Images controller to save images associated if there are any
-          const control = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimagesID'), "markerimages" )
-          control.saveMarkerID(data.id,updateOrCreate)// we need the location id as a foriegn key for marker images 
+          //const control = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimagesID'), "markerimages" )
+          //control.saveMarkerImage(data.id,updateOrCreate)// we need the location id as a foriegn key for marker images 
          
       }
              
-        this.clearMarker();
+        //this.clearMarker();
        
+  }
+
+
+  async saveImages(event){ 
+    let body
+    let locPics
+    const fileInput = this.inputGroupFileTarget;
+    const files = fileInput.files;
+    let updateOrCreate
+    //const loc_user_id = this.data.get("loc_user_id")
+
+    locPics = new FormData();
+    
+    for (let i = 0; i < files.length; i++) {
+      locPics.append("marker_image[images][]", files[i])
+      //locPics.append("loc_user_id", loc_user_id)
+    }
+
+    if(this.updatebtnTarget.hidden == true){
+      updateOrCreate = "markerimages/create"
+        body = {images: locPics}
+   }
+   else{
+        updateOrCreate = "markerimages/update"
+        body = {images: locPics}
+   }
+ 
+  const response = await post(updateOrCreate,{
+        body: body,
+        responseKind: 'json'
+         
+       })
+            
+      if (response.ok) {
+        const data = await response.json
+          markers.push(data)// The render markers function is exptecting an array
+          this.renderMarkers(markers)
+ 
+         
+      }
+             
+        //this.clearMarker();
+       
+
+
   }
 
   async destroySpot() {
@@ -447,23 +509,21 @@ export default class extends Controller {
        
      })
           
-    if (response.ok) {
-     
-    }
-
-    this.myMarkers.forEach((marker) => {
-      if(this.markerId == marker.id){
-        
-        const index = this.myMarkers.indexOf(marker);
-        if (index > -1) { // only splice array when item is found
-          this.myMarkers.splice(index, 1); // 2nd parameter means remove one item only
+    if (response.ok) {     
+      this.myMarkers.forEach((marker) => {
+        if(this.markerId == marker.id){
+          
+          const index = this.myMarkers.indexOf(marker);
+          if (index > -1) { // only splice array when item is found
+            this.myMarkers.splice(index, 1); // 2nd parameter means remove one item only
+          }
         }
-      }
-    });
 
-    this.myMarker.setMap(null)    
-    this.clearMarker();
-  
+      });
+      
+      this.myMarker.setMap(null)    
+      this.clearMarker();
+    }
   }
 
   filterTimesHunted(event){

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   post "locs/update", to: "locs#update"
   post "locs/destroy", to: "locs#destroy"
 
+  get  "markerimages/getPics"
   post "markerimages/create", to: "markerimages#create"
   post "markerimages/update", to: "markerimages#update"
   post "markerimages/destroy", to: "markerimages#destroy"
@@ -27,6 +28,10 @@ Rails.application.routes.draw do
       passwords: 'users/passwords',
       registrations: 'users/registrations'
       #confirmations: 'user/confirmations' Might need this later
+    #   resources :locs do
+    #     resources :marker_image
+    #   end
+    # end
     }
 
    

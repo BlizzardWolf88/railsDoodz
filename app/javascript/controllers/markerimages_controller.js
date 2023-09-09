@@ -23,7 +23,23 @@ export default class extends Controller {
 
   }
 
-  async saveMarkerID(marker,newOrUpdate){
+async fetchImages(marker){
+ let pics
+ let url = "../markerimages/getPics?loc_id="+ marker
+this.mypicsTarget.value 
+
+  const request = new FetchRequest("get",url, { responseKind: "json" })
+    const response = await request.perform()
+
+    if (response.ok){
+      const data = await response.json
+      pics = data 
+    }
+
+}
+
+
+  async saveMarkerImage(marker,newOrUpdate){
       let url
       let body      
       const test = marker
@@ -43,8 +59,7 @@ export default class extends Controller {
        })
             
       if (response.ok) {
-        const data = await response.json
-          
+        const data = await response.json          
                 
       }
     

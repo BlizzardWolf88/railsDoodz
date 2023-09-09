@@ -33,6 +33,10 @@ class LocsController < ApplicationController
     def create
       # @madood = Madood.new(madood_params)
       @loc = current_user.loc.build(loc_params)
+      
+      #Find a way to save images coming in from JSON Post
+      
+
        respond_to do |format|
          if @loc.save
            format.html { redirect_to loc_url(@loc), notice: "Location was successfully created." }
@@ -43,6 +47,13 @@ class LocsController < ApplicationController
            format.json { render json: @loc.errors, status: :unprocessable_entity }
          end
        end
+      
+       params[:images].each do |image|
+        @image = @loc.loc_images.new(image: image)
+        @image.save
+      end
+  
+       #@loc.files.attach(params[:loc][:images]) if params.dig(:loc, :images).present?
     end
 
     def update
@@ -87,7 +98,7 @@ class LocsController < ApplicationController
     
     #Might need to refactor the loc table IDK 
     def loc_params
-      params.require(:loc).permit(:name, :latitude, :longitude,:create_date,:created_at,:user_id,:updated_at,:wind,:notes,:loc_type,:num_sits)
+      params.require(:loc).permit(:name, :latitude, :longitude,:create_date,:created_at,:user_id,:updated_at,:wind,:notes,:loc_type,:num_sits,images:[])
     end
 
 

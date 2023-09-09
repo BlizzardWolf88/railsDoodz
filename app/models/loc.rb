@@ -1,4 +1,5 @@
 class Loc < ApplicationRecord
     belongs_to :user
-    has_many :Markerimage
+    # has_many :markerimage
+    has_many_attached :images
 end

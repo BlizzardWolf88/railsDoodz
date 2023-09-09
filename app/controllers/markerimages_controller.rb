@@ -1,42 +1,54 @@
 class MarkerimagesController < ApplicationController
-#before_action :correct_loc
+  before_action :set_location
+
+  def new
+    @marker_image = @loc.marker_images.new
+  end
 
 def show
 end
 
-def create
-    # @madood = Madood.new(madood_params)
-    @pics = Markerimage.new(markerPic_param)
-     respond_to do |format|
-       if @pics.save
-         format.html { redirect_to loc_url(@pics), notice: "Location was successfully created." }
-         msg = { :status => "ok", :message => "Location was successfully created." }
-         format.json {  render  json: @pics }
-       else
-         format.html { render :new, status: :unprocessable_entity }
-         format.json { render json: @pics.errors, status: :unprocessable_entity }
-       end
-     end
+# def create
+#     # @madood = Madood.new(madood_params)
+#     @pics = Markerimage.new(markerPic_param)
+#      respond_to do |format|
+#        if @pics.save
+#          format.html { redirect_to loc_url(@pics), notice: "Location was successfully created." }
+#          msg = { :status => "ok", :message => "Location was successfully created." }
+#          format.json {  render  json: @pics }
+#        else
+#          format.html { render :new, status: :unprocessable_entity }
+#          format.json { render json: @pics.errors, status: :unprocessable_entity }
+#        end
+#      end
+#   end
+
+  def create
+    params[:marker_image][:images].each do |image|
+      @marker_image = @loc.marker_images.new(image: image)
+      @marker_image.save
+    end
+
+    #redirect_to new_user_location_location_image_path(@user, @loc), notice: "Images uploaded successfully!"
   end
 
 
-def getPics
-    @images = current_user.loc.image    
-    render json: @images
-end
+  # def update
+  #   respond_to do |format|
+  #     if @loc.update(loc_params)
+  #       format.html { redirect_to loc_url(@pics), notice: "Image(s) was successfully updated." }
+  #       msg = { :status => "ok", :message => "Location was successfully updated." }
+  #       format.json {  render  json: @pics }
+  #     else
+  #       format.html { render :edit, status: :unprocessable_entity }
+  #       format.json { render json: @pics.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
-# def correct_loc 
-#     @loc = current_user.loc.find_by(id: params[:id])
-#     redirect_to loc_path, notice: "Can't change this Loc because that is NOT your Loc Madoo" if @loc.nil?
-# end
 
 private
 
-    def set_imag
-        @image = Markerimage.find(params[:id]) 
-    end
-
-    def markerPic_param
-        params.require(:markerimage).permit(:loc_id) 
-    end
+def set_location
+  @loc = current_user.loc.find_by(id: params[:id])
 end
