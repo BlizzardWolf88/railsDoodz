@@ -2,7 +2,7 @@ class MarkerimagesController < ApplicationController
   before_action :set_location
 
   def new
-    @marker_image = @loc.marker_images.new
+    @markerimage = @loc.markerimages.new
   end
 
 def show
@@ -24,9 +24,9 @@ end
 #   end
 
   def create
-    params[:marker_image][:images].each do |image|
-      @marker_image = @loc.marker_images.new(image: image)
-      @marker_image.save
+    params[:markerimage][:images].each do |image|
+      @markerimage = @loc.markerimages.new(image: image)
+      @markerimage.save
     end
 
     #redirect_to new_user_location_location_image_path(@user, @loc), notice: "Images uploaded successfully!"

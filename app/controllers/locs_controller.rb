@@ -3,6 +3,7 @@ class LocsController < ApplicationController
   before_action :authenticate_user!
   before_action :store_location
   before_action :correct_dood, only:[:edit,:update,:destroy]
+  #before_action :set_loc, only: [:show, :edit, :update, :destroy]
 
   
     def store_location
@@ -31,11 +32,19 @@ class LocsController < ApplicationController
 
 
     def create
-      # @madood = Madood.new(madood_params)
       @loc = current_user.loc.build(loc_params)
-      
-      #Find a way to save images coming in from JSON Post
-      
+    
+     #Can save one image
+      images = params[:image]
+           if images.respond_to?(:each)
+             images.each do |image|
+              @loc.images.attach(image)
+              logger.info "We are here to save image " 
+            end
+          else
+            @loc.images.attach(images)
+            logger.info "New Cunty Error " 
+          end
 
        respond_to do |format|
          if @loc.save
@@ -48,12 +57,6 @@ class LocsController < ApplicationController
          end
        end
       
-       params[:images].each do |image|
-        @image = @loc.loc_images.new(image: image)
-        @image.save
-      end
-  
-       #@loc.files.attach(params[:loc][:images]) if params.dig(:loc, :images).present?
     end
 
     def update
@@ -98,7 +101,7 @@ class LocsController < ApplicationController
     
     #Might need to refactor the loc table IDK 
     def loc_params
-      params.require(:loc).permit(:name, :latitude, :longitude,:create_date,:created_at,:user_id,:updated_at,:wind,:notes,:loc_type,:num_sits,images:[])
+       params.permit(:name, :latitude, :longitude,:create_date,:created_at,:user_id,:updated_at,:wind,:notes,:loc_type,:num_sits,images: [])
     end
 
 

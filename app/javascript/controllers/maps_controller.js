@@ -5,7 +5,7 @@ import{FetchRequest, get, post, put, patch, destroy } from '@rails/request.js'
 
 
 export default class extends Controller {
-  static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east","southwest",
+  static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east","southwest","myID",
   "southeast","south","loctype","numsits","showpicsbtn","addpicsbtn","createbtn","updatebtn","deletebtn","markerimages","inputGroupFile"]
 
   connect() {
@@ -80,8 +80,7 @@ export default class extends Controller {
         switch(marker.loc_type){
           case("Access Point"):
             sendIcon = this.icon1
-            break;
-          
+            break;         
           case("Buck Bed Pin"):
             sendIcon = this.icon2
             break;
@@ -389,60 +388,44 @@ export default class extends Controller {
   }
 
  async saveSpot(event) {
+ 
   let markers = []
-  let body
-  let updateOrCreate //= (this.updatbtnTarget.hidden == true)? "create":"update"; DON'T THINK i NEED THIS
-  const fileInput = this.inputGroupFileTarget;
-  const files = fileInput.files;
-
+  let updateOrCreate 
   let sendWind = this.NorthWind +"," + this.NorthEastWind + "," + this.EastWind + "," +
   this.SouthEastWind + "," + this.SouthWind +"," + this.SouthWestWind + "," + this.WestWind +"," + this.NorthWestWind
 
-  let locPics = new FormData();
+  const fileInput = this.inputGroupFileTarget;
+  const files = fileInput.files;
+  let loc = new FormData();
     
-  for (let i = 0; i < files.length; i++) {
-    locPics.append("images[]", files[i])
-    //locPics.append("loc_user_id", loc_user_id)
-  }
-  
-   if(this.updatebtnTarget.hidden == true){
-       updateOrCreate = "create"
-        body = { loc_type: this.locType,
-        name: this.nameTarget.value,
-        latitude: this.latTarget.value,
-        longitude:this.lonTarget.value,
-        notes: this.notesTarget.value,
-        num_sits: this.numsitsTarget.value,
-        wind: sendWind,
-        images: locPics
-      }
-   }
-   else{
-        updateOrCreate = "update"
-          body = { 
-          id:  this.markerId, 
-          loc_type: this.locType,
-          name: this.nameTarget.value,
-          latitude: this.latTarget.value,
-          longitude:this.lonTarget.value,
-          notes: this.notesTarget.value,
-          num_sits: this.numsitsTarget.value,
-          wind: sendWind,
-          images: this.picsTarget.files[0]
-        }
-   }
+  //test it
+  //loc.append("loc","loc")
+  loc.append("name", this.nameTarget.value)
+  loc.append("latitude", this.latTarget.value)
+  loc.append("longitude", this.lonTarget.value)
+  loc.append("notes",this.notesTarget.value)
+  loc.append("loc_type",this.locType )
+  loc.append("num_sits", this.numsitsTarget.value)
+  loc.append("wind", sendWind)
 
+  for (let i = 0; i < files.length; i++) {
+    loc.append("image", files[i])    
+  }
+
+
+  updateOrCreate = this.updatebtnTarget.hidden? "create":"update"
    
-  
   const response = await post(updateOrCreate,{
-        body: body,
+        body: loc,
+        //contentType: "multipart/form-data", //Was formerly "application/json"
         responseKind: 'json'
          
        })
             
       if (response.ok) {
         const data = await response.json
-       // this.saveImages();
+       //this.saveImages();
+       console.log("Return Data",data)
         markers.push(data)// The render markers function is exptecting an array
         this.renderMarkers(markers)
           
@@ -451,7 +434,7 @@ export default class extends Controller {
           //control.saveMarkerImage(data.id,updateOrCreate)// we need the location id as a foriegn key for marker images 
          
       }
-             
+       
         //this.clearMarker();
        
   }
@@ -473,7 +456,7 @@ export default class extends Controller {
     }
 
     if(this.updatebtnTarget.hidden == true){
-      updateOrCreate = "markerimages/create"
+      updateOrCreate = "/markerimages/create"
         body = {images: locPics}
    }
    else{

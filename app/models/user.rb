@@ -5,6 +5,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,:confirmable
 
   has_many :madood
-  has_many :loc
+  has_many :loc, dependent: :destroy
   has_one_attached :image
 end
