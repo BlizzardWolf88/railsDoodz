@@ -1,9 +1,7 @@
 class Loc < ApplicationRecord
     belongs_to :user
-    # has_many :markerimage
     has_many_attached :images, dependent: :destroy
 
-    #validates :images, presence: true
     validate :image_type
 
     def image_type

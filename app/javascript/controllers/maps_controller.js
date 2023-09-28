@@ -434,7 +434,7 @@ export default class extends Controller {
          
       }
        
-        //this.clearMarker();
+        this.clearMarker();
        
   }
 
@@ -586,7 +586,7 @@ export default class extends Controller {
     this.updatebtnTarget.hidden = true;
     this.createbtnTarget.hidden = false;
     this.deletebtnTarget.hidden = true
-
+    document.getElementById('inputGroupFile').value = ''; //clear the Image upload field 
 
   }
 
