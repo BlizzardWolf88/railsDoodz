@@ -34,18 +34,7 @@ class LocsController < ApplicationController
     def create
       @loc = current_user.loc.build(loc_params)
     
-     #Can save one image
-      images = params[:image]
-           if images.respond_to?(:each)
-             images.each do |image|
-              @loc.images.attach(image)
-              logger.info "We are here to save image " 
-            end
-          else
-            @loc.images.attach(images)
-            logger.info "New Cunty Error " 
-          end
-
+          
        respond_to do |format|
          if @loc.save
            format.html { redirect_to loc_url(@loc), notice: "Location was successfully created." }

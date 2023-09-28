@@ -399,7 +399,6 @@ export default class extends Controller {
   let loc = new FormData();
     
   //test it
-  //loc.append("loc","loc")
   loc.append("name", this.nameTarget.value)
   loc.append("latitude", this.latTarget.value)
   loc.append("longitude", this.lonTarget.value)
@@ -409,7 +408,7 @@ export default class extends Controller {
   loc.append("wind", sendWind)
 
   for (let i = 0; i < files.length; i++) {
-    loc.append("image", files[i])    
+    loc.append("images[]", files[i])    
   }
 
 

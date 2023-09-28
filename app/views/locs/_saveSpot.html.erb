@@ -67,7 +67,6 @@
                   <div class = "mb-3 input-group custom-file-button">
                      <label class="input-group-text" for="inputGroupFile">Select Image</label>
                        <%= form.file_field :images,multiple: true,id:"inputGroupFile",data: {target: "maps.inputGroupFile"} %>                       
-                      <%= form.hidden_field loc: @loc, id: :loc_user_id,data: {target: "maps.myID"}  %> 
                   </div>
 
                 <div class="mb-3" data-maps-target="savebtn" >
