@@ -23,6 +23,16 @@ export default class extends Controller {
 
   }
 
+  showImages(images) {
+      images.forEach(image => {
+      const imgElement = document.createElement('img')
+      imgElement.src = image.url
+      imgElement.alt = image.filename
+      this.containerTarget.appendChild(imgElement)
+    })
+  }
+
+
 async fetchImages(marker){
  let pics
  let url = "../markerimages/getPics?loc_id="+ marker
@@ -32,7 +42,7 @@ this.mypicsTarget.value
     const response = await request.perform()
 
     if (response.ok){
-      const data = await response.json
+      const data = await response.json()
       pics = data 
     }
 

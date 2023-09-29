@@ -59,14 +59,12 @@ export default class extends Controller {
   }
 
   async fetchMarkers(){
-     let markers
 
     const request = new FetchRequest("get","/locs/getMarkers", { responseKind: "json" })
     const response = await request.perform()
 
     if (response.ok){
-      const data = await response.json
-      markers = data 
+      const markers = await response.json
       this.renderMarkers(markers)
     }
     
@@ -101,7 +99,7 @@ export default class extends Controller {
 
       });
         
-        //ADD ALL VALUES FROM db
+        //ADD ALL VALUES FROM THE DB
         gmarker.set("id", marker.id.toString())
         gmarker.set("name", marker.name)
         gmarker.set("lat", marker.latitude)
@@ -186,12 +184,30 @@ export default class extends Controller {
        this.createbtnTarget.hidden = true;
        this.deletebtnTarget.hidden = false  
 
+
+       this.getMarkerImages(this.markerId)
        //Fetch images asscociated with this marker
 
-       //const control = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimagesID'), "markerimages" )
-      // control.fetchImages(this.markerId)// we need the location id as a foriegn key for marker images 
-       
+      
    
+  }
+
+  async getMarkerImages(locID){
+
+    const request = new FetchRequest("get","/locs/getMarkerImage/"+ locID, { responseKind: "json" })
+    const response = await request.perform()
+
+    if (response.ok){
+      const images = await response
+
+       const control = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimages'), "markerimages" )
+       control.showImages(images)// we need the location id as a foriegn key for marker images 
+
+        //const control = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimagesID'), "markerimages" )
+       //control.fetchImages(this.markerId)// we need the location id as a foriegn key for marker images 
+       
+    }
+
   }
 
 
@@ -398,7 +414,6 @@ export default class extends Controller {
   const files = fileInput.files;
   let loc = new FormData();
     
-  //test it
   loc.append("name", this.nameTarget.value)
   loc.append("latitude", this.latTarget.value)
   loc.append("longitude", this.lonTarget.value)
@@ -416,7 +431,6 @@ export default class extends Controller {
    
   const response = await post(updateOrCreate,{
         body: loc,
-        //contentType: "multipart/form-data", //Was formerly "application/json"
         responseKind: 'json'
          
        })

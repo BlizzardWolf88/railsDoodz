@@ -13,8 +13,8 @@ class LocsController < ApplicationController
     def index        
     end     
     
-    def show
-    end
+    # def show
+    # end
 
     def new
       @loc = current_user.madood.build
@@ -28,6 +28,22 @@ class LocsController < ApplicationController
     def getMarkers
       @locs = current_user.loc    
       render json: @locs
+    end
+
+    def getMarkerImage
+      Rails.logger.debug("Are we in the goddam def")
+      @loc = current_user.loc.find(params[:loc_id])
+      @images = @loc.images
+
+      response_data = @images.map do |image|
+        {
+          url: rails_blob_path(image),
+          content_type: image.content_type,
+          filename: image.filename.to_s
+        }
+        end
+
+       render json: response_data    
     end
 
 
