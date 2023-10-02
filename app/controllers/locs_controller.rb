@@ -31,7 +31,6 @@ class LocsController < ApplicationController
     end
 
     def getMarkerImage
-      Rails.logger.debug("Are we in the goddam def")
       @loc = current_user.loc.find(params[:loc_id])
       @images = @loc.images
 

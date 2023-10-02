@@ -178,8 +178,6 @@ export default class extends Controller {
   
        //show correct buttons (Create or Edit)
        this.addpicsbtnTarget.hidden = true;
-       this.showpicsbtnTarget.hidden = false;
-
        this.updatebtnTarget.hidden = false;
        this.createbtnTarget.hidden = true;
        this.deletebtnTarget.hidden = false  
@@ -198,13 +196,17 @@ export default class extends Controller {
     const response = await request.perform()
 
     if (response.ok){
-      const images = await response
-
+      //this.showpicsbtnTarget.hidden = false;
+       let images = await response.text;
+      console.log(locID)
+      if (images == "[]"){
+        this.showpicsbtnTarget.hidden = true
+      }
+      else{
+       this.showpicsbtnTarget.hidden = false
        const control = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimages'), "markerimages" )
-       control.showImages(images)// we need the location id as a foriegn key for marker images 
-
-        //const control = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimagesID'), "markerimages" )
-       //control.fetchImages(this.markerId)// we need the location id as a foriegn key for marker images 
+       control.showImages(JSON.parse(images))// we need the location id as a foriegn key for marker images 
+      }
        
     }
 
@@ -437,65 +439,17 @@ export default class extends Controller {
             
       if (response.ok) {
         const data = await response.json
-       //this.saveImages();
        console.log("Return Data",data)
         markers.push(data)// The render markers function is exptecting an array
         this.renderMarkers(markers)
           
-          //Invoke the marker Images controller to save images associated if there are any
-          //const control = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimagesID'), "markerimages" )
-          //control.saveMarkerImage(data.id,updateOrCreate)// we need the location id as a foriegn key for marker images 
-         
+          
       }
        
         this.clearMarker();
        
   }
 
-
-  async saveImages(event){ 
-    let body
-    let locPics
-    const fileInput = this.inputGroupFileTarget;
-    const files = fileInput.files;
-    let updateOrCreate
-    //const loc_user_id = this.data.get("loc_user_id")
-
-    locPics = new FormData();
-    
-    for (let i = 0; i < files.length; i++) {
-      locPics.append("marker_image[images][]", files[i])
-      //locPics.append("loc_user_id", loc_user_id)
-    }
-
-    if(this.updatebtnTarget.hidden == true){
-      updateOrCreate = "/markerimages/create"
-        body = {images: locPics}
-   }
-   else{
-        updateOrCreate = "markerimages/update"
-        body = {images: locPics}
-   }
- 
-  const response = await post(updateOrCreate,{
-        body: body,
-        responseKind: 'json'
-         
-       })
-            
-      if (response.ok) {
-        const data = await response.json
-          markers.push(data)// The render markers function is exptecting an array
-          this.renderMarkers(markers)
- 
-         
-      }
-             
-        //this.clearMarker();
-       
-
-
-  }
 
   async destroySpot() {
   
