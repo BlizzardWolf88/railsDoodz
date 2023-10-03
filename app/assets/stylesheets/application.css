@@ -79,7 +79,7 @@
     cursor: pointer;
   }
 
-  .locPics img {
+  .cssThoselocPics img {
     object-fit: cover; /* or "contain" depending on your preference */
     width: 100%;
     height: 100%;

@@ -1,58 +1,45 @@
-<%= stylesheet_link_tag "gmapping", "data-turbo-track": "reload",defer:true %>
+<%= stylesheet_link_tag "gmapping", "data-turbo-track": "reload", defer:true %>
 <%= form_with(model: @loc) do |form| %>
-<div class="modal fade" id="ViewPics" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-       <%# Re-inject this into the line below if test fails %>
-       <%# data-controller = "maps" id="markerimagesID" data-maps-target="pics" %>
-      <div class="modal-dialog modal-lg"  id="markerimages" data-controller="markerimages" >
-        <div class="modal-content container d-flex justify-content-center">
-          <div class="modal-header container d-flex justify-content-center">
-            <h1 class="modal-title container d-flex justify-content-center" id="exampleModalLabel">Spot Pics!!</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div> 
-              <div class="modal-body container d-flex justify-content-center">
-               <div class ="container">
-                   <div id="carouselExample" class="carousel slide locPics" data-bs-ride="carousel">
-                      <div class="carousel-inner"></div>
-                          <div class="carousel-item  active" data-markerimages-target="locPics" id="locPics">
-
-
-                          </div>
-                      </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                   </div>
-                    <div class = "row">
-                      <div class="scrollable">
-                        <div class="col input-group custom-file-button">                 
-                        <label class="input-group-text" for="inputGroupFile"  data-target="maps.inputGroupFile">Select Image</label>
-                         <%= form.file_field :images ,multiple: true,id:"inputGroupFile" %>
-                  
-                    </div>  
-                        </div>
-                    </div> 
-               </div>
-                <br/> 
-               <%# <div class ="container">
-                  <div class = "row">
-                            
-               </div> %>
-              </div>            
-          <div class="modal-footer container d-flex justify-content-center">
-           <button type="button" class="btn btn-primary active btn-lg" data-bs-dismiss="modal">Finished!!</button> 
-          
-           <button data-markerimages-target="deletebtn" type="button" class="btn btn-danger btn-lg active goodGood" >
-             Delete Pic
-          </button> 
-          
+  <div class="modal fade" id="ViewPics" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" id="markerimages" data-controller="markerimages">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title" id="exampleModalLabel">Spot Pics!!</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner cssThoselocPics" data-markerimages-target="locPics">
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="scrollable">
+              <div class="col input-group custom-file-button">
+                <label class="input-group-text" for="inputGroupFile" data-target="maps.inputGroupFile">Select Image</label>
+                <%= form.file_field :images, multiple: true, id: "inputGroupFile" %>
+              </div>
+            </div>
           </div>
         </div>
-       
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary active btn-lg" data-bs-dismiss="modal">Finished!!</button>
+          <button data-markerimages-target="deletebtn" type="button" class="btn btn-danger btn-lg active goodGood">
+            Delete Pic
+          </button>
+        </div>
       </div>
     </div>
-    <% end %>
+  </div>
+<% end %>

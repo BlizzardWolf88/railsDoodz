@@ -26,13 +26,23 @@ export default class extends Controller {
   showImages(images) {
       this.locPicsTarget.innerHTML = '' //clear the Image(s) from previous loc 
 
-      images.forEach(image => {     
-      console.log(image) 
+      images.forEach((image,index) => {     
       const imgElement = document.createElement('img')
       imgElement.src = image.url
       imgElement.alt = image.filename
-
-      this.locPicsTarget.appendChild(imgElement)
+      const divElement = document.createElement('div');
+      
+      if (index == 0){
+        //first element must be active to render
+        divElement.classList.add('carousel-item', 'active');
+      }
+      else
+      {
+        divElement.classList.add('carousel-item');
+      }
+      
+      divElement.appendChild(imgElement);
+      this.locPicsTarget.appendChild(divElement)
     })
   }
 
@@ -64,5 +74,5 @@ export default class extends Controller {
     
   }
 
-
+    
 }

@@ -6,7 +6,7 @@ import{FetchRequest, get, post, put, patch, destroy } from '@rails/request.js'
 
 export default class extends Controller {
   static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east","southwest","myID",
-  "southeast","south","loctype","numsits","showpicsbtn","addpicsbtn","createbtn","updatebtn","deletebtn","markerimages","inputGroupFile"]
+  "southeast","south","loctype","numsits","showpicsbtn","createbtn","updatebtn","deletebtn","markerimages","inputGroupFile"]
 
   connect() {
     if (typeof (google) != "undefined"){
@@ -20,7 +20,6 @@ export default class extends Controller {
     this.myMarkers =[]
 
     this.showpicsbtnTarget.hidden = true;
-    this.addpicsbtnTarget.hidden = false;
 
     this.updatebtnTarget.hidden = true;
     this.createbtnTarget.hidden = false;
@@ -177,7 +176,6 @@ export default class extends Controller {
      });
   
        //show correct buttons (Create or Edit)
-       this.addpicsbtnTarget.hidden = true;
        this.updatebtnTarget.hidden = false;
        this.createbtnTarget.hidden = true;
        this.deletebtnTarget.hidden = false  
@@ -196,9 +194,7 @@ export default class extends Controller {
     const response = await request.perform()
 
     if (response.ok){
-      //this.showpicsbtnTarget.hidden = false;
        let images = await response.text;
-      console.log(locID)
       if (images == "[]"){
         this.showpicsbtnTarget.hidden = true
       }
@@ -549,7 +545,6 @@ export default class extends Controller {
     this.numsitsTarget.value = ""
 
     
-    this.addpicsbtnTarget.hidden = false;
     this.showpicsbtnTarget.hidden = true;
     this.updatebtnTarget.hidden = true;
     this.createbtnTarget.hidden = false;
