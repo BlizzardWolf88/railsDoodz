@@ -36,6 +36,7 @@ class LocsController < ApplicationController
 
       response_data = @images.map do |image|
         {
+          id:image.id,
           url: rails_blob_path(image),
           content_type: image.content_type,
           filename: image.filename.to_s
@@ -43,6 +44,12 @@ class LocsController < ApplicationController
         end
 
        render json: response_data    
+    end
+
+    def delete_image
+      @image = ActiveStorage::Attachment.find(params[:image_id])
+      @image.purge
+      #redirect_to edit_loc_path(params[:loc_id]), notice: 'Image deleted successfully.'
     end
 
 

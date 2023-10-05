@@ -201,7 +201,7 @@ export default class extends Controller {
       else{
        this.showpicsbtnTarget.hidden = false
        const control = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimages'), "markerimages" )
-       control.showImages(JSON.parse(images))// we need the location id as a foriegn key for marker images 
+       control.showImages(JSON.parse(images),locID)// we need the location id as a foriegn key for marker images 
       }
        
     }

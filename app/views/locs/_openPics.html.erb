@@ -35,7 +35,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary active btn-lg" data-bs-dismiss="modal">Finished!!</button>
-          <button data-markerimages-target="deletebtn" type="button" class="btn btn-danger btn-lg active goodGood">
+          <button delete_image_loc_path(loc_id: @loc.id, image_id: image.id) data-action="click->markerimages#destroyPic"  type="button" class="btn btn-danger btn-lg active goodGood">
             Delete Pic
           </button>
         </div>

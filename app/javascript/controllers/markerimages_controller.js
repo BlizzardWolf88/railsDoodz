@@ -19,17 +19,20 @@ export default class extends Controller {
 
   initImages(){
     
-    this.deletebtnTarget.hidden = true;
+    //this.deletebtnTarget.hidden = true;
 
   }
 
-  showImages(images) {
+  showImages(images,locID) {
       this.locPicsTarget.innerHTML = '' //clear the Image(s) from previous loc 
 
+      this.locID = locID;
       images.forEach((image,index) => {     
       const imgElement = document.createElement('img')
       imgElement.src = image.url
       imgElement.alt = image.filename
+
+      imgElement.dataset.imageId = image.id;
       const divElement = document.createElement('div');
       
       if (index == 0){
@@ -43,10 +46,41 @@ export default class extends Controller {
       
       divElement.appendChild(imgElement);
       this.locPicsTarget.appendChild(divElement)
+     // this.deletebtnTarget.hidden = false;
     })
   }
 
+  //using for delete
+  getActiveImageId() {
+    const activeImage = this.locPicsTarget.querySelector('.carousel-item.active img');
+    
+    if (activeImage) {
+      //return activeImage.dataset.imageId;
+      return activeImage
+    }
+    return null;
+  }
 
+  async destroyPic() {
+
+    const activeIm = this.getActiveImageId();
+    const imageId  = activeIm.dataset.imageId;
+
+    const response = await post('delete_image',{
+      body:{image_id: imageId},
+      responseKind: 'json'
+       
+     })
+          
+    if (response.ok) {     
+      if (activeIm) {
+        activeIm.remove();
+        this.activeCarosel = this.locPicsTarget.querySelector('<div class="carousel-item"></div>');
+        this.activeCarosel.remove();
+      }
+           
+    }
+  }
 
   async saveMarkerImage(marker,newOrUpdate){
       let url

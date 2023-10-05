@@ -11,17 +11,12 @@ Rails.application.routes.draw do
   post "locs/create", to: "locs#create"
   post "locs/update", to: "locs#update"
   post "locs/destroy", to: "locs#destroy"
+  post 'locs/delete_image', to: 'locs#delete_image'
 
   get  "markerimages/getPics"
   post "markerimages/create", to: "markerimages#create"
   post "markerimages/update", to: "markerimages#update"
   post "markerimages/destroy", to: "markerimages#destroy"
-  
-
-  # GET '/users/:id users'#show
-  # PUT '/users/:id users'#update
-
-  # PUT '/users/invitation devise/invitations'#update
   
 
     devise_for :users, controllers: {
@@ -38,7 +33,11 @@ Rails.application.routes.draw do
    
   resources :madoods
   resources :doodzs
-  resources :locs
+  resources :locs do
+    member do
+      delete :delete_image
+    end
+  end
   resources :markerpics
  # resources :users
   
