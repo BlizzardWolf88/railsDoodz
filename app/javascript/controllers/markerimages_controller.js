@@ -60,12 +60,19 @@ export default class extends Controller {
     }
     return null;
   }
+  
 
   async destroyPic() {
+    let imageId
+    let caroItem
 
     const activeIm = this.getActiveImageId();
-    const imageId  = activeIm.dataset.imageId;
+    if(activeIm){
+       caroItem = activeIm.parentElement;
+       imageId  = activeIm.dataset.imageId;
 
+    }
+    
     const response = await post('delete_image',{
       body:{image_id: imageId},
       responseKind: 'json'
@@ -74,9 +81,9 @@ export default class extends Controller {
           
     if (response.ok) {     
       if (activeIm) {
-        activeIm.remove();
-        this.activeCarosel = this.locPicsTarget.querySelector('<div class="carousel-item"></div>');
-        this.activeCarosel.remove();
+        caroItem.remove();
+        //this.activeCarosel = this.locPicsTarget.querySelector('<div class="carousel-item"></div>');
+        //this.activeCarosel.remove();
       }
            
     }

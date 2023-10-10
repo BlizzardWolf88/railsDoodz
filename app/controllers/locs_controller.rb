@@ -2,8 +2,7 @@ class LocsController < ApplicationController
   
   before_action :authenticate_user!
   before_action :store_location
-  before_action :correct_dood, only:[:edit,:update,:destroy]
-  #before_action :set_loc, only: [:show, :edit, :update, :destroy]
+  before_action :correct_loc, only:[:edit,:update,:destroy]
 
   
     def store_location
@@ -49,7 +48,6 @@ class LocsController < ApplicationController
     def delete_image
       @image = ActiveStorage::Attachment.find(params[:image_id])
       @image.purge
-      #redirect_to edit_loc_path(params[:loc_id]), notice: 'Image deleted successfully.'
     end
 
 
@@ -98,18 +96,13 @@ class LocsController < ApplicationController
       end
     end
 
-    def correct_dood 
+    def correct_loc 
       @loc = current_user.loc.find_by(id: params[:id])
       redirect_to loc_path, notice: "Can't change this Loc because that is NOT your Loc Madoo" if @loc.nil?
     end
 
     
-    private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_loc
-      @loc = Loc.find(params[:id])
-    end
-    
+    private   
     #Might need to refactor the loc table IDK 
     def loc_params
        params.permit(:name, :latitude, :longitude,:create_date,:created_at,:user_id,:updated_at,:wind,:notes,:loc_type,:num_sits,images: [])

@@ -411,7 +411,16 @@ export default class extends Controller {
   const fileInput = this.inputGroupFileTarget;
   const files = fileInput.files;
   let loc = new FormData();
+
     
+  if(this.updatebtnTarget.hidden){
+    updateOrCreate = "create"
+  }
+  else{
+    updateOrCreate = "update" 
+    loc.append("id", this.markerId)
+  }
+
   loc.append("name", this.nameTarget.value)
   loc.append("latitude", this.latTarget.value)
   loc.append("longitude", this.lonTarget.value)
@@ -423,10 +432,7 @@ export default class extends Controller {
   for (let i = 0; i < files.length; i++) {
     loc.append("images[]", files[i])    
   }
-
-
-  updateOrCreate = this.updatebtnTarget.hidden? "create":"update"
-   
+  
   const response = await post(updateOrCreate,{
         body: loc,
         responseKind: 'json'
@@ -435,15 +441,11 @@ export default class extends Controller {
             
       if (response.ok) {
         const data = await response.json
-       console.log("Return Data",data)
         markers.push(data)// The render markers function is exptecting an array
-        this.renderMarkers(markers)
-          
-          
+        this.renderMarkers(markers)          
       }
        
-        this.clearMarker();
-       
+        this.clearMarker();      
   }
 
 
