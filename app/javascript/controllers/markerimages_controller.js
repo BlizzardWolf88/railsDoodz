@@ -55,7 +55,6 @@ export default class extends Controller {
     const activeImage = this.locPicsTarget.querySelector('.carousel-item.active img');
     
     if (activeImage) {
-      //return activeImage.dataset.imageId;
       return activeImage
     }
     return null;
@@ -68,7 +67,7 @@ export default class extends Controller {
 
     const activeIm = this.getActiveImageId();
     if(activeIm){
-       caroItem = activeIm.parentElement;
+       caroItem = activeIm.closest('.carousel-item');
        imageId  = activeIm.dataset.imageId;
 
     }

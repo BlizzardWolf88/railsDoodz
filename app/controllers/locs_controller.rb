@@ -52,12 +52,10 @@ class LocsController < ApplicationController
 
 
     def create
-      @loc = current_user.loc.build(loc_params)
-    
-          
+      @loc = current_user.loc.build(loc_params)          
        respond_to do |format|
          if @loc.save
-           format.html { redirect_to loc_url(@loc), notice: "Location was successfully created." }
+           format.html { redirect_to loc_url(@loc), notice: "Location was successfully created." }           
            msg = { :status => "ok", :message => "Location was successfully created." }
            format.json {  render  json: @loc }
          else
@@ -69,11 +67,23 @@ class LocsController < ApplicationController
     end
 
     def update
+
       respond_to do |format|
-        if @loc.update(loc_params)
+        if @loc.update(loc_params.except(:images))
+          # Check if new images are being uploaded
+          if params[:images].present?
+            # Append new images to the existing collection
+            existing_image_filenames = @loc.images.map { |image| image.filename.to_s }
+            params[:images].each do |image|
+              unless existing_image_filenames.include?(image.original_filename)
+                @loc.images.attach(image)
+              end
+            end           
+          end
+    
           format.html { redirect_to loc_url(@loc), notice: "Loc was successfully updated." }
           msg = { :status => "ok", :message => "Location was successfully updated." }
-          format.json {  render  json: @loc }
+          format.json { render json: @loc }
         else
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @loc.errors, status: :unprocessable_entity }
