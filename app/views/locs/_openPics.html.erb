@@ -27,14 +27,14 @@
           <div class="row">
             <div class="scrollable">
               <div class="col input-group custom-file-button">
-                <label class="input-group-text" for="inputGroupFile" data-target="maps.inputGroupFile">Select Image</label>
-                <%= form.file_field :images, multiple: true, id: "inputGroupFile" %>
+                <label class="input-group-text" for="addMoreInputGroupFile">Attach Images</label>
+                <%= form.file_field :images, multiple: true, id: "addMoreInputGroupFile",data: {target: "markerimages.addMoreInputGroupFile"} %>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary active btn-lg" data-bs-dismiss="modal">Finished!!</button>
+          <button type="button" data-action="click->markerimages#addMoreImages" class="btn btn-primary active btn-lg">Save Pics!!</button>
           <button delete_image_loc_path(loc_id: @loc.id, image_id: image.id) data-action="click->markerimages#destroyPic"  type="button" class="btn btn-danger btn-lg active goodGood">
             Delete Pic
           </button>

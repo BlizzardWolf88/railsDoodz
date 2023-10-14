@@ -200,14 +200,13 @@ export default class extends Controller {
       }
       else{
        this.showpicsbtnTarget.hidden = false
-       const control = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimages'), "markerimages" )
-       control.showImages(JSON.parse(images),locID)// we need the location id as a foriegn key for marker images 
+       const mImagesControl = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimages'), "markerimages" )
+       mImagesControl.showImages(JSON.parse(images),locID,true)// we need the location id as a foriegn key for marker images 
       }
        
     }
 
   }
-
 
      placeMarkerAndPanTo(latLng, map) {
      

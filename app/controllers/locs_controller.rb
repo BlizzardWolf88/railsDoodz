@@ -50,7 +50,6 @@ class LocsController < ApplicationController
       @image.purge
     end
 
-
     def create
       @loc = current_user.loc.build(loc_params)          
        respond_to do |format|
@@ -62,12 +61,10 @@ class LocsController < ApplicationController
            format.html { render :new, status: :unprocessable_entity }
            format.json { render json: @loc.errors, status: :unprocessable_entity }
          end
-       end
-      
+       end     
     end
 
     def update
-
       respond_to do |format|
         if @loc.update(loc_params.except(:images))
           # Check if new images are being uploaded
@@ -90,6 +87,7 @@ class LocsController < ApplicationController
         end
       end
     end
+
   
     def destroy
       @loc.destroy 

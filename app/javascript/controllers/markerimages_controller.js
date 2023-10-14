@@ -11,7 +11,7 @@ import {
 
 // Connects to data-controller="marker-images"
 export default class extends Controller {
-  static targets = ["mypics","deletebtn","locPics"]
+  static targets = ["mypics","deletebtn","locPics","addMoreInputGroupFile"]
   connect() {
     this.initImages();
 
@@ -19,12 +19,12 @@ export default class extends Controller {
 
   initImages(){
     
-    //this.deletebtnTarget.hidden = true;
-
   }
 
-  showImages(images,locID) {
-      this.locPicsTarget.innerHTML = '' //clear the Image(s) from previous loc 
+  showImages(images,locID,newLoc) {
+       if (newLoc){ 
+        this.locPicsTarget.innerHTML = '' //clear the Image(s) from previous loc 
+       }
 
       this.locID = locID;
       images.forEach((image,index) => {     
@@ -50,6 +50,43 @@ export default class extends Controller {
     })
   }
 
+  async addMoreImages(){
+
+    const fileInput = this.addMoreInputGroupFileTarget;
+    const files = fileInput.files;
+    let loc = new FormData();
+    loc.append("id", this.locID)
+    
+    for (let i = 0; i < files.length; i++) {
+      loc.append("images[]", files[i])    
+    }
+
+    const response = await post("update",{
+      body: loc,
+      responseKind: 'json'
+       
+     })
+          
+    if (response.ok) {
+      //if the response is ok the images have been validated, are save and saved!
+      // we can take the new images and add them to the carousel
+      const images = Array.from(files).map(file => {
+        return {
+            url: URL.createObjectURL(file),  // Assuming you want to display a preview
+            filename: file.name,  // Assuming you want to use the file name as the filename
+            id: null  // You might want to generate a unique ID for the image
+        };
+    });
+
+
+
+      this.showImages(images,this.locID,false)   
+    }
+
+    document.getElementById('addMoreInputGroupFile').value = ''; //clear the Image upload field 
+
+     
+  }
   //using for delete
   getActiveImageId() {
     const activeImage = this.locPicsTarget.querySelector('.carousel-item.active img');
@@ -81,8 +118,9 @@ export default class extends Controller {
     if (response.ok) {     
       if (activeIm) {
         caroItem.remove();
-        //this.activeCarosel = this.locPicsTarget.querySelector('<div class="carousel-item"></div>');
-        //this.activeCarosel.remove();
+        //write code if any images left make the previous the active 
+        //if no images left close modal
+        
       }
            
     }
