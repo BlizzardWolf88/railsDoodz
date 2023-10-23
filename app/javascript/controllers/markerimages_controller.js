@@ -11,7 +11,7 @@ import {
 
 // Connects to data-controller="marker-images"
 export default class extends Controller {
-  static targets = ["mypics","deletebtn","locPics","addMoreInputGroupFile"]
+  static targets = ["mypics","deletebtn","locPics","addMoreInputGroupFile","picsModal"]
   connect() {
     this.initImages();
 
@@ -26,6 +26,7 @@ export default class extends Controller {
         this.locPicsTarget.innerHTML = '' //clear the Image(s) from previous loc 
        }
 
+       //add new images for same loc
       this.locID = locID;
       images.forEach((image,index) => {     
       const imgElement = document.createElement('img')
@@ -61,7 +62,7 @@ export default class extends Controller {
       loc.append("images[]", files[i])    
     }
 
-    const response = await post("update",{
+    const response = await post("updateImages",{
       body: loc,
       responseKind: 'json'
        
@@ -70,17 +71,17 @@ export default class extends Controller {
     if (response.ok) {
       //if the response is ok the images have been validated, are save and saved!
       // we can take the new images and add them to the carousel
-      const images = Array.from(files).map(file => {
-        return {
-            url: URL.createObjectURL(file),  // Assuming you want to display a preview
-            filename: file.name,  // Assuming you want to use the file name as the filename
-            id: null  // You might want to generate a unique ID for the image
-        };
-    });
+      const images = await response.json
 
+    //   const images = Array.from(files).map(file => {
+    //     return {
+    //         url: URL.createObjectURL(file),  // Assuming you want to display a preview
+    //         filename: file.name,  // Assuming you want to use the file name as the filename
+    //         id: null  // You might want to generate a unique ID for the image
+    //     };
+    // });
 
-
-      this.showImages(images,this.locID,false)   
+    this.showImages(JSON.parse(images),this.locID,false) 
     }
 
     document.getElementById('addMoreInputGroupFile').value = ''; //clear the Image upload field 
@@ -120,37 +121,24 @@ export default class extends Controller {
         caroItem.remove();
         //write code if any images left make the previous the active 
         //if no images left close modal
-        
+
+        const nextCaroItem = caroItem.nextElementSibling;
+        if (nextCaroItem) {
+          // Make the next item active
+          nextCaroItem.classList.add('active');
+        } else {
+          // If no next item, make the first item active
+          const firstCaroItem = this.locPicsTarget.querySelector('.carousel-item');
+          if (firstCaroItem) {
+              firstCaroItem.classList.add('active');
+          }
+          else{
+            const bootstrapModal = new bootstrap.Modal(this.picsModalTarget);
+            bootstrapModal.hide(); 
+          }        
       }
-           
+    }  
     }
   }
-
-  async saveMarkerImage(marker,newOrUpdate){
-      let url
-      let body      
-      const test = marker
-      
-      url = (newOrUpdate == "update") ?  "../markerimages/update":  "../markerimages/create"
-        
- 
-      body = { 
-        loc_id: marker
-        //pictures: this.mypicsTarget.value
-      }
-
-      const response = await post(url,{
-        body: body,
-        responseKind: 'json'
-         
-       })
-            
-      if (response.ok) {
-        const data = await response.json          
-                
-      }
-    
-  }
-
-    
+  
 }

@@ -7,8 +7,7 @@
     <div class="card text-center" >
       <div class="card-header">      
         <div class ="row">     
-          <h2>Location Information!!!</h2>                  
-         </button> 
+          <h2>Location Information!!!</h2>                         
         </div>
       </div>
       <div class="card-body" >         
@@ -21,12 +20,14 @@
             </div>          
             <div class = "row g-1" >
                <div class ="col-5" >
+               <label class="form-label form-labe">Latitude</label>
                  <%= form.text_field :latitude,placeholder:"Enter Latitude", class:"form-control fw-bold ", data: {target: "maps.lat"} %>
                </div>    
                <div class ="col-5" data-action="keydown->maps#keydown" >
+                <label class="form-label form-labe">Longitude</label>
                   <%= form.text_field :longtitude,placeholder:"Enter Longitude" ,class:"form-control fw-bold ", data: {target: "maps.lon"} %>
                 </div>
-                <div class = "col-2" data-action="click->maps#goToSpot">
+                <div class = "col-2" data-action="click->maps#goToSpot" style="padding-top: 31px;">
                   <button type="button" class="btn btn-lg btn-primary active px-4 py-1">Go!</button>
                 </div>
                </div>              
@@ -42,22 +43,51 @@
               <br/>
               <%# Form Container %>
               <div class="container-sm">
-                <div class = "mb-3">  
-                      <%= form.select :loctype,['Stand Pin','Buck Bed Pin','Access Point'] ,{prompt:"Select A Loc Type"}, {class:"form-select fw-bold",data:{action:"click->maps#setLocType",target:"maps.loctype"}} %>                     
-                </div>   
-                <div class="mb-3">  
-                  <%= form.text_field :name, class:"form-control fw-bold", placeholder:"Spot Name",data: {target: "maps.name"} %>
-                </div>
-                <div class="mb-3">  
-                  <%= form.text_field :create_date,disabled: true, class:"form-control fw-bold", placeholder:"Date",data: {target: "maps.date"} %>
-                </div>
-                <div class="mb-3" >
-                  <textarea class="form-control fw-bold" id="exampleFormControlTextarea1" placeholder="Notes" rows="3" data-target="maps.notes"></textarea>
-                </div>
-                <div class = "mb-3">
-                <%= form.text_field :num_sits, class:"form-control fw-bold", placeholder:"Number of Times Hunted",data: {target: "maps.numsits"} %>           
-                </div>   
-                 <%# Add this Here  %>
+               <div class="row g-1">
+                    <div class="col-3">
+                      <label class="form-label form-labe">Location Type</label>
+                    </div>
+                    <div class="col-9">
+                      <%= form.select :loctype, ['Stand Pin','Buck Bed Pin','Access Point'], {prompt: "Select A Loc Type"}, {class: "form-select fw-bold", data: {action: "click->maps#setLocType", target: "maps.loctype"}} %>                     
+                    </div>
+                </div> 
+                <br/>
+               <div class="row g-1">
+                    <div class="col-3">
+                     <label class="form-label form-labe">Location Name</label>
+                    </div>
+                    <div class="col-9">
+                     <%= form.text_field :name, class:"form-control fw-bold", placeholder:"Spot Name",data: {target: "maps.name"} %>
+                    </div>
+                </div> 
+                 <br/>
+               <div class="row g-1">
+                    <div class="col-3">
+                      <label class="form-label form-labe">Date Added</label>
+                    </div>
+                    <div class="col-9">
+                      <%= form.text_field :create_date,disabled: true, class:"form-control fw-bold", placeholder:"Date",data: {target: "maps.date"} %>
+                    </div>
+                </div> 
+                 <br/>
+               <div class="row g-1">
+                    <div class="col-3">
+                      <label class="form-label form-labe">Notes</label>
+                    </div>
+                    <div class="col-9">
+                       <textarea class="form-control fw-bold" id="exampleFormControlTextarea1" placeholder="Notes" rows="3" data-target="maps.notes"></textarea>
+                    </div>
+                </div> 
+                 <br/>
+               <div class="row g-1">
+                    <div class="col-3">
+                      <label class="form-label form-labe">Times Hunted</label>
+                    </div>
+                    <div class="col-9">
+                        <%= form.text_field :num_sits, class:"form-control fw-bold", placeholder:"Number of Times Hunted",data: {target: "maps.numsits"} %>           
+                    </div>
+                </div> 
+                <br/>
                   <div class = "mb-3 input-group custom-file-button">
                      <label class="input-group-text" for="inputGroupFile">Attach Images</label>
                        <%= form.file_field :images,multiple: true,id:"inputGroupFile",data: {target: "maps.inputGroupFile"} %>                       

@@ -1,10 +1,10 @@
 <%= stylesheet_link_tag "gmapping", "data-turbo-track": "reload", defer:true %>
 <%= form_with(model: @loc) do |form| %>
   <div class="modal fade" id="ViewPics" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" id="markerimages" data-controller="markerimages">
+    <div class="modal-dialog modal-lg" id="markerimages" data-controller="markerimages" data-markerimages-target="picsModal">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title" id="exampleModalLabel">Spot Pics!!</h1>
+           <h1 class="modal-title container d-flex justify-content-center" id="exampleModalLabel">Location Images</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -26,15 +26,14 @@
           </div>
           <div class="row">
             <div class="scrollable">
-              <div class="col input-group custom-file-button">
+              <%# <div class="col input-group custom-file-button">
                 <label class="input-group-text" for="addMoreInputGroupFile">Attach Images</label>
-                <%= form.file_field :images, multiple: true, id: "addMoreInputGroupFile",data: {target: "markerimages.addMoreInputGroupFile"} %>
-              </div>
+                <%= form.file_field :images, multiple: true, id: "addMoreInputGroupFile",data: {target: "markerimages.addMoreInputGroupFile"} </div> %>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" data-action="click->markerimages#addMoreImages" class="btn btn-primary active btn-lg">Save Pics!!</button>
+          <%# <button type="button" data-action="click->markerimages#addMoreImages" class="btn btn-primary active btn-lg">Save Pics!!</button> %>
           <button delete_image_loc_path(loc_id: @loc.id, image_id: image.id) data-action="click->markerimages#destroyPic"  type="button" class="btn btn-danger btn-lg active goodGood">
             Delete Pic
           </button>

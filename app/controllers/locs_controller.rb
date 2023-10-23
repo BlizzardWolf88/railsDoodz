@@ -2,7 +2,7 @@ class LocsController < ApplicationController
   
   before_action :authenticate_user!
   before_action :store_location
-  before_action :correct_loc, only:[:edit,:update,:destroy]
+  before_action :correct_loc, only:[:edit,:update,:destroy,:updateImages]
 
   
     def store_location
@@ -80,6 +80,8 @@ class LocsController < ApplicationController
     
           format.html { redirect_to loc_url(@loc), notice: "Loc was successfully updated." }
           msg = { :status => "ok", :message => "Location was successfully updated." }
+
+      
           format.json { render json: @loc }
         else
           format.html { render :edit, status: :unprocessable_entity }
@@ -88,6 +90,41 @@ class LocsController < ApplicationController
       end
     end
 
+
+    def updateImages
+      respond_to do |format|
+        if @loc.update(loc_params.except(:images))
+          # Check if new images are being uploaded
+          saved_images = []
+          if params[:images].present?
+            # Append new images to the existing collection
+            existing_image_filenames = @loc.images.map { |image| image.filename.to_s }
+            params[:images].each do |image|
+              unless existing_image_filenames.include?(image.original_filename)
+                #@loc.images.attach(image)
+                attachment = @loc.images.attach(image) # Get the attached image
+                 saved_images << attachment if attachment # 
+              end
+            end           
+          end
+          
+          #saved_images = @loc.images.last(params[:images].size)
+          format.html { redirect_to loc_url(@loc), notice: "Loc was successfully updated." }
+          response_data = saved_images.map do |attachment|
+            {
+              id:attachment.id,
+              url: rails_blob_path(attachment),
+              content_type: attachment.content_type,
+              filename: attachment.filename.to_s
+            }
+            end
+            format.json { render json: response_data, status: :ok } # Send the response with saved image data
+        else
+          format.html { render :edit, status: :unprocessable_entity }
+          format.json { render json: @loc.errors, status: :unprocessable_entity }
+        end
+      end
+    end
   
     def destroy
       @loc.destroy 

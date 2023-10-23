@@ -69,6 +69,7 @@ export default class extends Controller {
     
   }
 
+  //add new param if update
   renderMarkers(markers){
 
      markers.forEach((marker) => {
@@ -99,6 +100,11 @@ export default class extends Controller {
       });
         
         //ADD ALL VALUES FROM THE DB
+        //The update comes with 2 objects: Form data i.e. lat,long and images
+        //We only need the form oject properties for this update
+        //The image update that takes place in the images modal
+        //needs this in order to delete
+       
         gmarker.set("id", marker.id.toString())
         gmarker.set("name", marker.name)
         gmarker.set("lat", marker.latitude)
@@ -108,8 +114,8 @@ export default class extends Controller {
         gmarker.set("numSits", marker.num_sits)
         gmarker.set("date", marker.created_at)
         gmarker.set("notes", marker.notes)
-   
-
+       
+      
         this.myMarkers.push(gmarker)
         //adding a a click event to each of the user's markers
         google.maps.event.addListener(gmarker, 'click', (e) => {
@@ -180,12 +186,8 @@ export default class extends Controller {
        this.createbtnTarget.hidden = true;
        this.deletebtnTarget.hidden = false  
 
-
        this.getMarkerImages(this.markerId)
-       //Fetch images asscociated with this marker
-
-      
-   
+       //Fetch images asscociated with this marke 
   }
 
   async getMarkerImages(locID){
@@ -200,8 +202,11 @@ export default class extends Controller {
       }
       else{
        this.showpicsbtnTarget.hidden = false
-       const mImagesControl = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimages'), "markerimages" )
-       mImagesControl.showImages(JSON.parse(images),locID,true)// we need the location id as a foriegn key for marker images 
+       
+       //We must pass this to a new stimulus controller the modal will break
+       // The binding of the stimulus targets 
+       const imagesControl = this.application.getControllerForElementAndIdentifier(document.getElementById('markerimages'), "markerimages" )
+       imagesControl.showImages(JSON.parse(images),locID,true)// we need the location id as a foriegn key for marker images 
       }
        
     }
