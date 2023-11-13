@@ -3,7 +3,7 @@
     <a class="navbar-brand" href="#">      
        <%= image_tag 'BlueWolfDood.png', class: "navbar-brand rounded-circle",style: 'max-width: 4rem;' %>
     </a>
-    <%= link_to 'DOODZ APP', root_path, class:"navbar-brand" %>
+    <%= link_to 'JOURNEY APP', root_path, class:"navbar-brand" %>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -12,10 +12,10 @@
            <% if user_signed_in? %> 
                                                                 
                   <li class="nav-item">
-                  <%= link_to 'Show Madoodz', madoods_path, class:"nav-link" %>
+                  <%= link_to 'Show Parnters', madoods_path, class:"nav-link" %>
                   </li>
                     <li class="nav-item">
-                  <%= link_to 'Add A Dood',new_madood_path, class:"nav-link" %>
+                  <%= link_to 'Add A Partner',new_madood_path, class:"nav-link" %>
                   </li>
                   
                   <%# Save This Dropdown For Later %>
@@ -57,13 +57,13 @@
                 </form>
               
               <% else %>
-                <%= link_to 'Become A Dood', new_user_registration_path, class:"nav-link" %>
+                <%= link_to 'Join', new_user_registration_path, class:"nav-link" %>
                   </li>
                   <li class="nav-item">
-                    <%= link_to 'Access Yer Doodship',new_user_session_path, class:"nav-link" %>
+                    <%= link_to 'Access Your Account',new_user_session_path, class:"nav-link" %>
                   </li>         
                 <li class="nav-item">
-                <%= link_to 'All About Ma Doodz', home_about_path, class:"nav-link" %>
+                <%= link_to 'About', home_about_path, class:"nav-link" %>
                 </li>
         
       </ul>

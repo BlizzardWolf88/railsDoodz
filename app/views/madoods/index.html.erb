@@ -1,5 +1,5 @@
 <% if user_signed_in? %>
-      <h1>Madoods</h1>
+      <h1>Partners</h1>
 
       <table class="table table-striped table-hover table-bordered">
         <thead class= "thead-dark">
@@ -7,7 +7,7 @@
           <th>Name</th>        
           <th>Email</th>
           <th>Phone</th>
-          <th>E-Baby's Twitter</th>
+          <th>Use to be Twitter</th>
         </tr>
         </thead>
       <tbody> 
@@ -23,14 +23,12 @@
       </tbody>
       </table>
 
-      <%= link_to "New Dood?", new_madood_path,class:"btn btn-primary btn-lg active" %>
+      <%= link_to "New Partner?", new_madood_path,class:"btn btn-primary btn-lg active" %>
       <br/>
     
 
 <% else %>
 
-<h1>GET IT RIGHT GET IT RIGHT GET IT TIGHT</h1>
-<p>Booty Booty Booty Booty ROCKIN' EVERYWHERE  </p>
 
 
 <% end %>
