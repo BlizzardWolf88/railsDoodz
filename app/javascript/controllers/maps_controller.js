@@ -40,7 +40,9 @@ export default class extends Controller {
     const lat = parseFloat("43.639")
     const lon = parseFloat("-71.981" )
     const coordinates = {lat: lat,lng: lon}
-    this.map = new google.maps.Map(this.mapTarget,{center:coordinates,zoom:12});
+    this.map = new google.maps.Map(this.mapTarget,{center:coordinates,zoom:12});   
+   
+  
     this.holdContent = formContent //HTML for the info Window marker form
     this.userContent = formContent
 
@@ -128,7 +130,8 @@ export default class extends Controller {
   }
 
   showMarker(userGMarker){
-    
+    this.marker.setVisible(false); //hide the "current location by click" marker
+
     this.myMarker = userGMarker
     this.clearMarker();
 
