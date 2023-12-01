@@ -256,11 +256,12 @@ export default class extends Controller {
     this.activateMeasureDist = !this.activateMeasureDist; 
     this.marker1
     this.marker2
+    this.polyline
   }
    
 
   CalculateDist(location){
-    
+     
     if (!this.marker1) {
       this.marker1 = new google.maps.Marker({
         position: location,
@@ -284,7 +285,20 @@ export default class extends Controller {
         
       );
       console.log('Distance: ' + distance + ' meters');
-      
+      if (this.polyline) {
+        this.polyline.setMap(null);
+      }
+  
+      // Draw a new polyline
+      this.polyline = new google.maps.Polyline({
+        path: [ this.marker1.getPosition(), this.marker2.getPosition()],
+        geodesic: true,
+        strokeColor: 'red',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      });
+  
+      this.polyline.setMap(this.map);
     }
 
   }
