@@ -45,6 +45,7 @@ export default class extends Controller {
   
     this.holdContent = formContent //HTML for the info Window marker form
     this.userContent = formContent
+    this.MeasureDist = false
 
     this.fetchMarkers();
     this.CreateIcons();
@@ -217,31 +218,76 @@ export default class extends Controller {
   }
 
      placeMarkerAndPanTo(latLng, map) {
-     
-     //Create Marker on the click
-     if(this.marker != undefined){
-         this.marker.setPosition(latLng);
-          this.marker.setVisible(true);      
-     }
+
+      //setting pins to calculate a distance
+      if(this.activateMeasureDist){
+        if(this.marker != undefined){  
+            this.marker.setVisible(false);                          
+       }  
+       this.CalculateDist(latLng)
+      }
      else{
-       this.marker = new google.maps.Marker({
-          position: latLng,
-          map: this.map,
-          icon: this.icon5,
-        });
-        map.panTo(latLng);
+          //render pin on the click
+          if(this.marker != undefined){
+              this.marker.setPosition(latLng);
+                this.marker.setVisible(true);  
+                this.marker.setIcon(this.icon5)    
+          }
+          else{
+            this.marker = new google.maps.Marker({
+                position: latLng,
+                map: this.map,
+                icon: this.icon5,
+              });
+              map.panTo(latLng);
 
-    }
-    
-      this.clearMarker();
-      const cords = JSON.stringify(latLng.toJSON(), null, 2)
-      const parsee = JSON.parse(cords);
+           }   
+          this.clearMarker();
+          const cords = JSON.stringify(latLng.toJSON(), null, 2)
+          const parsee = JSON.parse(cords);
 
-      //send coords to testfields
-      this.latTarget.value = parsee.lat
-      this.lonTarget.value = parsee.lng
+          //send coords to testfields
+          this.latTarget.value = parsee.lat
+          this.lonTarget.value = parsee.lng
+        }
   }
 
+  SwicthOnMesureDist(){
+    this.activateMeasureDist = !this.activateMeasureDist; 
+    this.marker1
+    this.marker2
+  }
+   
+
+  CalculateDist(location){
+    
+    if (!this.marker1) {
+      this.marker1 = new google.maps.Marker({
+        position: location,
+        map: this.map,
+        title: 'Point 1',
+        icon: this.icon6,
+      });
+    } else if (!this.marker2) {
+      this.marker2 = new google.maps.Marker({
+        position: location,
+        map: this.map,
+        title: 'Point 2',
+        icon: this.icon7,
+      });
+
+      if(this.marker1 && this.marker2 )
+      // Calculate and display distance
+      var distance = google.maps.geometry.spherical.computeDistanceBetween(
+        this.marker1.getPosition(),
+        this.marker2.getPosition()
+        
+      );
+      console.log('Distance: ' + distance + ' meters');
+      
+    }
+
+  }
   setCompassImages(){
 
     const northLogo = document.getElementById('northLogo').src = "/assets/wind/North.png";
@@ -273,6 +319,7 @@ export default class extends Controller {
     }
 
   }
+
 
     sendNorth(){
       if(this.NorthWind == "" ){
@@ -402,6 +449,20 @@ export default class extends Controller {
     this.icon5 = {
       url: "/assets/BlueWolfDood.png"  + '#custom_marker', // url
       scaledSize: new google.maps.Size(50, 50), // scaled size
+      origin: new google.maps.Point(0,0), // origin
+      anchor: new google.maps.Point(0, 0) // anchor
+    };
+
+    this.icon6 = {
+      url: "/assets/distanceIcon1.png"  + '#custom_marker', // url
+      scaledSize: new google.maps.Size(40, 40), // scaled size
+      origin: new google.maps.Point(0,0), // origin
+      anchor: new google.maps.Point(0, 0) // anchor
+    };
+
+    this.icon7 = {
+      url: "/assets/distanceIcon2.png"  + '#custom_marker', // url
+      scaledSize: new google.maps.Size(40, 40), // scaled size
       origin: new google.maps.Point(0,0), // origin
       anchor: new google.maps.Point(0, 0) // anchor
     };

@@ -9,9 +9,9 @@
       <div class = "col-5">
       </div>    
       <div class = "col-1 g-1">
-         <%# <button type="button" id= "filtWindBtn" class="btn btn-primary btn-lg active w-100" data-bs-toggle="modal" data-bs-target="#FiltWind">
-             Filter Wind
-         </button> %>
+         <button type="button"  class="btn btn-primary btn-lg active w-100" data-action="click->maps#SwicthOnMesureDist" >
+             Measure Dist
+         </button>
       </div> 
       <div class = "col-2 g-1">  
          <%= form.select :filterTimesSat,['0','1','2','3','4','5+'] ,{prompt:"Filter Times Hunted (All)"}, 
