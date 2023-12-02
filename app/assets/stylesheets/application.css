@@ -61,8 +61,7 @@
 
 /* This will change the style of the Select Image Button for profile   */
  .custom-file-button input[type=file] {
-    margin-left: -2px !important;
-    
+    margin-left: -2px !important;    
   }
   
   .custom-file-button input[type=file]::-webkit-file-upload-button {
@@ -86,8 +85,6 @@
     height: 100%;
   }
 
-
-
   .form-labe{
     font-weight: bold;
   }
@@ -100,4 +97,19 @@
 /******************************************************************/
 
 
+/******************************************************************/
+/* This is a slick trick to mascarade a checkbox and style it as a bootstrap button */
+/* This way it can toggle colors on a click and no javascript is needed*/
+/******************************************************************/
+.toggle-checkbox {
+  display: none;
+}
+
+.toggle-checkbox:checked + .custom-btn { 
+  background-color: white; /* Color 2 */
+  color: red;
+  font-weight: bold;  
+}
+/******************************************************************/
+/******************************************************************/
 

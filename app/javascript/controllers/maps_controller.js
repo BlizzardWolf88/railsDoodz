@@ -5,9 +5,10 @@ import{FetchRequest, get, post, put, patch, destroy } from '@rails/request.js'
 
 
 export default class extends Controller {
-  static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east","southwest","myID",
-  "southeast","south","loctype","numsits","showpicsbtn","createbtn","updatebtn","deletebtn","markerimages","inputGroupFile"]
-
+  static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east",
+  "southwest","myID","southeast","south","loctype","numsits","showpicsbtn","createbtn","updatebtn","deletebtn",
+  "markerimages","inputGroupFile"]
+ 
   connect() {
     if (typeof (google) != "undefined"){
       this.initializeMap();
@@ -251,7 +252,7 @@ export default class extends Controller {
           this.lonTarget.value = parsee.lng
         }
   }
-
+  
   SwicthOnMesureDist(){
     this.activateMeasureDist = !this.activateMeasureDist; 
     this.marker1
@@ -283,22 +284,36 @@ export default class extends Controller {
         this.marker1.getPosition(),
         this.marker2.getPosition()
         
+      );  
+      
+      let midpoint = google.maps.geometry.spherical.interpolate(
+        this.marker1.getPosition(), this.marker2.getPosition(), 0.5
       );
-      console.log('Distance: ' + distance + ' meters');
-      if (this.polyline) {
-        this.polyline.setMap(null);
-      }
-  
+
+     
       // Draw a new polyline
       this.polyline = new google.maps.Polyline({
         path: [ this.marker1.getPosition(), this.marker2.getPosition()],
         geodesic: true,
         strokeColor: 'red',
         strokeOpacity: 1.0,
-        strokeWeight: 2
+        strokeWeight: 3
       });
   
-      this.polyline.setMap(this.map);
+      if (this.polyline) {
+        this.polyline.setMap(this.map);
+      }
+ 
+      let distanceInYards = distance * 1.09361; 
+
+      let distanceLabel = new google.maps.InfoWindow({
+        position: midpoint,
+        pixelOffset: new google.maps.Size(0, -27),
+        content: '<div style=" font-weight: bold;"  class="distance-label">' + distanceInYards.toFixed(2) + ' yards</div>'
+      });
+  
+      distanceLabel.open(this.map)
+
     }
 
   }
@@ -471,14 +486,14 @@ export default class extends Controller {
       url: "/assets/distanceIcon1.png"  + '#custom_marker', // url
       scaledSize: new google.maps.Size(40, 40), // scaled size
       origin: new google.maps.Point(0,0), // origin
-      anchor: new google.maps.Point(0, 0) // anchor
+      anchor: new google.maps.Point(20, 20) // anchor
     };
 
     this.icon7 = {
       url: "/assets/distanceIcon2.png"  + '#custom_marker', // url
       scaledSize: new google.maps.Size(40, 40), // scaled size
       origin: new google.maps.Point(0,0), // origin
-      anchor: new google.maps.Point(0, 0) // anchor
+      anchor: new google.maps.Point(20, 20) // anchor
     };
 
   }
