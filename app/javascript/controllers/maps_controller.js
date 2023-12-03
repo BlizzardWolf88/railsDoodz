@@ -225,7 +225,7 @@ export default class extends Controller {
         if(this.marker != undefined){  
             this.marker.setVisible(false);                          
        }  
-       this.CalculateDist(latLng)
+       this.CreateDistanceLocs(latLng)
       }
      else{
           //render pin on the click
@@ -254,80 +254,102 @@ export default class extends Controller {
   }
   
   SwicthOnMesureDist(){
+
     this.activateMeasureDist = !this.activateMeasureDist; 
-    this.marker1
-    this.marker2
-    this.polyline
+    this.distLocs = []
+    this.polylines = [];
   }
    
 
-  CalculateDist(location){
-     
-    if (!this.marker1) {
-      this.marker1 = new google.maps.Marker({
-        position: location,
-        map: this.map,
-        title: 'Point 1',
-        icon: this.icon6,
-      });
-    } else if (!this.marker2) {
-      this.marker2 = new google.maps.Marker({
-        position: location,
-        map: this.map,
-        title: 'Point 2',
-        icon: this.icon7,
-      });
+  CreateDistanceLocs(location) {
+    let daIcon
+    daIcon = this.distLocs.length > 0 ? this.icon7 : this.icon6
 
-      if(this.marker1 && this.marker2 )
-      // Calculate and display distance
+    let marker = new google.maps.Marker({
+            position: location,
+            map: this.map,
+            title: 'Point',
+            icon: daIcon,
+          });
+
+     this.distLocs.push(marker)
+
+     if (this.distLocs.length > 1){
+      this.drawLines(this.distLocs);
+     }
+    
+  }
+
+
+  drawLines(distLocs) {
+    const markers = distLocs;
+  
+    for (let i = 0; i < markers.length - 1; i++) {
+
+      //distance between the current and the preev
       var distance = google.maps.geometry.spherical.computeDistanceBetween(
-        this.marker1.getPosition(),
-        this.marker2.getPosition()
-        
-      );  
-      
+        markers[i].getPosition(),
+        markers[i+1].getPosition()        
+       );  
+
+      let distanceInYards = distance * 1.09361; 
+
+      //get medpoint of distance
       let midpoint = google.maps.geometry.spherical.interpolate(
-        this.marker1.getPosition(), this.marker2.getPosition(), 0.5
+        markers[i].getPosition(), markers[i+1].getPosition() , 0.5
       );
 
-     
-      // Draw a new polyline
-      this.polyline = new google.maps.Polyline({
-        path: [ this.marker1.getPosition(), this.marker2.getPosition()],
+      const line = new google.maps.Polyline({
+        path: [
+          { lat: markers[i].getPosition().lat(), lng: markers[i].getPosition().lng() },
+          { lat: markers[i + 1].getPosition().lat(), lng: markers[i + 1].getPosition().lng() },
+        ],
         geodesic: true,
         strokeColor: 'red',
         strokeOpacity: 1.0,
-        strokeWeight: 3
+        strokeWeight: 3,
+        map: this.map,
+        
       });
-  
-      if (this.polyline) {
-        this.polyline.setMap(this.map);
-      }
- 
-      let distanceInYards = distance * 1.09361; 
 
-      let distanceLabel = new google.maps.InfoWindow({
-        position: midpoint,
-        pixelOffset: new google.maps.Size(0, -27),
-        content: '<div style=" font-weight: bold;"  class="distance-label">' + distanceInYards.toFixed(2) + ' yards</div>'
-      });
-  
-      distanceLabel.open(this.map)
+          this.polylines.push(line);
+
+          let distanceLabel = new google.maps.InfoWindow({
+          position: midpoint,
+          pixelOffset: new google.maps.Size(0, -27),
+          content: '<div style=" font-weight: bold;"  class="distance-label">' + distanceInYards.toFixed(2) + ' yards</div>'
+        });
+
+        distanceLabel.open(this.map)
 
     }
-
   }
+
+  UndoPolyLine() {
+
+    if (this.polylines.length > 0) {
+      const lastLine = this.polylines.pop();
+      lastLine.setMap(null); // Remove the line from the map
+    }
+  
+    // If you have corresponding markers, adjust this part accordingly
+    if (this.distLocs.length > this.polylines.length) {
+      const lastMarker = this.distLocs.pop();
+      lastMarker.setMap(null); // Remove the marker from the map
+      //this.marker.setVisible(false);
+    }
+  }
+
   setCompassImages(){
 
-    const northLogo = document.getElementById('northLogo').src = "/assets/wind/North.png";
-    const northWestLogo = document.getElementById('northWestLogo').src = "/assets/wind/NorthWest.png";
-    const northEastLogo = document.getElementById('northEastLogo').src = "/assets/wind/NorthEast.png";
-    const westLogo = document.getElementById('westLogo').src = "/assets/wind/West.png";
-    const eastLogo = document.getElementById('eastLogo').src = "/assets/wind/East.png";
-    const southWestlogo = document.getElementById('southWestLogo').src = "/assets/wind/SouthWest.png";
-    const southEeastlogo = document.getElementById('southEastLogo').src = "/assets/wind/SouthEast.png";
-    const southLogo = document.getElementById('southLogo').src = "/assets/wind/South.png";
-
+    document.getElementById('northLogo').src = "/assets/wind/North.png";
+    document.getElementById('northWestLogo').src = "/assets/wind/NorthWest.png";
+    document.getElementById('northEastLogo').src = "/assets/wind/NorthEast.png";
+    document.getElementById('westLogo').src = "/assets/wind/West.png";
+    document.getElementById('eastLogo').src = "/assets/wind/East.png";
+    document.getElementById('southWestLogo').src = "/assets/wind/SouthWest.png";
+    document.getElementById('southEastLogo').src = "/assets/wind/SouthEast.png";
+    document.getElementById('southLogo').src = "/assets/wind/South.png";
   }
 
   keydown(event){
@@ -624,7 +646,6 @@ export default class extends Controller {
 
   async clearMarker(){
 
-   
     this.loctypeTarget.value = ""
     this.setCompassImages();
     this.NorthWind = ""

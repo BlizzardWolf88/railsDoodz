@@ -6,8 +6,11 @@
 <div data-controller = "maps">
   <div class="container">
     <div class = "row mb-3">
-      <div class = "col-4">
-      </div>    
+      <div class = "col-2">
+      </div>   
+       <div class = "col-2">
+       <button class ="btn btn-primary btn-md active" data-action="click->maps#UndoPolyLine">Undo</button>
+      </div> 
       <div class = "col-2 g-1">
          <%# This is a sneaky way to toggle the colors of a button when clicked  %>
          <input type="checkbox" id="toggle" class="toggle-checkbox">
