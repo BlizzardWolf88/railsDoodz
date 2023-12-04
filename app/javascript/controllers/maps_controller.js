@@ -132,7 +132,9 @@ export default class extends Controller {
   }
 
   showMarker(userGMarker){
-    this.marker.setVisible(false); //hide the "current location by click" marker
+    if(this.marker != undefined){
+      this.marker.setVisible(false); //hide the "current location by click" marker
+    }   
 
     this.myMarker = userGMarker
     this.clearMarker();
@@ -257,7 +259,8 @@ export default class extends Controller {
 
     this.activateMeasureDist = !this.activateMeasureDist; 
     this.distLocs = []
-    this.polylines = [];
+    this.polylines = []
+    this.distLabels = []
   }
    
 
@@ -284,25 +287,25 @@ export default class extends Controller {
   drawLines(distLocs) {
     const markers = distLocs;
   
-    for (let i = 0; i < markers.length - 1; i++) {
+    for (let i = markers.length -1; i >=0 ; i--) {
 
       //distance between the current and the preev
       var distance = google.maps.geometry.spherical.computeDistanceBetween(
         markers[i].getPosition(),
-        markers[i+1].getPosition()        
+        markers[i-1].getPosition()        
        );  
 
       let distanceInYards = distance * 1.09361; 
 
       //get medpoint of distance
       let midpoint = google.maps.geometry.spherical.interpolate(
-        markers[i].getPosition(), markers[i+1].getPosition() , 0.5
+        markers[i].getPosition(), markers[i-1].getPosition() , 0.5
       );
 
       const line = new google.maps.Polyline({
         path: [
           { lat: markers[i].getPosition().lat(), lng: markers[i].getPosition().lng() },
-          { lat: markers[i + 1].getPosition().lat(), lng: markers[i + 1].getPosition().lng() },
+          { lat: markers[i - 1].getPosition().lat(), lng: markers[i - 1].getPosition().lng() },
         ],
         geodesic: true,
         strokeColor: 'red',
@@ -320,25 +323,35 @@ export default class extends Controller {
           content: '<div style=" font-weight: bold;"  class="distance-label">' + distanceInYards.toFixed(2) + ' yards</div>'
         });
 
+        this.distLabels.push(distanceLabel);
         distanceLabel.open(this.map)
-
+        break;
     }
   }
+
 
   UndoPolyLine() {
+   // Check if there are polylines to undo
+      if (this.polylines.length > 0 )  {
+        // Remove the last drawn polyline from the map
+        const lastLine = this.polylines.pop();
+        lastLine.setMap(null);
+      }
+        
+        // If you have corresponding markers, adjust this part accordingly
+        if (this.distLocs.length > 0) {
+            // Remove the last marker from the map
+            const lastMarker = this.distLocs.pop();
+            lastMarker.setMap(null);
+        }
 
-    if (this.polylines.length > 0) {
-      const lastLine = this.polylines.pop();
-      lastLine.setMap(null); // Remove the line from the map
-    }
-  
-    // If you have corresponding markers, adjust this part accordingly
-    if (this.distLocs.length > this.polylines.length) {
-      const lastMarker = this.distLocs.pop();
-      lastMarker.setMap(null); // Remove the marker from the map
-      //this.marker.setVisible(false);
-    }
-  }
+        if (this.distLabels.length > 0) {
+          // Remove the last marker from the map
+          const lastLabel = this.distLabels.pop();
+          lastLabel.setMap(null);
+        }
+    
+}
 
   setCompassImages(){
 
@@ -506,14 +519,14 @@ export default class extends Controller {
 
     this.icon6 = {
       url: "/assets/distanceIcon1.png"  + '#custom_marker', // url
-      scaledSize: new google.maps.Size(40, 40), // scaled size
+      scaledSize: new google.maps.Size(35, 35), // scaled size
       origin: new google.maps.Point(0,0), // origin
       anchor: new google.maps.Point(20, 20) // anchor
     };
 
     this.icon7 = {
       url: "/assets/distanceIcon2.png"  + '#custom_marker', // url
-      scaledSize: new google.maps.Size(40, 40), // scaled size
+      scaledSize: new google.maps.Size(35, 35), // scaled size
       origin: new google.maps.Point(0,0), // origin
       anchor: new google.maps.Point(20, 20) // anchor
     };
