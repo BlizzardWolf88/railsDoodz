@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_25_203340) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_05_032819) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -72,6 +72,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_25_203340) do
     t.string "notes"
     t.string "loc_type"
     t.integer "num_sits"
+    t.text "polyline_info"
     t.index ["user_id"], name: "index_locs_on_user_id"
   end
 

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get  'locs/getMarkerImage/:loc_id', to: 'locs#getMarkerImage'
   post "locs/create", to: "locs#create"
   post "locs/update", to: "locs#update"
+  post "locs/saveMarkersAndPolylines", to: 'locs#saveMarkersAndPolylines' 
   post "locs/updateImages", to: "locs#updateImages"
   post "locs/destroy", to: "locs#destroy"
   post 'locs/delete_image', to: 'locs#delete_image'

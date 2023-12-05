@@ -7,7 +7,7 @@ import{FetchRequest, get, post, put, patch, destroy } from '@rails/request.js'
 export default class extends Controller {
   static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east",
   "southwest","myID","southeast","south","loctype","numsits","showpicsbtn","createbtn","updatebtn","deletebtn",
-  "markerimages","inputGroupFile"]
+  "markerimages","inputGroupFile","buttons"]
  
   connect() {
     if (typeof (google) != "undefined"){
@@ -258,9 +258,16 @@ export default class extends Controller {
   SwicthOnMesureDist(){
 
     this.activateMeasureDist = !this.activateMeasureDist; 
+    this.toggleVisibility()
     this.distLocs = []
     this.polylines = []
     this.distLabels = []
+  }
+
+  toggleVisibility() {
+    this.buttonsTargets.forEach((button) => {
+      button.classList.toggle("d-none", !button.classList.contains("d-none"));
+    });
   }
    
 
@@ -285,27 +292,26 @@ export default class extends Controller {
 
 
   drawLines(distLocs) {
-    const markers = distLocs;
-  
-    for (let i = markers.length -1; i >=0 ; i--) {
+       
+  for (let i = distLocs.length -1; i >=0 ; i--) {
 
       //distance between the current and the preev
       var distance = google.maps.geometry.spherical.computeDistanceBetween(
-        markers[i].getPosition(),
-        markers[i-1].getPosition()        
+        distLocs[i].getPosition(),
+        distLocs[i-1].getPosition()        
        );  
 
       let distanceInYards = distance * 1.09361; 
 
       //get medpoint of distance
       let midpoint = google.maps.geometry.spherical.interpolate(
-        markers[i].getPosition(), markers[i-1].getPosition() , 0.5
+        distLocs[i].getPosition(), distLocs[i-1].getPosition() , 0.5
       );
 
       const line = new google.maps.Polyline({
         path: [
-          { lat: markers[i].getPosition().lat(), lng: markers[i].getPosition().lng() },
-          { lat: markers[i - 1].getPosition().lat(), lng: markers[i - 1].getPosition().lng() },
+          { lat: distLocs[i].getPosition().lat(), lng: distLocs[i].getPosition().lng() },
+          { lat: distLocs[i - 1].getPosition().lat(), lng: distLocs[i - 1].getPosition().lng() },
         ],
         geodesic: true,
         strokeColor: 'red',
@@ -315,15 +321,19 @@ export default class extends Controller {
         
       });
 
-          this.polylines.push(line);
+        this.polylines.push(line);
 
           let distanceLabel = new google.maps.InfoWindow({
           position: midpoint,
           pixelOffset: new google.maps.Size(0, -27),
           content: '<div style=" font-weight: bold;"  class="distance-label">' + distanceInYards.toFixed(2) + ' yards</div>'
         });
-
-        this.distLabels.push(distanceLabel);
+        
+        //We don't want to save repetative HTML we just want the distance
+        // we can reuse that HTML in the content after fetching from the db
+        distanceLabel.set("distance", distanceInYards.toFixed(2))
+       
+       this.distLabels.push(distanceLabel);    
         distanceLabel.open(this.map)
         break;
     }
@@ -338,19 +348,18 @@ export default class extends Controller {
         lastLine.setMap(null);
       }
         
-        // If you have corresponding markers, adjust this part accordingly
-        if (this.distLocs.length > 0) {
-            // Remove the last marker from the map
-            const lastMarker = this.distLocs.pop();
-            lastMarker.setMap(null);
-        }
-
-        if (this.distLabels.length > 0) {
+      // If you have corresponding markers, adjust this part accordingly
+      if (this.distLocs.length > 0) {
           // Remove the last marker from the map
-          const lastLabel = this.distLabels.pop();
-          lastLabel.setMap(null);
-        }
-    
+          const lastMarker = this.distLocs.pop();
+          lastMarker.setMap(null);
+      }
+
+      if (this.distLabels.length > 0) {
+        // Remove the last marker from the map
+        const lastLabel = this.distLabels.pop();
+        lastLabel.setMap(null);
+      }   
 }
 
   setCompassImages(){
@@ -581,6 +590,54 @@ export default class extends Controller {
   }
 
 
+  async SaveLocsAndPol(){
+
+        // Assuming distLocs is an array of objects representing markers
+      const markerData = this.distLocs.map((marker) => {
+      return {
+        latitude: marker.latitude,
+        longitude: marker.longitude,
+        loc_type: marker.loc_type
+        // Add other properties you need
+      };
+    });
+
+      // Assuming polylines is an array of coordinates for polylines
+      const polylineData = this.polylines.map((polyline) => {
+        return {
+          path: polyline.getPath().getArray().map((latLng) => {
+            return { lat: latLng.lat(), lng: latLng.lng() };
+          }),
+          // Add other properties you need
+        };
+      });
+
+    
+      const labelData = this.distLabels.map((label) => {
+        let dist = label.get("distance")
+        return {
+          //content: label.getContent(),
+          distance: dist
+          // Add other properties you need
+        };
+});
+
+    const response = await post('saveMarkersAndPolylines',{
+      body: JSON.stringify({
+        distLocs: markerData,
+        polylines:polylineData,
+        distLabels: labelData,
+      }),
+      responseKind: 'json'
+       
+     })
+          
+    if (response.ok) {
+      const data = await response.json     
+     }        
+  }
+
+
   async destroySpot() {
   
     const response = await post('destroy',{
@@ -606,6 +663,7 @@ export default class extends Controller {
     }
   }
 
+  /** Filter methods for location markers */
   filterTimesHunted(event){
     let timesHunted
     let found  

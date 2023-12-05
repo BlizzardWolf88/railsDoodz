@@ -141,16 +141,29 @@ class LocsController < ApplicationController
       end
     end
 
+    def saveMarkersAndPolylines
+      distLocs = params[:distLocs]
+      polylines = params[:polylines]
+      distLabels = params[:distLabels]
+  
+      # Process and save the data to the database or perform other actions
+      # ...
+  
+      render json: { success: true }
+    end
+
     def correct_loc 
       @loc = current_user.loc.find_by(id: params[:id])
       redirect_to loc_path, notice: "Can't change this Loc because that is NOT your Loc Madoo" if @loc.nil?
     end
 
     
+
+    
     private   
     #Might need to refactor the loc table IDK 
     def loc_params
-       params.permit(:name, :latitude, :longitude,:create_date,:created_at,:user_id,:updated_at,:wind,:notes,:loc_type,:num_sits,images: [])
+       params.permit(:name, :latitude, :longitude,:create_date,:created_at,:user_id,:updated_at, :wind,:notes,:loc_type,:num_sits,images: [], distLocs: [], polylines: [], distLabels: [])
     end
 
 
