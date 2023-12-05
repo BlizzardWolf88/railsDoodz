@@ -146,7 +146,7 @@ class LocsController < ApplicationController
       polylines = params[:polylines]
       distLabels = params[:distLabels]
   
-      # Process and save the data to the database or perform other actions
+      #God Damn do we need logic for these arrays
       # ...
   
       render json: { success: true }
@@ -156,8 +156,6 @@ class LocsController < ApplicationController
       @loc = current_user.loc.find_by(id: params[:id])
       redirect_to loc_path, notice: "Can't change this Loc because that is NOT your Loc Madoo" if @loc.nil?
     end
-
-    
 
     
     private   
