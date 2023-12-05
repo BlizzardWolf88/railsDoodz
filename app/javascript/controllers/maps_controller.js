@@ -266,7 +266,16 @@ export default class extends Controller {
 
   CreateDistanceLocs(location) {
     let daIcon
-    daIcon = this.distLocs.length > 0 ? this.icon7 : this.icon6
+    let iconName 
+
+   if (this.distLocs.length > 0){
+    daIcon = this.icon7
+    iconName = "laser"// each tail loc
+   }else{
+    daIcon = this.icon6
+    iconName = "Predator"//the head
+   }
+  
 
     let marker = new google.maps.Marker({
             position: location,
@@ -275,6 +284,7 @@ export default class extends Controller {
             icon: daIcon,
           });
 
+     marker.set("locType", iconName)
      this.distLocs.push(marker)
 
      if (this.distLocs.length > 1){
@@ -515,14 +525,14 @@ export default class extends Controller {
       anchor: new google.maps.Point(0, 0) // anchor
     };
 
-    this.icon6 = {
+    this.icon6 = { //name is predator
       url: "/assets/distanceIcon1.png"  + '#custom_marker', // url
       scaledSize: new google.maps.Size(35, 35), // scaled size
       origin: new google.maps.Point(0,0), // origin
       anchor: new google.maps.Point(20, 20) // anchor
     };
 
-    this.icon7 = {
+    this.icon7 = { //name laser
       url: "/assets/distanceIcon2.png"  + '#custom_marker', // url
       scaledSize: new google.maps.Size(35, 35), // scaled size
       origin: new google.maps.Point(0,0), // origin
@@ -582,10 +592,11 @@ export default class extends Controller {
   async SaveLocsAndPol(){
 
       const markerData = this.distLocs.map((marker) => {
+        let locIcon = marker.get("locType")
       return {
         latitude: marker.position.lat(),
         longitude: marker.position.lng(),
-        loc_type: marker.loc_type
+        loc_type: locIcon
         // Add other properties you need
       };
     });
