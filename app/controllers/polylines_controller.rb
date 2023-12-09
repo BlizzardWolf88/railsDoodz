@@ -1,7 +1,7 @@
 class PolylinesController < ApplicationController
     before_action :authenticate_user!
     
-    def save_dist_locs(dist_locs_data, user)
+    def save_dist_marks(dist_locs_data, user)
         dist_locs_data.each do |loc_data|
           current_user.loc.create(
             latitude: loc_data[:latitude],

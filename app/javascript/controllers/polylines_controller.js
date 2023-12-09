@@ -6,33 +6,20 @@ export default class extends Controller {
     connect() {
       this.initImages();
       this.CreateIcons();
+      this.polylines = []
+      this.distLabels = []
     }
   
     initImages(){
       
     }
 
-    SwicthOnMesureDist(){
-
-        this.activateMeasureDist = !this.activateMeasureDist; 
-        this.toggleVisibility()
-        this.distLocs = []
-        this.polylines = []
-        this.distLabels = []
-      }
-      
-      toggleVisibility() {
-        this.buttonsTargets.forEach((button) => {
-          button.classList.toggle("d-none", !button.classList.contains("d-none"));
-        });
-      }
-    
-
-    CreateDistanceLocs(location,disLocs) {
+    CreateDistanceLocs(location,disLocs,map) {
         let daIcon
         let iconName 
-    
+     
        this.distLocs = disLocs
+       this.map = map
 
        if (this.distLocs.length > 0){
         daIcon = this.icon7
@@ -129,6 +116,51 @@ export default class extends Controller {
           }   
     }
 
+    async SaveLocsAndPol(){
+
+      const markerData = this.distLocs.map((marker) => {
+        let locIcon = marker.get("locType")
+      return {
+        latitude: marker.position.lat(),
+        longitude: marker.position.lng(),
+        loc_type: locIcon
+        // Add other properties you need
+      };
+    });
+
+      const polylineData = this.polylines.map((polyline) => {
+        return {
+          path: polyline.getPath().getArray().map((latLng) => {
+            return { lat: latLng.lat(), lng: latLng.lng() };
+          }),
+          // Add other properties you need
+        };
+      });
+
+    
+      const labelData = this.distLabels.map((label) => {
+        let dist = label.get("distance")
+        return {
+          //content: label.getContent(),
+          distance: dist
+          // Add other properties you need
+        };
+});
+
+    const response = await post('save_dist_marks',{
+      body: JSON.stringify({
+        distLocs: markerData,
+        polylines:polylineData,
+        distLabels: labelData,
+      }),
+      responseKind: 'json'
+       
+     })
+          
+    if (response.ok) {
+      const data = await response.json     
+     }        
+  }
 
     CreateIcons(){
 

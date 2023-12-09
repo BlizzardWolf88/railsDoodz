@@ -4,18 +4,18 @@
 <%# Alt + B + B to close html tag <%%> 
 <br/>
 <div data-controller = "maps">
-  <div class="container" ata-controller = "polylines">
+  <div class="container" data-controller = "polylines"  id="polylines">
     <div class = "row mb-3">  
       <div class = "col-2 g-1"> 
        <input type="checkbox" id="toggle-btn" class="toggle-checkbox">    
        <label for="toggle-btn" data-target="maps.buttons" 
-       class="btn btn-primary btn-lg w-100 active  d-none"  data-action="click->maps#SaveLocsAndPol">
+       class="btn btn-primary btn-lg w-100 active  d-none"  data-action="click->polylines#SaveLocsAndPol">
                   Save Line          
          </label> 
       </div>   
        <div class = "col-1  g-1">      
          <label for="toggle-btn" data-target="maps.buttons" 
-         class="btn btn-dark btn-lg w-75 bi bi-arrow-clockwise d-none" data-action="click->maps#UndoPolyLine">
+         class="btn btn-dark btn-lg w-75 bi bi-arrow-clockwise d-none" data-action="click->polylines#UndoPolyLine">
            Undo           
          </label> 
       </div> 
