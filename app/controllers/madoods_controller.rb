@@ -52,7 +52,7 @@ class MadoodsController < ApplicationController
 
   def correct_dood 
    @madood = current_user.madood.find_by(id: params[:id])
-   redirect_to madood_path, notice: "Can't change this dood because you are NOT that dood" if @madood.nil?
+   redirect_to madood_path, notice: "Can't change this friend because you are NOT that freinds with " if @madood.nil?
   end
 
 

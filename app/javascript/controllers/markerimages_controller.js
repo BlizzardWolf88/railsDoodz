@@ -1,12 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 import{FetchRequest, get, post, put, patch, destroy } from '@rails/request.js'
-import {
-  getMetaValue,
-  toArray,
-  findElement,
-  removeElement,
-  insertAfter
-} from "helpers";
+// import {
+//   getMetaValue,
+//   toArray,
+//   findElement,
+//   removeElement,
+//   insertAfter
+// } from "helpers";
 
 
 // Connects to data-controller="marker-images"

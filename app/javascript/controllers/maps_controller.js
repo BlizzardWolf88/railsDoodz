@@ -5,7 +5,7 @@ import{FetchRequest, get, post, put, patch, destroy } from '@rails/request.js'
 export default class extends Controller {
   static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east",
   "southwest","myID","southeast","south","loctype","numsits","showpicsbtn","createbtn","updatebtn","deletebtn",
-  "markerimages","inputGroupFile","buttons"]
+  "markerimages","inputGroupFile","buttons","polylines"]
  
   connect() {
     if (typeof (google) != "undefined"){
@@ -220,7 +220,12 @@ export default class extends Controller {
         if(this.marker != undefined){  
             this.marker.setVisible(false);                          
        }  
-       this.CreateDistanceLocs(latLng)
+
+       // MUST REFACTOR
+       const polylineCntl = this.application.getControllerForElementAndIdentifier(document.getElementById('polylines'), "polylines" )
+       polylineCntl.CreateDistanceLocs(latLng,this.distLocs.length)
+      
+      this.CreateDistanceLocs(latLng)
       }
      else{
           //render pin on the click
@@ -257,6 +262,7 @@ export default class extends Controller {
     this.distLabels = []
   }
 
+  //This is to show the save lines button and the undo button
   toggleVisibility() {
     this.buttonsTargets.forEach((button) => {
       button.classList.toggle("d-none", !button.classList.contains("d-none"));
@@ -620,7 +626,7 @@ export default class extends Controller {
         };
 });
 
-    const response = await post('saveMarkersAndPolylines',{
+    const response = await post('save_dist_locs',{
       body: JSON.stringify({
         distLocs: markerData,
         polylines:polylineData,
