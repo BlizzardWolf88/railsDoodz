@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   post "locs/destroy", to: "locs#destroy"
   post 'locs/delete_image', to: 'locs#delete_image'
 
-  post "polylines/save_dist_marks", to: 'polylines#save_dist_marks' 
+  post "locs/save_dist_marks", to: 'polylines#save_dist_marks' 
   
   get  "markerimages/getPics"
   post "markerimages/create", to: "markerimages#create"

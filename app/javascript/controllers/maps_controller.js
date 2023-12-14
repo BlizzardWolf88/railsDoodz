@@ -82,9 +82,16 @@ export default class extends Controller {
             break;
           case("Stand Pin"):
             sendIcon = this.icon3
-            break;       
+            break; 
+          case("Predator"):
+            sendIcon = this.icon6
+            break;
+          case("laser"):
+          sendIcon = this.icon7
+          break;    
           default:
             sendIcon = this.icon4      
+            
         }
 
         let latLng = new google.maps.LatLng(marker.latitude, marker.longitude);

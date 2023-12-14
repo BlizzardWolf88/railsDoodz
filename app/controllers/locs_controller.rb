@@ -151,7 +151,7 @@ class LocsController < ApplicationController
     private   
     #Might need to refactor the loc table IDK 
     def loc_params
-       params.permit(:name, :latitude, :longitude,:create_date,:created_at,:user_id,:updated_at, :wind,:notes,:loc_type,:num_sits,images: [], distLocs: [], polylines: [], distLabels: [])
+       params.permit(:name, :latitude, :longitude,:create_date,:created_at,:user_id,:updated_at, :wind,:notes,:loc_type,:num_sits,images: [])
     end
 
    

@@ -49,6 +49,7 @@ export default class extends Controller {
     
       drawLines(distLocs) {
            
+        //Start at the end of the array only need 1 iteration
         for (let i = distLocs.length -1; i >=0 ; i--) {
     
             //distance between the current and the preev
@@ -76,7 +77,11 @@ export default class extends Controller {
               map: this.map,
               
             });
-    
+               //We don't want to save repetative HTML we just want the distance
+              //There is a column in the Poly Lines table for a distance
+              // we can reuse that HTML in the content after fetching from the db
+              line.set("distance", distanceInYards.toFixed(2))
+
               this.polylines.push(line);
     
                 let distanceLabel = new google.maps.InfoWindow({
@@ -85,16 +90,14 @@ export default class extends Controller {
                 content: '<div style=" font-weight: bold;"  class="distance-label">' + distanceInYards.toFixed(2) + ' yards</div>'
               });
               
-              //We don't want to save repetative HTML we just want the distance
-              // we can reuse that HTML in the content after fetching from the db
-              distanceLabel.set("distance", distanceInYards.toFixed(2))
-            
-            this.distLabels.push(distanceLabel);    
+                        
+             this.distLabels.push(distanceLabel);    
               distanceLabel.open(this.map)
               break;
           }
       }
     
+      //Pop these bad boys
       UndoPolyLine() {
     
           if (this.polylines.length > 0 )  {
@@ -129,29 +132,25 @@ export default class extends Controller {
     });
 
       const polylineData = this.polylines.map((polyline) => {
+        let dist = polyline.get("distance")
         return {
           path: polyline.getPath().getArray().map((latLng) => {
-            return { lat: latLng.lat(), lng: latLng.lng() };
+            return { 
+              lat: latLng.lat(), 
+              lng: latLng.lng(),
+              distance: dist 
+            };
           }),
           // Add other properties you need
         };
       });
 
-    
-      const labelData = this.distLabels.map((label) => {
-        let dist = label.get("distance")
-        return {
-          //content: label.getContent(),
-          distance: dist
-          // Add other properties you need
-        };
-});
-
+  
     const response = await post('save_dist_marks',{
       body: JSON.stringify({
         distLocs: markerData,
-        polylines:polylineData,
-        distLabels: labelData,
+        polylines:polylineData
+        //distLabels: labelData,
       }),
       responseKind: 'json'
        
