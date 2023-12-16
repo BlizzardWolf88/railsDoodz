@@ -1,6 +1,12 @@
 class PolylinesController < ApplicationController
   before_action :authenticate_user!
 
+  def getPolyLines
+    @polyLines = current_user.polylines    
+    render json: @polyLines
+  end
+
+
   def save_dist_marks
     polyline_params[:distLocs].each do |loc_data|
       current_user.loc.create(
@@ -10,46 +16,45 @@ class PolylinesController < ApplicationController
       )
     end
 
-
     polyline_params[:polylines].each do |polyline_data|
       create_polyline(polyline_data)
     end
-
-
   end
-
-  # def save_polylines_and_labels
-  #   polyline_params[:polylines].each_with_index do |polyline_data, index|
-  #     dist_loc_start = find_or_create_loc(polyline_data[:path][0])
-  #     dist_loc_end = find_or_create_loc(polyline_data[:path][1])
-
-  #     polyline = create_polyline(dist_loc_start, dist_loc_end,distance)
-  #     format.json { render json: response_data, status: :ok }
-  #   end
-  # end
 
   private
 
-  def find_or_create_loc(coords)
-    current_user.loc.find_or_create_by(
-      latitude: coords[:lat],
-      longitude: coords[:lng]
-    )
-  end
-
+ 
   def create_polyline(polyline_data)
-    #Rails.logger.info("Creating polyline with parameters: #{dist_loc_start}, #{dist_loc_end}, #{distance}")
-    current_user.loc.find(dist_loc_start.id).start_polylines.create(
-      start_loc: dist_loc_start,
-      end_loc: dist_loc_end,
-      distance: distance
+    start_point = polyline_data[:path].first
+    end_point = polyline_data[:path].last
+  
+    start_loc = create_or_find_loc(
+      latitude: start_point[:lat],
+      longitude: start_point[:lng]
+    )
+  
+    end_loc = create_or_find_loc(
+      latitude: end_point[:lat],
+      longitude: end_point[:lng]
+    )
+  
+    current_user.polylines.create(
+      start_latitude: start_loc.latitude,
+      start_longitude: start_loc.longitude,
+      end_latitude: end_loc.latitude,
+      end_longitude: end_loc.longitude,
+      distance: polyline_data[:path].first[:distance].to_f 
     )
   end
 
-
+  def create_or_find_loc(coords)
+    current_user.loc.find_or_create_by(
+      latitude: coords[:latitude],
+      longitude: coords[:longitude]
+    )
+  end
 
   def polyline_params
     params.permit(distLocs: [:latitude, :longitude, :loc_type], polylines: [:path => [:lat, :lng, :distance]])
   end
-
-end 
+end

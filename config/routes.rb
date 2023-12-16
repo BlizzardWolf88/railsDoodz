@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get  'locs/index'
   get  'locs/saveSpot', to: "locs#saveSpot"
   get  'locs/getMarkers'
+  get  'polylines/getPolyLines'
   get  'locs/getMarkerImage/:loc_id', to: 'locs#getMarkerImage'
   post "locs/create", to: "locs#create"
   post "locs/update", to: "locs#update"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_08_033120) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_16_022647) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -101,13 +101,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_08_033120) do
   end
 
   create_table "polylines", force: :cascade do |t|
-    t.integer "start_loc_id", null: false
-    t.integer "end_loc_id", null: false
+    t.decimal "start_latitude", precision: 10, scale: 6, null: false
+    t.decimal "start_longitude", precision: 10, scale: 6, null: false
+    t.decimal "end_latitude", precision: 10, scale: 6, null: false
+    t.decimal "end_longitude", precision: 10, scale: 6, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.float "distance"
-    t.index ["end_loc_id"], name: "index_polylines_on_end_loc_id"
-    t.index ["start_loc_id"], name: "index_polylines_on_start_loc_id"
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_polylines_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -130,6 +132,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_08_033120) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "markerimages", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "polylines", "end_locs"
-  add_foreign_key "polylines", "start_locs"
+  add_foreign_key "polylines", "users"
 end

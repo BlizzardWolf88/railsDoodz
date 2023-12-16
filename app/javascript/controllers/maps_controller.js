@@ -45,6 +45,7 @@ export default class extends Controller {
 
     this.fetchMarkers();
     this.CreateIcons();
+    this.fetchPolyLines();
 
      this.map.addListener("click", (e) => {
 
@@ -55,6 +56,20 @@ export default class extends Controller {
 
   }
 
+
+  async fetchPolyLines(){
+
+    const request = new FetchRequest("get","/polylines/getPolyLines", { responseKind: "json" })
+    const response = await request.perform()
+
+    if (response.ok){
+      const lines = await response.json
+      //this.drawLines(lines)
+    }
+    
+  }
+
+  
   async fetchMarkers(){
 
     const request = new FetchRequest("get","/locs/getMarkers", { responseKind: "json" })

@@ -10,9 +10,10 @@ export default class extends Controller {
       this.distLabels = []
     }
   
-    initImages(){
-      
+    initImages(){     
+     
     }
+
 
     CreateDistanceLocs(location,disLocs,map) {
         let daIcon
@@ -65,6 +66,7 @@ export default class extends Controller {
               distLocs[i].getPosition(), distLocs[i-1].getPosition() , 0.5
             );
     
+            //Move the polyline creation to its own function
             const line = new google.maps.Polyline({
               path: [
                 { lat: distLocs[i].getPosition().lat(), lng: distLocs[i].getPosition().lng() },
@@ -97,6 +99,13 @@ export default class extends Controller {
           }
       }
     
+      //we need this for API fetch and user click creation 
+      RenderSavedPolys(strLat,strLon,endLat,endLon,midpoint){
+
+
+      }
+
+
       //Pop these bad boys
       UndoPolyLine() {
     
@@ -132,7 +141,7 @@ export default class extends Controller {
     });
 
       const polylineData = this.polylines.map((polyline) => {
-        let dist = polyline.get("distance")
+        let dist = polyline.get("distance")// chat GTP this is the distance a conversion to yards
         return {
           path: polyline.getPath().getArray().map((latLng) => {
             return { 
