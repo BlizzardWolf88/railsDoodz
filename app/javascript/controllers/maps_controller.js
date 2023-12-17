@@ -16,6 +16,7 @@ export default class extends Controller {
 
   initializeMap(evt) {
     this.myMarkers =[]
+    this.polyMarkArr = []
 
     this.showpicsbtnTarget.hidden = true;
 
@@ -45,8 +46,9 @@ export default class extends Controller {
 
     this.fetchMarkers();
     this.CreateIcons();
-    this.fetchPolyLines();
+    //this.fetchPolyLines();
 
+    
      this.map.addListener("click", (e) => {
 
         console.log("Map Listener")
@@ -54,19 +56,6 @@ export default class extends Controller {
 
       });
 
-  }
-
-
-  async fetchPolyLines(){
-
-    const request = new FetchRequest("get","/polylines/getPolyLines", { responseKind: "json" })
-    const response = await request.perform()
-
-    if (response.ok){
-      const lines = await response.json
-      //this.drawLines(lines)
-    }
-    
   }
 
   
@@ -84,28 +73,34 @@ export default class extends Controller {
 
   //add new param if update
   renderMarkers(markers){
+     this.polyMarker = false
 
-     markers.forEach((marker) => {
-
+     markers.forEach((marker) => {       
         let sendIcon 
         switch(marker.loc_type){
           case("Access Point"):
             sendIcon = this.icon1
+            this.polyMarker = false
             break;         
           case("Buck Bed Pin"):
             sendIcon = this.icon2
+            this.polyMarker = false
             break;
           case("Stand Pin"):
             sendIcon = this.icon3
+            this.polyMarker = false
             break; 
           case("Predator"):
             sendIcon = this.icon6
+            this.polyMarker = true
             break;
           case("laser"):
           sendIcon = this.icon7
+          this.polyMarker = true
           break;    
           default:
-            sendIcon = this.icon4      
+            sendIcon = this.icon4 
+            this.polyMarker = false     
             
         }
 
@@ -134,8 +129,14 @@ export default class extends Controller {
         gmarker.set("numSits", marker.num_sits)
         gmarker.set("date", marker.created_at)
         gmarker.set("notes", marker.notes)
-          
-        this.myMarkers.push(gmarker)
+        
+        if(this.polyMarker){
+         this.polyMarkArr.push(gmarker)
+        }
+        else{
+          this.myMarkers.push(gmarker)
+        }
+        
         //adding a a click event to each of the user's markers
         google.maps.event.addListener(gmarker, 'click', (e) => {
           this.showMarker(gmarker);
@@ -144,6 +145,8 @@ export default class extends Controller {
 
      });
 
+     const polylineCntl = this.application.getControllerForElementAndIdentifier(document.getElementById('polylines'), "polylines" )
+     polylineCntl.RenderSavedPolys(this.polyMarkArr,this.map)
   }
 
   showMarker(userGMarker){
@@ -209,7 +212,7 @@ export default class extends Controller {
        this.deletebtnTarget.hidden = false  
 
        this.getMarkerImages(this.markerId)
-       //Fetch images asscociated with this marke 
+       //Fetch images asscociated with this marker 
   }
 
   async getMarkerImages(locID){
@@ -244,8 +247,8 @@ export default class extends Controller {
        }  
 
        // MUST REFACTOR
-       const polylineCntl = this.application.getControllerForElementAndIdentifier(document.getElementById('polylines'), "polylines" )
-       polylineCntl.CreateDistanceLocs(latLng,this.distLocs,this.map)
+      const polylineCntl = this.application.getControllerForElementAndIdentifier(document.getElementById('polylines'), "polylines" )
+      polylineCntl.CreateDistanceLocs(latLng,this.distLocs,this.map)
       
       //this.CreateDistanceLocs(latLng)
       }

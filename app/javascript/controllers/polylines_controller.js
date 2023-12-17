@@ -51,6 +51,7 @@ export default class extends Controller {
       drawLines(distLocs) {
            
         //Start at the end of the array only need 1 iteration
+        //Adding a new node to the tail
         for (let i = distLocs.length -1; i >=0 ; i--) {
     
             //distance between the current and the preev
@@ -100,13 +101,70 @@ export default class extends Controller {
       }
     
       //we need this for API fetch and user click creation 
-      RenderSavedPolys(strLat,strLon,endLat,endLon,midpoint){
+      RenderSavedPolys(distLocs,map){
+        let group = true;
 
+        let theMap = map
+        for (let i = 0; i < distLocs.length -1; i++) {
+          
+          if(i < distLocs.length -1 && i > 1){
+            //The sequence for a group of markers with polylines is predator conjoined by lasers
+            // we do not want a polylilne from a laser to a seperate predator
+            //if group becomes false do NOT draw line 
+            group = (distLocs[i].locType == "laser" && distLocs[i + 1].locType == "Predator") ? false :true
+          
+          }          
 
+          if(group){
+          //distance between the current and the preev
+          var distance = google.maps.geometry.spherical.computeDistanceBetween(
+            distLocs[i].getPosition(),
+            distLocs[i+1].getPosition()        
+          );  
+  
+          let distanceInYards = distance * 1.09361; 
+  
+          //get medpoint of distance
+          let midpoint = google.maps.geometry.spherical.interpolate(
+            distLocs[i].getPosition(), distLocs[i+1].getPosition() , 0.5
+          );
+  
+          //Move the polyline creation to its own function
+          const line = new google.maps.Polyline({
+            path: [
+              { lat: distLocs[i].getPosition().lat(), lng: distLocs[i].getPosition().lng() },
+              { lat: distLocs[i + 1].getPosition().lat(), lng: distLocs[i + 1].getPosition().lng() },
+            ],
+            geodesic: true,
+            strokeColor: 'red',
+            strokeOpacity: 1.0,
+            strokeWeight: 3,
+            map: theMap,
+            
+          });
+             //We don't want to save repetative HTML we just want the distance
+            //There is a column in the Poly Lines table for a distance
+            // we can reuse that HTML in the content after fetching from the db
+            line.set("distance", distanceInYards.toFixed(2))
+
+            //this.polylines.push(line);
+  
+              let distanceLabel = new google.maps.InfoWindow({
+              position: midpoint,
+              pixelOffset: new google.maps.Size(0, -27),
+              content: '<div style=" font-weight: bold;"  class="distance-label">' + distanceInYards.toFixed(2) + ' yards</div>'
+            });
+            
+                      
+           this.distLabels.push(distanceLabel);    
+            distanceLabel.open(theMap)
+          
+         }
+        }
       }
 
 
-      //Pop these bad boys
+     //Pop these bad boys
       UndoPolyLine() {
     
           if (this.polylines.length > 0 )  {
@@ -128,7 +186,8 @@ export default class extends Controller {
           }   
     }
 
-    async SaveLocsAndPol(){
+
+    async SaveDistanceLocs(){
 
       const markerData = this.distLocs.map((marker) => {
         let locIcon = marker.get("locType")
@@ -140,25 +199,11 @@ export default class extends Controller {
       };
     });
 
-      const polylineData = this.polylines.map((polyline) => {
-        let dist = polyline.get("distance")// chat GTP this is the distance a conversion to yards
-        return {
-          path: polyline.getPath().getArray().map((latLng) => {
-            return { 
-              lat: latLng.lat(), 
-              lng: latLng.lng(),
-              distance: dist 
-            };
-          }),
-          // Add other properties you need
-        };
-      });
-
-  
+      
     const response = await post('save_dist_marks',{
       body: JSON.stringify({
-        distLocs: markerData,
-        polylines:polylineData
+        distLocs: markerData
+        //polylines:polylineData
         //distLabels: labelData,
       }),
       responseKind: 'json'

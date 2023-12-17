@@ -9,52 +9,34 @@ class PolylinesController < ApplicationController
 
   def save_dist_marks
     polyline_params[:distLocs].each do |loc_data|
-      current_user.loc.create(
+     @loc = current_user.loc.create(
         latitude: loc_data[:latitude],
         longitude: loc_data[:longitude],
         loc_type: loc_data[:loc_type]
       )
     end
 
-    polyline_params[:polylines].each do |polyline_data|
-      create_polyline(polyline_data)
+    # polyline_params[:polylines].each do |polyline_data|
+    #  @polyLine = create_polyline(polyline_data)
+    # end
+   
+    respond_to do |format|
+      if @loc.save
+        format.html { redirect_to loc_url(@loc), notice: "Poly loc and marker were successfully created." }           
+        msg = { :status => "ok", :message => "Poly loc and marker were successfully created." }
+        format.json {  render  json: @loc }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @loc.errors, status: :unprocessable_entity }
+      end
     end
+
   end
+
 
   private
-
  
-  def create_polyline(polyline_data)
-    start_point = polyline_data[:path].first
-    end_point = polyline_data[:path].last
-  
-    start_loc = create_or_find_loc(
-      latitude: start_point[:lat],
-      longitude: start_point[:lng]
-    )
-  
-    end_loc = create_or_find_loc(
-      latitude: end_point[:lat],
-      longitude: end_point[:lng]
-    )
-  
-    current_user.polylines.create(
-      start_latitude: start_loc.latitude,
-      start_longitude: start_loc.longitude,
-      end_latitude: end_loc.latitude,
-      end_longitude: end_loc.longitude,
-      distance: polyline_data[:path].first[:distance].to_f 
-    )
-  end
-
-  def create_or_find_loc(coords)
-    current_user.loc.find_or_create_by(
-      latitude: coords[:latitude],
-      longitude: coords[:longitude]
-    )
-  end
-
   def polyline_params
-    params.permit(distLocs: [:latitude, :longitude, :loc_type], polylines: [:path => [:lat, :lng, :distance]])
+    params.permit(distLocs: [:latitude, :longitude, :loc_type])
   end
 end
