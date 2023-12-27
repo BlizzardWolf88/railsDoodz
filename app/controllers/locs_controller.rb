@@ -141,6 +141,28 @@ class LocsController < ApplicationController
       end
     end
 
+
+    def save_dist_marks
+      polyline_params[:distLocs].each do |loc_data|
+       @loc = current_user.loc.create(
+          latitude: loc_data[:latitude],
+          longitude: loc_data[:longitude],
+          loc_type: loc_data[:loc_type]
+        )
+      end
+   
+      respond_to do |format|
+        if @loc.save
+          format.html { redirect_to loc_url(@loc), notice: "Poly loc and marker were successfully created." }           
+          msg = { :status => "ok", :message => "Poly loc and marker were successfully created." }
+          format.json {  render  json: @loc }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @loc.errors, status: :unprocessable_entity }
+        end
+      end
+  
+    end
     
     def correct_loc 
       @loc = current_user.loc.find_by(id: params[:id])
@@ -154,5 +176,8 @@ class LocsController < ApplicationController
        params.permit(:name, :latitude, :longitude,:create_date,:created_at,:user_id,:updated_at, :wind,:notes,:loc_type,:num_sits,images: [])
     end
 
+    def polyline_params
+      params.permit(distLocs: [:latitude, :longitude, :loc_type])
+    end
    
   end

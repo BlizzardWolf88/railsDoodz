@@ -46,9 +46,7 @@ export default class extends Controller {
 
     this.fetchMarkers();
     this.CreateIcons();
-    //this.fetchPolyLines();
-
-    
+ 
      this.map.addListener("click", (e) => {
 
         console.log("Map Listener")
@@ -71,7 +69,7 @@ export default class extends Controller {
     
   }
 
-  //add new param if update
+
   renderMarkers(markers){
      this.polyMarker = false
 
@@ -90,11 +88,11 @@ export default class extends Controller {
             sendIcon = this.icon3
             this.polyMarker = false
             break; 
-          case("Predator"):
+          case("Predator"): //This is a polyline "distance" marker
             sendIcon = this.icon6
             this.polyMarker = true
             break;
-          case("laser"):
+          case("laser")://This is a polyline "distance" marker
           sendIcon = this.icon7
           this.polyMarker = true
           break;    
@@ -131,16 +129,15 @@ export default class extends Controller {
         gmarker.set("notes", marker.notes)
         
         if(this.polyMarker){
-         this.polyMarkArr.push(gmarker)
+         this.polyMarkArr.push(gmarker)//distance markers
         }
         else{
-          this.myMarkers.push(gmarker)
+          this.myMarkers.push(gmarker)//info markers
         }
         
         //adding a a click event to each of the user's markers
         google.maps.event.addListener(gmarker, 'click', (e) => {
           this.showMarker(gmarker);
-
         });
 
      });
@@ -153,6 +150,12 @@ export default class extends Controller {
     if(this.marker != undefined){
       this.marker.setVisible(false); //hide the "current location by click" marker
     }   
+
+    if(this.activateMeasureDist){
+      let latLng = new google.maps.LatLng(userGMarker.get("lat"), userGMarker.get("lon"));
+      
+      this.placeMarkerAndPanTo(latLng, this.map);
+    }
 
     this.myMarker = userGMarker
     this.clearMarker();
@@ -246,11 +249,10 @@ export default class extends Controller {
             this.marker.setVisible(false);                          
        }  
 
-       // MUST REFACTOR
+  
       const polylineCntl = this.application.getControllerForElementAndIdentifier(document.getElementById('polylines'), "polylines" )
       polylineCntl.CreateDistanceLocs(latLng,this.distLocs,this.map)
       
-      //this.CreateDistanceLocs(latLng)
       }
      else{
           //render pin on the click
