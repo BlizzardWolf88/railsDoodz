@@ -11,10 +11,7 @@ class LocsController < ApplicationController
   
     def index        
     end     
-    
-    # def show
-    # end
-
+   
     def new
       @loc = current_user.madood.build
     end

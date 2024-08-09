@@ -90,7 +90,7 @@ export default class extends Controller {
                 let distanceLabel = new google.maps.InfoWindow({
                 position: midpoint,
                 pixelOffset: new google.maps.Size(0, -27),
-                content: '<div style=" font-weight: bold;"  class="distance-label">' + distanceInYards.toFixed(2) + ' yards</div>'
+                content: '<div style=" font-weight: bold;"  class="info-window-inner">' + distanceInYards.toFixed(2) + ' yards</div>'
               });
               
                         
@@ -108,9 +108,9 @@ export default class extends Controller {
         for (let i = 0; i < distLocs.length -1; i++) {
           
           if(i < distLocs.length -1 && i > 1){
-            //The sequence for a group of markers with polylines is predator conjoined by lasers
-            // we do not want a polylilne from a laser to a seperate predator
-            //if group becomes false do NOT draw line by separating the group 
+            //The sequence for a group of markers with polylines is a predator icon conjoined by laser icons
+            // we do not want a polyline from a laser to a different predator grouping
+            //if group becomes false do NOT draw line we must separate the group 
             group = (distLocs[i].locType == "laser" && distLocs[i + 1].locType == "Predator") ? false : true
           
           }          
@@ -146,8 +146,9 @@ export default class extends Controller {
             
                 let distanceLabel = new google.maps.InfoWindow({
                 position: midpoint,
-                pixelOffset: new google.maps.Size(0, -27),
-                content: '<div style=" font-weight: bold;"  class="distance-label">' + distanceInYards.toFixed(2) + ' yards</div>'
+                pixelOffset: new google.maps.Size(0, 0),
+                content: '<div style="font-weight:bold">' + distanceInYards.toFixed(2) + ' yards</div>'
+                
               });
               
                         
