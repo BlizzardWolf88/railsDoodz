@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get  'home/about'
   get  'madoods/index'
   get  'locs/index'
+  get  'camps/index'
   get  'locs/saveSpot', to: "locs#saveSpot"
   get  'locs/getMarkers'
   get  'locs/getMarkerImage/:loc_id', to: 'locs#getMarkerImage'
