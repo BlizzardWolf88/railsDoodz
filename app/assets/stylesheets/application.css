@@ -117,3 +117,11 @@ div.gm-style-iw {
   max-height:20px;
   overflow:scroll;
 }
+
+
+.info-window-inner {
+  width: 100px; /* Adjust the width */
+  height: 20px; /* Adjust the height or set a fixed value */
+  max-height: 15px; /* Optional: Limit the height */
+  overflow-y: auto; /* Add scroll if content overflows */
+}

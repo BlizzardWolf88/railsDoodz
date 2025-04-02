@@ -146,8 +146,8 @@ export default class extends Controller {
             
                 let distanceLabel = new google.maps.InfoWindow({
                 position: midpoint,
-                pixelOffset: new google.maps.Size(0, 0),
-                content: '<div style="font-weight:bold">' + distanceInYards.toFixed(2) + ' yards</div>'
+                pixelOffset: new google.maps.Size(0, -27),
+                content: '<div style="font-weight:bold"; class="info-window-inner">' + distanceInYards.toFixed(2) + ' yards</div>'
                 
               });
               

@@ -3,9 +3,10 @@ import { Controller } from "@hotwired/stimulus"
 import{FetchRequest, get, post, put, patch, destroy } from '@rails/request.js'
 
 export default class extends Controller {
-  static targets = ["map","lat","lon","name","date","notes","north","northwest","northeast","west","east",
-  "southwest","myID","southeast","south","loctype","numsits","showpicsbtn","createbtn","updatebtn","deletebtn",
-  "markerimages","inputGroupFile","buttons","polylines"]
+  static targets = ["map","lat","lon","name","date"]
+  // "notes","north","northwest","northeast","west","east",
+  // "southwest","myID","southeast","south","loctype","numsits","showpicsbtn","createbtn","updatebtn","deletebtn",
+  // "markerimages","inputGroupFile","buttons","polylines"]
  
   connect() {
     if (typeof (google) != "undefined"){
@@ -18,22 +19,22 @@ export default class extends Controller {
     this.myMarkers =[]
     this.polyMarkArr = []
 
-    this.showpicsbtnTarget.hidden = true;
+    // this.showpicsbtnTarget.hidden = true;
 
-    this.updatebtnTarget.hidden = true;
-    this.createbtnTarget.hidden = false;
-    this.deletebtnTarget.hidden = true
+    // this.updatebtnTarget.hidden = true;
+    // this.createbtnTarget.hidden = false;
+    // this.deletebtnTarget.hidden = true
 
-    this.setCompassImages();
+    //this.setCompassImages();
 
-    this.NorthWind = ""
-    this.NorthEastWind = ""
-    this.EastWind = ""
-    this.SouthEastWind = ""
-    this.SouthWind = ""
-    this.SouthWestWind = ""
-    this.WestWind = ""
-    this.NorthWestWind = ""
+    // this.NorthWind = ""
+    // this.NorthEastWind = ""
+    // this.EastWind = ""
+    // this.SouthEastWind = ""
+    // this.SouthWind = ""
+    // this.SouthWestWind = ""
+    // this.WestWind = ""
+    // this.NorthWestWind = ""
 
      //Lat and Lon for starting position on map
     const lat = parseFloat("43.639")
