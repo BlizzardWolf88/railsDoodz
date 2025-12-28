@@ -1,19 +1,34 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.1.3"
+ruby "3.4.4"
+gem 'logger', '~> 1.6'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.0.4", ">= 7.0.4.3"
+#gem "rails", "~> 7.0.4", ">= 7.0.4.3"
+#gem 'rails', '7.0.8.1'
+gem 'rails', '~> 8.0.2'
+
+gem 'io-console', '~> 0.8.0'
+
+gem 'csv', require: false
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 1.4"
+#gem "sqlite3", "~> 1.4."
+gem "sqlite3", "~> 2.1"
+
+
+
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "~> 5.0"
+gem "puma", "~> 6.5"
+
+gem "nokogiri", "~> 1.18", platforms: :mingw
+
+
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
