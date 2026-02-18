@@ -1,13 +1,25 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
   name: MyString
-  address: MyString
   latitude: 1.5
   longitude: 1.5
+  create_date: 2025-08-30
+  wind: Calm
+  user_id: 1
+  notes: My notes
+  loc_type: TypeA
+  num_sits: 0
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
 
 two:
-  name: MyString
-  address: MyString
-  latitude: 1.5
-  longitude: 1.5
+  name: AnotherPlace
+  latitude: 2.5
+  longitude: -3.5
+  create_date: 2025-08-30
+  wind: Breezy
+  user_id: 2
+  notes: Other notes
+  loc_type: TypeB
+  num_sits: 3
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

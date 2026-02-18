@@ -39,6 +39,8 @@ Rails.application.configure do
 
   config.assets.compile = true
   config.serve_static_assets = true
+  config.active_support.to_time_preserves_timezone = :zone
+
 
   # ALL SETTINGS FOR SEND GRID MAIL SERVER
   config.action_mailer.raise_delivery_errors = false

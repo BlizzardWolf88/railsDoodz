@@ -1,0 +1,3 @@
+class Doodz < ApplicationRecord
+ 
+end

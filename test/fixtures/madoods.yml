@@ -1,15 +1,19 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  first_name: MyString
-  last_name: MyString
-  email: MyString
-  phone: MyString
-  EBabys_Twitter: MyString
+  first_name: "MyString"
+  last_name: "MyString"
+  email: "mystring@example.com"
+  phone: "123-456-7890"
+  EBabys_Twitter: "@MyString"
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+  user_id: 1
 
 two:
-  first_name: MyString
-  last_name: MyString
-  email: MyString
-  phone: MyString
-  EBabys_Twitter: MyString
+  first_name: "AnotherString"
+  last_name: "AnotherString"
+  email: "another@example.com"
+  phone: "098-765-4321"
+  EBabys_Twitter: "@AnotherString"
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+  user_id: 2

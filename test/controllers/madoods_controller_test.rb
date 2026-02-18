@@ -17,7 +17,7 @@ class MadoodsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create madood" do
     assert_difference("Madood.count") do
-      post madoods_url, params: { madood: { EBabys_Twitter: @madood.EBabys_Twitter, email: @madood.email, first_name: @madood.first_name, last_name: @madood.last_name, phone: @madood.phone } }
+      post madoods_url, params: { madood: {} }
     end
 
     assert_redirected_to madood_url(Madood.last)
@@ -34,7 +34,7 @@ class MadoodsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update madood" do
-    patch madood_url(@madood), params: { madood: { EBabys_Twitter: @madood.EBabys_Twitter, email: @madood.email, first_name: @madood.first_name, last_name: @madood.last_name, phone: @madood.phone } }
+    patch madood_url(@madood), params: { madood: {} }
     assert_redirected_to madood_url(@madood)
   end
 

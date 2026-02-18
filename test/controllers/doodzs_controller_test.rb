@@ -1,8 +1,9 @@
 require "test_helper"
 
 class DoodzsControllerTest < ActionDispatch::IntegrationTest
+  
   setup do
-    @doodz = doodzs(:one)
+    @doodz = doodzs(:one)  # uses your fixture key "one"
   end
 
   test "should get index" do

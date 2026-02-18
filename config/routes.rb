@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
   
   root 'home#index'
+  get 'home/index'
   get  'home/about'
   get  'madoods/index'
   get  'locs/index'
@@ -19,15 +20,22 @@ Rails.application.routes.draw do
   post "locs/save_dist_marks", to: 'locs#save_dist_marks' 
   
 
+    # devise_for :users, controllers: {
+    #   sessions: 'users/sessions',
+    #   passwords: 'users/passwords',
+    #   registrations: 'users/registrations'
+    #   #confirmations: 'user/confirmations' Might need this later
+    # #   resources :locs do
+    # #     resources :marker_image
+    # #   end
+    # # end
+    # }
+
     devise_for :users, controllers: {
       sessions: 'users/sessions',
       passwords: 'users/passwords',
-      registrations: 'users/registrations'
-      #confirmations: 'user/confirmations' Might need this later
-    #   resources :locs do
-    #     resources :marker_image
-    #   end
-    # end
+      registrations: 'users/registrations',
+      omniauth_callbacks: 'users/omniauth_callbacks'
     }
 
    

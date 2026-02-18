@@ -125,3 +125,12 @@ div.gm-style-iw {
   max-height: 15px; /* Optional: Limit the height */
   overflow-y: auto; /* Add scroll if content overflows */
 }
+
+.btn-google {
+  background-color: #4285F4; /* Google Blue */
+  color: white;
+  font-weight: bold;
+}
+.btn-google:hover {
+  background-color: #357ae8;
+}

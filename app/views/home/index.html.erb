@@ -6,14 +6,23 @@
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
   </div>
+  
   <div class="carousel-inner">
     <div class="carousel-item  active c-item">
        <%= image_tag 'Magalloway.jpg', class:' d-block w-100 c-img', alt: "slide 1"  %>     
        <div class="carousel-caption top-0 mt-5 d-none d-md-block ">
        <br/><br/><br/><br/><br/>
+
+      
+
         <p class ="mt-6 fs-2 text-uppercase">The Time is Now</p>
         <h1 class="display-1 fw-bold text-capitalize">Start Your Jouney</h1>
           <button type="button" class="btn btn-lg btn-primary active px-4 py-2">Begin</button>
+
+           <%= link_to "Sign in with Google", 
+          user_google_oauth2_omniauth_authorize_path, 
+          data: { turbo: false }, 
+          class: "btn btn-google" %> 
       </div>
     </div>
     <div class="carousel-item c-item">

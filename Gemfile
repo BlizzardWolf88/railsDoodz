@@ -54,6 +54,11 @@ gem 'dotenv-rails', '~> 2.8', '>= 2.8.1'
 
 gem 'requestjs-rails'
 
+# Gemfile
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+
+
 
 gem "gmaps4rails"
 gem "geocoder"

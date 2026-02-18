@@ -14,11 +14,6 @@ class MadoodsTest < ApplicationSystemTestCase
     visit madoods_url
     click_on "New madood"
 
-    fill_in "Ebabys twitter", with: @madood.EBabys_Twitter
-    fill_in "Email", with: @madood.email
-    fill_in "First name", with: @madood.first_name
-    fill_in "Last name", with: @madood.last_name
-    fill_in "Phone", with: @madood.phone
     click_on "Create Madood"
 
     assert_text "Madood was successfully created"
@@ -29,11 +24,6 @@ class MadoodsTest < ApplicationSystemTestCase
     visit madood_url(@madood)
     click_on "Edit this madood", match: :first
 
-    fill_in "Ebabys twitter", with: @madood.EBabys_Twitter
-    fill_in "Email", with: @madood.email
-    fill_in "First name", with: @madood.first_name
-    fill_in "Last name", with: @madood.last_name
-    fill_in "Phone", with: @madood.phone
     click_on "Update Madood"
 
     assert_text "Madood was successfully updated"

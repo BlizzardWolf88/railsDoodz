@@ -9,8 +9,11 @@ class LocsController < ApplicationController
       session[:user_return_to] = request.fullpath
     end
   
-    def index        
-    end     
+    def index
+      @locs = current_user.loc     # optional: for listing existing locs
+      @loc = current_user.loc.build  # for the form_with(model: @loc)
+    end
+     
    
     def new
       @loc = current_user.madood.build
